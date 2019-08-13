@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap Sign in Form with Social Login Buttons</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style type="text/css">
+	.login-form {
+		width: 340px;
+    	margin: 30px auto;
+	}
+    .login-form form {
+    	margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .login-form .hint-text {
+		color: #777;
+		padding-bottom: 15px;
+		text-align: center;
+    }
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .login-btn {        
+        font-size: 15px;
+        font-weight: bold;
+    }
+    .or-seperator {
+        margin: 20px 0 10px;
+        text-align: center;
+        border-top: 1px solid #ccc;
+    }
+    .or-seperator i {
+        padding: 0 10px;
+        background: #f7f7f7;
+        position: relative;
+        top: -11px;
+        z-index: 1;
+    }
+    .social-btn .btn {
+        margin: 10px 0;
+        font-size: 15px;
+        text-align: left; 
+        line-height: 24px;       
+    }
+	.social-btn .btn i {
+		float: left;
+		margin: 4px 15px  0 5px;
+        min-width: 15px;
+	}
+	.input-group-addon .fa{
+		font-size: 18px;
+	}
+</style>
+</head>
+<body>
+<div class="login-form">
+    <form action="http://localhost:8000/accesos/registro_social" method="POST">
+        {% csrf_token %}
+        <h2 class="text-center">Completar información de registro</h2>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                {% if request.session.cliente.nombres == '' or request.session.cliente.nombres == None %}
+                    <input type="text" class="form-control" name="nombres" placeholder="Nombres" required="required">
+                {% else %}
+                    <input type="text" class="form-control" name="nombres" placeholder="Nombres" required="required" value={{ request.session.cliente.nombres }}>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                {% if request.session.cliente.apellidos == '' or request.session.cliente.apellidos == None %}
+                    <input type="text" class="form-control" name="apellidos" placeholder="Apellidos" required="required">                    
+                {% else %}
+                    <input type="text" class="form-control" name="apellidos" placeholder="Apellidos" required="required" value={{ request.session.cliente.apellidos }}>
+                {% endif %}                
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                {% if request.session.cliente.fecha_nacimiento == '' or request.session.cliente.fecha_nacimiento == None %}
+                    <input type="date" class="form-control" name="fecha_nacimiento" placeholder="Fecha nacimiento" required="required">
+                {% else %}
+                    <input type="date" class="form-control" name="fecha_nacimiento" placeholder="Fecha nacimiento" required="required" value={{ request.session.cliente.fecha_nacimiento }}>
+                {% endif %}                
+            </div>
+        </div>
+        <div class="form-group">
+        	<div class="input-group">            
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" name="email" placeholder="Email" required="required" value={{ request.session.cliente.email }} disabled>
+                {% comment %} {% if request.session.cliente.email == '' or request.session.cliente.email == None %}
+                    <input type="text" class="form-control" name="email" placeholder="Email" required="required">
+                {% else %}
+                    <input type="text" class="form-control" name="email" placeholder="Email" required="required" value={{ request.session.cliente.email }}>                    
+                {% endif %}            {% endcomment %}
+            </div>
+        </div>        
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block login-btn">Guardar</button>
+        </div>            
+    </form>    
+</div>
+</body>
+</html>                            

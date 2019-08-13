@@ -8,7 +8,7 @@ class Cliente(AbstractBaseUser):
     nombres = models.CharField(max_length = 100)
     apellidos = models.CharField(max_length = 100)
     fecha_nacimiento = models.DateField(null=True)
-    username = models.CharField(max_length = 100, unique=True)
+    username = models.CharField(max_length = 100, unique=True, null=True)
     email = models.EmailField(unique=True)
     password = models.TextField()
     estado = models.BooleanField(default=True)

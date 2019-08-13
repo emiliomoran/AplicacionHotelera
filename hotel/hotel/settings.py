@@ -120,7 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'accesos.Cliente'
 SOCIAL_AUTH_USER_MODEL = 'accesos.Cliente'
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/reservas'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/accesos/login_social'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/accesos/registro_social'
 
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get("FbKey","484372565697357")        # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get("FbSecret","e919caa80a98637c70827cb7fba27f2c") # App Secret
