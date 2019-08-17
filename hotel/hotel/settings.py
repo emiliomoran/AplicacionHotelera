@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     # app creadas
     'social_django',  # social
     'accesos.apps.AccesosConfig',
-    'reservas.apps.ReservasConfig'
+    'reservas.apps.ReservasConfig',
+    'shopping_cart.apps.ShoppingCartConfig'
 ]
 
 MIDDLEWARE = [
@@ -80,9 +81,9 @@ WSGI_APPLICATION = 'hotel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "Hotel Salinas",
+        'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "1923",
+        'PASSWORD': "admin",
         'HOST': "localhost",
         'PORT': "5432",
     }

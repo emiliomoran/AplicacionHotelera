@@ -20,3 +20,7 @@ class Cliente(AbstractBaseUser):
     USERNAME_FIELD = 'username'
     
     objects = UserManager()
+
+class Perfil(models.Model):
+    usuario = models.OneToOneField(Cliente,on_delete = models.CASCADE)
+     
