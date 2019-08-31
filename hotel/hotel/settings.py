@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'hotel.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "Hotel Salinas",
+        'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "1923",
+        'PASSWORD': "root",
         'HOST': "localhost",
         'PORT': "5432",
     }
