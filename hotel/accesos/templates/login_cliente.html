@@ -62,20 +62,25 @@
 	.input-group-addon .fa{
 		font-size: 18px;
 	}
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
 </style>
 </head>
-<body>
-<div class="login-form">
+<body style="background-image: url('https://www.vistazo.com/sites/default/files/field/image/2018/09/09/islas-galapagos.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; height: 500px;">
+<div class="login-form center">    
     <form action="http://localhost:8000/accesos/login" method="POST">
         {% csrf_token %}
-        <h2 class="text-center">Ingresar</h2>		
-        <div class="text-center social-btn">
-            {% comment %} <a href="#" class="btn btn-primary btn-block"><i class="fa fa-facebook"></i> Sign in with <b>Facebook</b></a>
-            <a href="#" class="btn btn-info btn-block"><i class="fa fa-twitter"></i> Sign in with <b>Twitter</b></a>
-			<a href="#" class="btn btn-danger btn-block"><i class="fa fa-google"></i> Sign in with <b>Google</b></a> {% endcomment %}
-            <a href="{% url 'social:begin' 'instagram' %}" class="btn btn-danger btn-block"><i class="fa fa-instagram"></i>Login with Instagram</a>
-            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary btn-block"><i class="fa fa-facebook"></i>Login with Facebook</a>
-			<a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-info btn-block"><i class="fa fa-google"></i>Login with Google+</a>
+        <h2 class="text-center">Ingreso</h2>		
+        <div class="text-center social-btn">            
+            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary btn-block cente"><i class="fa fa-facebook"></i>Ingresar con Facebook</a>
+			<a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger btn-block"><i class="fa fa-google"></i>Ingresar con Google+</a>
         </div>
 		<div class="or-seperator"><i>or</i></div>
         <div class="form-group">
@@ -91,13 +96,12 @@
             </div>
         </div>        
         <div class="form-group">
-            <button type="submit" class="btn btn-success btn-block login-btn">Sign in</button>
+            <button type="submit" class="btn btn-success btn-block login-btn">Ingresar</button>
         </div>
         <div class="clearfix">
             <label class="pull-left checkbox-inline"><input type="checkbox"> Recuerdame</label>
             <a href="#" class="pull-right text-success">¿Olvidó su contraseña?</a>
-        </div>  
-        
+        </div>
     </form>
     <div class="hint-text small">¿No tienes cuenta? <a href="/accesos/registro" class="text-success">Registrate aquí!</a></div>
 </div>

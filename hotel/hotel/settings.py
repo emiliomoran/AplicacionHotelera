@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     # app creadas
     'social_django',  # social
     'accesos.apps.AccesosConfig',
-    'reservas.apps.ReservasConfig'
+    'reservas.apps.ReservasConfig',
+    'shopping_cart.apps.ShoppingCartConfig'
 ]
 
 MIDDLEWARE = [

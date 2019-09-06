@@ -130,3 +130,8 @@ def registro_social(request):
             return render(request, 'registro_social.html')
         except Exception as error:
             print(error)
+
+def my_profile(request):
+	my_user_profile = Perfil.objects.filter(usuario = request.usuario).first()
+	my_reservations = Reservas.objects.filter(estaReservado = True, owner = my_user_profile)
+	

@@ -31,7 +31,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Roxandrea</a>
+	      <a class="navbar-brand" href="index.html">Hotel Salinas</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
@@ -39,11 +39,9 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="index.html" class="nav-link">Inicio</a></li>
-	          <li class="nav-item"><a href="rooms.html" class="nav-link">Cuartos</a></li>
-	          <li class="nav-item"><a href="restaurant.html" class="nav-link">Restaurant</a></li>
-	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+	          <li class="nav-item"><a href="rooms.html" class="nav-link">Habitaciones</a></li>	          	          
+	          <li class="nav-item"><a href="blog.html" class="nav-link">Noticias</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Contactos</a></li>
 			  {% if request.session.estado %}
 			  	<li class="nav-item"><span class="nav-link">{{ request.session.cliente.nombres }}</span></li>
 			  {% else %}
@@ -67,8 +65,8 @@
 	          <div class="row no-gutters slider-text align-items-center">
 	          <div class="col-md-8 ftco-animate">
 	          	<div class="text mb-5 pb-5">
-		            <h1 class="mb-3">Roxandrea</h1>
-		            <h2>More than a hotel... an experience</h2>
+		            <h1 class="mb-3">Hotel Salinas</h1>
+		            <h2>Más que un hotel... Una experiencia</h2>
 	            </div>
 	          </div>
 	        </div>
@@ -81,8 +79,8 @@
 	          <div class="row no-gutters slider-text align-items-center">
 	          <div class="col-md-8 ftco-animate">
 	          	<div class="text mb-5 pb-5">
-		            <h1 class="mb-3">Experience Epic Beauty</h1>
-		            <h2>Roxandrea Hotel &amp; Resort</h2>
+		            <h1 class="mb-3">Experimente una belleza épica</h1>
+		            <h2>Hotel Salinas &amp; Resort</h2>
 	            </div>
 	          </div>
 	        </div>
@@ -95,67 +93,88 @@
     	<div class="container">
     		<div class="row">
     			<div class="col-lg-12 pr-1 aside-stretch">
-    				<form action="#" class="booking-form">
+    				<form action="/reservas/busqueda-normal" method="POST" class="booking-form">
+					{% csrf_token %}
 	        		<div class="row">
-	        			<div class="col-md d-flex py-md-4">
+						<div class="col-md d-flex py-md-3">
 	        				<div class="form-group align-self-stretch d-flex align-items-end">
 	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
-				    					<label for="#">Check-in Date</label>
-				    					<input type="text" class="form-control checkin_date" placeholder="Check-in date">
-			    					</div>
-			    				</div>
-	        			</div>
-	        			<div class="col-md d-flex py-md-4">
-	        				<div class="form-group align-self-stretch d-flex align-items-end">
-	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
-				    					<label for="#">Check-out Date</label>
-				    					<input type="text" class="form-control checkout_date" placeholder="Check-out date">
-			    					</div>
-			    				</div>
-	        			</div>
-	        			<div class="col-md d-flex py-md-4">
-	        				<div class="form-group align-self-stretch d-flex align-items-end">
-	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
-			      					<label for="#">Room</label>
+			      					<label for="#">Tipo</label>
 			      					<div class="form-field">
 			        					<div class="select-wrap">
-			                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-			                    <select name="" id="" class="form-control">
-			                    	<option value="">Suite</option>
-			                      <option value="">Family Room</option>
-			                      <option value="">Deluxe Room</option>
-			                      <option value="">Classic Room</option>
-			                      <option value="">Superior Room</option>
-			                      <option value="">Luxury Room</option>
-			                    </select>
-			                  </div>
-				              </div>
-				            </div>
-		              </div>
+						                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+			                    			<select name="select_tipo_reserva" id="select_tipo_reserva" class="form-control">
+			                    				<option value="0">Evento</option>
+												<option value="1">Normal</option>												
+			                    			</select>
+			                  			</div>
+				              		</div>
+				            	</div>
+		              		</div>
 	        			</div>
-	        			<div class="col-md d-flex py-md-4">
+						<div class="col-md-3 d-flex py-md-3">
+	        				<div class="form-group align-self-stretch d-flex align-items-end">
+	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
+				    					<label for="#">Entrada - Salida</label>
+				    					<input name="fecha_reserva" type="text" class="form-control">
+			    					</div>
+			    				</div>
+	        			</div>	        			
+	        			{% comment %} <div class="col-md d-flex py-md-3">
+	        				<div class="form-group align-self-stretch d-flex align-items-end">
+	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
+				    					<label for="#">Entrada</label>
+				    					<input name="fecha_entrada" type="date" class="form-control">
+			    					</div>
+			    				</div>
+	        			</div>
+	        			<div class="col-md d-flex py-md-3">
+	        				<div class="form-group align-self-stretch d-flex align-items-end">
+	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
+				    					<label for="#">Salida</label>
+				    					<input name="fecha_salida" type="date" class="form-control">
+			    					</div>
+			    				</div>
+	        			</div> {% endcomment %}
+	        			<div class="col-md d-flex py-md-3">
+	        				<div class="form-group align-self-stretch d-flex align-items-end">
+	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
+			      					<label for="#">Habitación</label>
+			      					<div class="form-field">
+			        					<div class="select-wrap">
+						                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+			                    			<select name="select_tipo_habitacion" id="select_tipo_habitacion" class="form-control">
+			                    				<option value="0">Suite</option>
+												<option value="1">Habitación familiar</option>
+												<option value="2">Habitación deluxe</option>
+												<option value="3">Habitación clásico</option>
+			                    			</select>
+			                  			</div>
+				              		</div>
+				            	</div>
+		              		</div>
+	        			</div>
+	        			<div class="col-md d-flex py-md-3">
 	        				<div class="form-group align-self-stretch d-flex align-items-end">
 	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
 			      					<label for="#">Guests</label>
 			      					<div class="form-field">
 			        					<div class="select-wrap">
 			                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-			                    <select name="" id="" class="form-control">
-			                    	<option value="">1 Adult</option>
-			                      <option value="">2 Adult</option>
-			                      <option value="">3 Adult</option>
-			                      <option value="">4 Adult</option>
-			                      <option value="">5 Adult</option>
-			                      <option value="">6 Adult</option>
+			                    <select name="select_num_adultos" id="select_num_adultos" class="form-control">
+			                    	<option value="1">1 Adulto</option>
+			                      	<option value="2">2 Adultos</option>
+									<option value="3">3 Adultos</option>
+									<option value="4">4 Adultos</option>									
 			                    </select>
 			                  </div>
 				              </div>
 				            </div>
-		              </div>
+		              	</div>
 	        			</div>
 	        			<div class="col-md d-flex">
 	        				<div class="form-group d-flex align-self-stretch">
-			              <a href="#" class="btn btn-black py-5 py-md-3 px-4 align-self-stretch d-block"><span>Check Availability <small>Best Price Guaranteed!</small></span></a>
+			              	<button type="submit" class="btn btn-black py-5 py-md-3 px-4 align-self-stretch d-block">BUSCAR
 			            </div>
 	        			</div>
 	        		</div>
@@ -775,24 +794,41 @@
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
-  <script src="../static/js/jquery.min.js"></script>
-  <script src="../static/js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="../static/js/popper.min.js"></script>
-  <script src="../static/js/bootstrap.min.js"></script>
-  <script src="../static/js/jquery.easing.1.3.js"></script>
-  <script src="../static/js/jquery.waypoints.min.js"></script>
-  <script src="../static/js/jquery.stellar.min.js"></script>
-  <script src="../static/js/owl.carousel.min.js"></script>
-  <script src="../static/js/jquery.magnific-popup.min.js"></script>
-  <script src="../static/js/aos.js"></script>
-  <script src="../static/js/jquery.animateNumber.min.js"></script>
-  <script src="../static/js/jquery.mb.YTPlayer.min.js"></script>
-  <script src="../static/js/bootstrap-datepicker.js"></script>
-  <!-- // <script src="../static/js/jquery.timepicker.min.js"></script> -->
-  <script src="../static/js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="../static/js/google-map.js"></script>
-  <script src="../static/js/main.js"></script>
-    
+	<script src="../static/js/jquery.min.js"></script>
+	<script src="../static/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="../static/js/popper.min.js"></script>
+	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/jquery.easing.1.3.js"></script>
+	<script src="../static/js/jquery.waypoints.min.js"></script>
+	<script src="../static/js/jquery.stellar.min.js"></script>
+	<script src="../static/js/owl.carousel.min.js"></script>
+	<script src="../static/js/jquery.magnific-popup.min.js"></script>
+	<script src="../static/js/aos.js"></script>
+	<script src="../static/js/jquery.animateNumber.min.js"></script>
+	<script src="../static/js/jquery.mb.YTPlayer.min.js"></script>
+	<script src="../static/js/bootstrap-datepicker.js"></script>
+	<!-- // <script src="../static/js/jquery.timepicker.min.js"></script> -->
+	<script src="../static/js/scrollax.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="../static/js/google-map.js"></script>
+	<script src="../static/js/main.js"></script>
+
+	<!--script para date range picker-->
+	<!--scripts para el date range picker-->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<!---->
+	<script>
+		$(document).ready(function(){
+			$('input[name="fecha_reserva"]').daterangepicker({
+				locale: {
+					format: 'DD/MM/YYYY'
+				}
+			});
+		})		
+	</script>
+	<!---->
   </body>
 </html>

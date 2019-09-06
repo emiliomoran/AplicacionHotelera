@@ -62,10 +62,18 @@
 	.input-group-addon .fa{
 		font-size: 18px;
 	}
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
 </style>
 </head>
-<body>
-<div class="login-form">
+<body style="background-image: url('https://www.vistazo.com/sites/default/files/field/image/2018/09/09/islas-galapagos.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; height: 500px;">
+<div class="login-form center">
     <form action="/accesos/registro" method="POST">
         {% csrf_token %}
         <h2 class="text-center">Registro</h2>
@@ -102,7 +110,8 @@
         <div class="form-group">
             <button type="submit" class="btn btn-success btn-block login-btn">Guardar</button>
         </div>            
-    </form>    
+    </form>
+    <div class="hint-text small">¿Ya tienes cuenta? <a href="/accesos/registro" class="text-success">Ingresa aquí!</a></div>   
 </div>
 </body>
 </html>
