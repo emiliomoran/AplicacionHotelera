@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password, check_password
 
 # Modelos
 from accesos.models import Cliente
+from accesos.models import Perfil
 
 # Create your views here.
 
@@ -67,10 +68,16 @@ def registro(request):
 
             cliente.save()
 
+            Perfil.objects.create(
+                usuario = cliente
+            )
+
+
             return redirect('/accesos/login')
 
         except Exception as error:
             print(error)
+
     else:
         return render(request, 'registro_form.html')
 

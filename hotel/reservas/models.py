@@ -26,14 +26,37 @@ class Room(models.Model):
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_modificacion = models.DateTimeField(auto_now=True)
 
-# class Booking(models.Model):	
-# 	reserva_inicio = models.DateTimeField()
-# 	reserva_fin = models.DateTimeField()
-# 	estaReservado = models.BooleanField()
-# 	num_noches = models.IntegerField()
-# 	activa = models.BooleanField(default=True)		#True si esta activa y False si no esta activa
-# 	id_room = models.OneToOneField(Room, on_delete = models.CASCADE)
-# 	id_cliente = models.OneToOneField(Cliente, on_delete = models.CASCADE)
-# 	estado = models.BooleanField(default=True)
-# 	fecha_creacion = models.DateTimeField(auto_now_add=True)
-# 	fecha_modificacion = models.DateTimeField(auto_now=True)
+
+class BookingType(models.Model):
+
+	name = models.CharField(max_length = 50)
+	description = models.CharField(max_length = 150)
+	is_removed = models.BooleanField(default = False)
+
+	create_date = models.DateTimeField(auto_now_add = True)
+	update_date = models.DateTimeField(auto_now = True)
+
+class Booking_State(models.Model):
+	name = models.CharField(max_length = 50)
+	description = models.CharField(max_length = 150)
+	is_removed = models.BooleanField(default = False)
+
+	create_date = models.DateTimeField(auto_now_add = True)
+	update_date = models.DateTimeField(auto_now = True)
+
+	
+class Booking(models.Model):
+	customer_id = models.OneToOneField('accesos.Cliente', on_delete = models.CASCADE)
+	room_id = models.OneToOneField(Room,on_delete = models.CASCADE)
+	bookingtype_id = models.OneToOneField(BookingType, on_delete = models.CASCADE)
+	state_id = models.ForeignKey(Booking_State, on_delete = models.CASCADE)
+
+	booking_date = models.DateTimeField(auto_now_add = True)
+	check_in_date = models.DateTimeField()
+	check_out_date = models.DateTimeField()
+	no_nights = models.IntegerField(default = 0)
+	is_removed = models.BooleanField(default = False)
+
+	create_date = models.DateTimeField(auto_now_add = True)
+	update_date = models.DateTimeField(auto_now = True)
+
