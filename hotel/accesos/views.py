@@ -100,7 +100,7 @@ def registro_social(request):
             cliente.nombres = request.POST.get('nombres')
             cliente.apellidos = request.POST.get('apellidos')
             cliente.fecha_nacimiento = request.POST.get('fecha_nacimiento')
-            cliente.save()            
+            cliente.save()
 
             cliente_actualizado = Cliente.objects.get(id=request.user.id)
             json_cliente = {

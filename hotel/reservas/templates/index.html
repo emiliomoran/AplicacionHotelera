@@ -41,7 +41,7 @@
 	          <li class="nav-item active"><a href="index.html" class="nav-link">Inicio</a></li>
 	          <li class="nav-item"><a href="rooms.html" class="nav-link">Habitaciones</a></li>	          	          
 	          <li class="nav-item"><a href="blog.html" class="nav-link">Noticias</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contactos</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Contactos</a></li>			  
 			  {% if request.session.estado %}
 			  	<li class="nav-item"><span class="nav-link">{{ request.session.cliente.nombres }}</span></li>
 			  {% else %}
@@ -96,7 +96,7 @@
     				<form action="/reservas/busqueda-normal" method="POST" class="booking-form">
 					{% csrf_token %}
 	        		<div class="row">
-						<div class="col-md d-flex py-md-3">
+						{% comment %} <div class="col-md d-flex py-md-3">
 	        				<div class="form-group align-self-stretch d-flex align-items-end">
 	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
 			      					<label for="#">Tipo</label>
@@ -111,7 +111,7 @@
 				              		</div>
 				            	</div>
 		              		</div>
-	        			</div>
+	        			</div> {% endcomment %}
 						<div class="col-md-3 d-flex py-md-3">
 	        				<div class="form-group align-self-stretch d-flex align-items-end">
 	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
@@ -120,22 +120,6 @@
 			    					</div>
 			    				</div>
 	        			</div>	        			
-	        			{% comment %} <div class="col-md d-flex py-md-3">
-	        				<div class="form-group align-self-stretch d-flex align-items-end">
-	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
-				    					<label for="#">Entrada</label>
-				    					<input name="fecha_entrada" type="date" class="form-control">
-			    					</div>
-			    				</div>
-	        			</div>
-	        			<div class="col-md d-flex py-md-3">
-	        				<div class="form-group align-self-stretch d-flex align-items-end">
-	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
-				    					<label for="#">Salida</label>
-				    					<input name="fecha_salida" type="date" class="form-control">
-			    					</div>
-			    				</div>
-	        			</div> {% endcomment %}
 	        			<div class="col-md d-flex py-md-3">
 	        				<div class="form-group align-self-stretch d-flex align-items-end">
 	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
@@ -144,10 +128,9 @@
 			        					<div class="select-wrap">
 						                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
 			                    			<select name="select_tipo_habitacion" id="select_tipo_habitacion" class="form-control">
-			                    				<option value="0">Suite</option>
-												<option value="1">Habitación familiar</option>
-												<option value="2">Habitación deluxe</option>
-												<option value="3">Habitación clásico</option>
+												{% for type in room_type %}
+													<option value={{ type.id }}>{{ type.nombre }}</option>
+												{% endfor %}
 			                    			</select>
 			                  			</div>
 				              		</div>
@@ -157,25 +140,44 @@
 	        			<div class="col-md d-flex py-md-3">
 	        				<div class="form-group align-self-stretch d-flex align-items-end">
 	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
-			      					<label for="#">Guests</label>
+			      					<label for="#">Adultos</label>
 			      					<div class="form-field">
 			        					<div class="select-wrap">
-			                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-			                    <select name="select_num_adultos" id="select_num_adultos" class="form-control">
-			                    	<option value="1">1 Adulto</option>
-			                      	<option value="2">2 Adultos</option>
-									<option value="3">3 Adultos</option>
-									<option value="4">4 Adultos</option>									
-			                    </select>
-			                  </div>
-				              </div>
-				            </div>
-		              	</div>
-	        			</div>
+			                    			<div class="icon"><span class="ion-ios-arrow-down"></span></div>
+											<select name="select_num_adultos" id="select_num_adultos" class="form-control">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+											</select>
+			                  			</div>
+				            		</div>
+				            	</div>
+		              		</div>
+		        		</div>
+						<div class="col-md d-flex py-md-3">
+	        				<div class="form-group align-self-stretch d-flex align-items-end">
+	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
+			      					<label for="#">Niños</label>
+			      					<div class="form-field">
+			        					<div class="select-wrap">
+			                    			<div class="icon"><span class="ion-ios-arrow-down"></span></div>
+											<select name="select_num_ninos" id="select_num_adultos" class="form-control">
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+											</select>
+			                  			</div>
+				            		</div>
+				            	</div>
+		              		</div>
+		        		</div>
 	        			<div class="col-md d-flex">
 	        				<div class="form-group d-flex align-self-stretch">
-			              	<button type="submit" class="btn btn-black py-5 py-md-3 px-4 align-self-stretch d-block">BUSCAR
-			            </div>
+			              		<button type="submit" class="btn btn-black py-5 py-md-3 px-4 align-self-stretch d-block">BUSCAR
+			            	</div>
 	        			</div>
 	        		</div>
 	        	</form>
