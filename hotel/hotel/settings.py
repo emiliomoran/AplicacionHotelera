@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'social_django',  # social
     'accesos.apps.AccesosConfig',
     'reservas.apps.ReservasConfig',
-    'shopping_cart.apps.ShoppingCartConfig'
+    'shopping_cart.apps.ShoppingCartConfig',
+    'card.apps.CardConfig'
 ]
 
 MIDDLEWARE = [
@@ -83,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "root",
+        'PASSWORD': "admin",
         'HOST': "localhost",
         'PORT': "5432",
     }
@@ -166,4 +167,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
