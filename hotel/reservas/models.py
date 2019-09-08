@@ -29,35 +29,31 @@ class Room(models.Model):
 
 
 class BookingType(models.Model):
-
 	name = models.CharField(max_length = 50)
 	description = models.CharField(max_length = 150)
 	is_removed = models.BooleanField(default = False)
-
 	create_date = models.DateTimeField(auto_now_add = True)
 	update_date = models.DateTimeField(auto_now = True)
 
-class Booking_State(models.Model):
+class BookingState(models.Model):
 	name = models.CharField(max_length = 50)
 	description = models.CharField(max_length = 150)
 	is_removed = models.BooleanField(default = False)
-
 	create_date = models.DateTimeField(auto_now_add = True)
 	update_date = models.DateTimeField(auto_now = True)
 
 
 class Booking(models.Model):
+
 	customer_id = models.ForeignKey(Perfil, on_delete = models.CASCADE)
 	room_id = models.OneToOneField(Room,on_delete = models.CASCADE)
 	bookingtype_id = models.OneToOneField(BookingType, on_delete = models.CASCADE)
 	state_id = models.ForeignKey(Booking_State, on_delete = models.CASCADE)
-
 	booking_date = models.DateTimeField(auto_now_add = True)
 	check_in_date = models.DateTimeField()
 	check_out_date = models.DateTimeField()
 	no_nights = models.IntegerField(default = 0)
 	is_removed = models.BooleanField(default = False)
-
 	create_date = models.DateTimeField(auto_now_add = True)
 	update_date = models.DateTimeField(auto_now = True)
 

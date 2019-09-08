@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tarjeta de Crédito</title>
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <link href="https://cdn.paymentez.com/js/1.0.1/paymentez.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.paymentez.com/js/1.0.1/paymentez.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    {% load static %}
+    <script src="{% static "card/js/addCard.js" %}"></script>
+    <link href="{% static "card/css/style.css" %}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+    <div class="panel">
+        <div class="paymentez-form" data-capture-name="true" data-capture-email="true" data-icon-colour="#569B29"></div>
+        <button id="agregarTarjeta" type="button" class="btn btn-success">Registrar</button>
+    </div>
+</body>
+</html> 

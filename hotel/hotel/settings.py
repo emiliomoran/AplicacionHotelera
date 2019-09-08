@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'social_django',  # social
     'accesos.apps.AccesosConfig',
     'reservas.apps.ReservasConfig',
-    'shopping_cart.apps.ShoppingCartConfig'
+    'shopping_cart.apps.ShoppingCartConfig',
+    'card.apps.CardConfig'
 ]
 
 MIDDLEWARE = [
