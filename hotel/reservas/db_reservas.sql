@@ -25,3 +25,13 @@ insert into reservas_room(id_roomtype_id, descripcion, num_camas, precio, dispon
 /* */
 
 
+select id_cuarto
+from cuarto
+where id_cuarto not in 
+(
+  select id_cuarto
+  from reserva
+  where salida <= '2019-09-09'
+  and entrada >= '2019-09-07'
+)
+order by id_cuarto;
