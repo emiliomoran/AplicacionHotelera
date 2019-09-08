@@ -44,3 +44,11 @@ def busqueda_normal(request):
 #     print(request.user.extra_data)    
 #     print('###################')
 #     return render(request, 'prueba.html')
+
+def rooms(request,profile_id):
+    objects_list = Booking.objects.filter(customer_id=profile_id)
+    context =  {
+        'reservas': objects_list
+    }
+
+    return render(request,"list_reservas.html",context)

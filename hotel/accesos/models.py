@@ -26,7 +26,7 @@ class Cliente(AbstractBaseUser):
 
 class Perfil(models.Model):
 	usuario = models.OneToOneField(Cliente,on_delete = models.CASCADE)
-	#reservas = models.ManyToManyField(Booking, blank =  True)
+	#reservas = models.ManyToManyField(Booking, blank =  True) CREO QUE NO DEBERIA IR ACA
 
 	def __str__(self):
 		return '{0} {1}'.format(self.usuario.nombres,self.usuario.apellidos)

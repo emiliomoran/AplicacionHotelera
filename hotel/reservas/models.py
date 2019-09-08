@@ -1,4 +1,5 @@
 from django.db import models
+from accesos.models import Perfil
 
 # Create your models here.
 
@@ -44,9 +45,9 @@ class Booking_State(models.Model):
 	create_date = models.DateTimeField(auto_now_add = True)
 	update_date = models.DateTimeField(auto_now = True)
 
-	
+
 class Booking(models.Model):
-	customer_id = models.OneToOneField('accesos.Cliente', on_delete = models.CASCADE)
+	customer_id = models.ForeignKey(Perfil, on_delete = models.CASCADE)
 	room_id = models.OneToOneField(Room,on_delete = models.CASCADE)
 	bookingtype_id = models.OneToOneField(BookingType, on_delete = models.CASCADE)
 	state_id = models.ForeignKey(Booking_State, on_delete = models.CASCADE)
@@ -59,4 +60,11 @@ class Booking(models.Model):
 
 	create_date = models.DateTimeField(auto_now_add = True)
 	update_date = models.DateTimeField(auto_now = True)
+
+	def get_total_price(self):
+
+		room = Room.objects.filter(id=self.room_id).first()
+		#Se debe implementar para que tambien sume el precio de los servicios despues agregados
+		
+		return room.precio
 
