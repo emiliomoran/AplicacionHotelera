@@ -90,7 +90,10 @@
                   <span><strong>Precio: </strong></span><span>{{ room_details.precio }} (por noche)</span>
                 <p>
                 <div>
-                  <button type="submit" class="btn btn-black d-block">Agregar al carrito</button>
+                  <form action = "/reservas/add-to-cart/{{room_details.id}}" method = "POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-black d-block">Agregar al carrito</button>
+                  </form>
                 </div>
               </div>
             </div>

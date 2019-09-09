@@ -7,6 +7,10 @@ from reservas.models import Room
 from reservas.models import Booking
 from reservas.models import BookingType
 from reservas.models import BookingState
+from accesos.models import Cliente, Perfil
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 # Create your views here.
 def index(request):
@@ -96,3 +100,37 @@ def rooms(request,profile_id):
     }
 
     return render(request,"list_reservas.html",context)
+
+
+#@login_required(login_url = '/accesos/login')#revisar para mantener el login.
+def add_to_cart(request,id_cuarto):
+    
+    if request.method == "POST":
+        try:
+            #perfil = get_object_or_404(Perfil, usuario=request.session.cliente)#esto da error
+            cliente = Cliente.objects.filter(id=1).first()
+            perfil = Perfil.objects.filter(usuario = cliente).first()
+            #Lo siguiente deberia ser considerado como un Producto de manera general, pero por ahora sera un cuarto.
+            cuarto = Room.objects.filter(id=id_cuarto).first()
+            booking_type = BookingType.objects.filter(id=1).first()
+            booking_state = BookingState.objects.filter(id=1).first()
+
+            print(perfil)
+            booking = Booking(
+                customer_id = perfil,
+                room_id = cuarto,
+                bookingtype_id = booking_type,
+                state_id = booking_state,
+                booking_date = datetime.now(),
+                no_nights = 3
+            )
+            booking.save()
+
+            return redirect('index')
+
+        except Exception as error:
+            print(error)
+            #return render(request,"index.html")
+    
+    else:
+        print("Caca")
