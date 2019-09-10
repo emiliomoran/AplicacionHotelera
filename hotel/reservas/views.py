@@ -126,7 +126,7 @@ def add_to_cart(request,id_cuarto):
             )
             booking.save()
 
-            return redirect('index')
+            return redirect('reservas:index')
 
         except Exception as error:
             print(error)
