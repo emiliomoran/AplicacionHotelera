@@ -44,10 +44,9 @@ class BookingState(models.Model):
 
 
 class Booking(models.Model):
-
 	customer_id = models.ForeignKey(Perfil, on_delete = models.CASCADE)
-	room_id = models.OneToOneField(Room,on_delete = models.CASCADE)
-	bookingtype_id = models.OneToOneField(BookingType, on_delete = models.CASCADE)
+	room_id = models.ForeignKey(Room,on_delete = models.CASCADE)
+	bookingtype_id = models.ForeignKey(BookingType, on_delete = models.CASCADE)
 	state_id = models.ForeignKey(BookingState, on_delete = models.CASCADE)
 	booking_date = models.DateTimeField(auto_now_add = True)
 	check_in_date = models.DateTimeField(null= True)

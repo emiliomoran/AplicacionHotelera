@@ -7,7 +7,7 @@ from reservas.models import Room
 from reservas.models import Booking
 from reservas.models import BookingType
 from reservas.models import BookingState
-from accesos.models import Cliente, Perfil
+from accesos.models import Usr, Perfil
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -86,13 +86,6 @@ def convert_date(string_date):
 
     return ano+'-'+mes+'-'+dia
 
-# def prueba(request):
-#     print('###################')
-#     print(request.user.id)    
-#     print(request.user.extra_data)    
-#     print('###################')
-#     return render(request, 'prueba.html')
-
 def rooms(request,profile_id):
     objects_list = Booking.objects.filter(customer_id=profile_id)
     context =  {
@@ -107,7 +100,7 @@ def add_to_cart(request,id_cuarto):
     
     if request.method == "POST":
         try:
-            #perfil = get_object_or_404(Perfil, usuario=request.session.cliente)#esto da error
+            perfil = get_object_or_404(Perfil, usuario=request.session.cliente)#esto da error
             cliente = Cliente.objects.filter(id=1).first()
             perfil = Perfil.objects.filter(usuario = cliente).first()
             #Lo siguiente deberia ser considerado como un Producto de manera general, pero por ahora sera un cuarto.
