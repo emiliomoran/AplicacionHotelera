@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # app creadas
     'social_django',  # social
+    'rest_framework',
     'accesos.apps.AccesosConfig',
     'reservas.apps.ReservasConfig',
     'shopping_cart.apps.ShoppingCartConfig',
-    'card.apps.CardConfig'
+    'card.apps.CardConfig',
+    'cardToken.apps.CardtokenConfig'
 ]
 
 MIDDLEWARE = [

@@ -7,3 +7,4 @@ def index(request):
     print(request.user.id)    
     print('###################')
     return render(request, 'card/index.html')
+    
