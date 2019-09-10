@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # app creadas
     'social_django',  # social
+    'rest_framework',
     'accesos.apps.AccesosConfig',
     'reservas.apps.ReservasConfig',
     'shopping_cart.apps.ShoppingCartConfig',
-    'card.apps.CardConfig'
+    'card.apps.CardConfig',
+    'cardToken.apps.CardtokenConfig'
 ]
 
 MIDDLEWARE = [
@@ -84,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "admin",
+        'PASSWORD': "root",
         'HOST': "localhost",
         'PORT': "5432",
     }
@@ -119,8 +121,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'accesos.Cliente'
-SOCIAL_AUTH_USER_MODEL = 'accesos.Cliente'
+AUTH_USER_MODEL = 'accesos.Usr'
+SOCIAL_AUTH_USER_MODEL = 'accesos.Usr'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/accesos/login_social'
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/accesos/registro_social'

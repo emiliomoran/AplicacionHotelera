@@ -40,16 +40,20 @@
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="index.html" class="nav-link">Inicio</a></li>
-	          <li class="nav-item"><a href="rooms.html" class="nav-link">Habitaciones</a></li>	          	          
-	          <li class="nav-item"><a href="blog.html" class="nav-link">Noticias</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contactos</a></li>			  
-			  {% if request.session.estado %}
-			  	<li class="nav-item"><span class="nav-link">{{ request.session.cliente.nombres }}</span></li>
-			  {% else %}
-					<li class="nav-item"><a href="/accesos/login" class="nav-link">Ingresar</a></li>	
+				<li class="nav-item active"><a href="index.html" class="nav-link">Inicio</a></li>
+				<li class="nav-item"><a href="rooms.html" class="nav-link">Habitaciones</a></li>	          	          
+				<li class="nav-item"><a href="blog.html" class="nav-link">Noticias</a></li>
+				<li class="nav-item"><a href="contact.html" class="nav-link">Contactos</a></li>			  
+				{% if 'success_login' in request.session %}
+					{% if request.session.success_login %}
+						<li class="nav-item"><span class="nav-link">{{ request.session.customer.name }} {{ request.session.customer.last_name }}</span></li>
+						<li class="nav-item"><a href="/shopping-cart" class="nav-link"><i class="fa fa-shopping-cart" style="font-size: 1.5em"></i></a></li>
+					{% else %}
+						<li class="nav-item"><a href="/accesos/login" class="nav-link">Ingresar</a></li>	
+					{% endif %}					
+				{% else %}
+					<li class="nav-item"><a href="/accesos/login" class="nav-link">Ingresar</a></li>				
 				{% endif %}
-				<li class="nav-item"><a href="/shopping-cart" class="nav-link"><i class="fa fa-shopping-cart" style="font-size: 1.5em"></i></a></li>
 	        </ul>
 	      </div>
 	    </div>
@@ -99,22 +103,6 @@
     				<form action="/reservas/busqueda-normal" method="POST" class="booking-form">
 					{% csrf_token %}
 	        		<div class="row">
-						{% comment %} <div class="col-md d-flex py-md-3">
-	        				<div class="form-group align-self-stretch d-flex align-items-end">
-	        					<div class="wrap bg-white align-self-stretch py-3 px-4">
-			      					<label for="#">Tipo</label>
-			      					<div class="form-field">
-			        					<div class="select-wrap">
-						                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-			                    			<select name="select_tipo_reserva" id="select_tipo_reserva" class="form-control">
-			                    				<option value="0">Evento</option>
-												<option value="1">Normal</option>												
-			                    			</select>
-			                  			</div>
-				              		</div>
-				            	</div>
-		              		</div>
-	        			</div> {% endcomment %}
 						<div class="col-md-3 d-flex py-md-3">
 	        				<div class="form-group align-self-stretch d-flex align-items-end">
 	        					<div class="wrap bg-white align-self-stretch py-3 px-4">

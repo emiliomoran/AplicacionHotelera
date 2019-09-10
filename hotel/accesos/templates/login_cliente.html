@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,81 +9,40 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-<style type="text/css">
-	.login-form {
-		width: 340px;
-    	margin: 30px auto;
-	}
-    .login-form form {
-    	margin-bottom: 15px;
-        background: #f7f7f7;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-    }
-    .login-form h2 {
-        margin: 0 0 15px;
-    }
-    .login-form .hint-text {
-		color: #777;
-		padding-bottom: 15px;
-		text-align: center;
-    }
-    .form-control, .btn {
-        min-height: 38px;
-        border-radius: 2px;
-    }
-    .login-btn {        
-        font-size: 15px;
-        font-weight: bold;
-    }
-    .or-seperator {
-        margin: 20px 0 10px;
-        text-align: center;
-        border-top: 1px solid #ccc;
-    }
-    .or-seperator i {
-        padding: 0 10px;
-        background: #f7f7f7;
-        position: relative;
-        top: -11px;
-        z-index: 1;
-    }
-    .social-btn .btn {
-        margin: 10px 0;
-        font-size: 15px;
-        text-align: left; 
-        line-height: 24px;       
-    }
-	.social-btn .btn i {
-		float: left;
-		margin: 4px 15px  0 5px;
-        min-width: 15px;
-	}
-	.input-group-addon .fa{
-		font-size: 18px;
-	}
-    .center {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-
-</style>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{% static "css/style_login_register.css" %}">
 </head>
 <body style="background-image: url('https://www.vistazo.com/sites/default/files/field/image/2018/09/09/islas-galapagos.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; height: 500px;">
-<div class="login-form center">    
-    <form action="http://localhost:8000/accesos/login" method="POST">
-        {% csrf_token %}
-        <h2 class="text-center">Ingreso</h2>		
-        <div class="text-center social-btn">            
-            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary btn-block cente"><i class="fa fa-facebook"></i>Ingresar con Facebook</a>
-			<a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger btn-block"><i class="fa fa-google"></i>Ingresar con Google+</a>
+{% if 'success_register' in request.session %}
+    {% if request.session.success_register %}
+        <div class="alert success">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>Bien!</strong> Se ha registro con éxito
         </div>
-		<div class="or-seperator"><i>or</i></div>
+    {% else %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>Falló!</strong> No ha podido registrarse correctamente.
+        </div>
+    {% endif %}
+{% endif %}
+{% if 'success_login' in request.session %}
+    {% if request.session.success_login == False %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>Falló!</strong> Verificar credenciales
+        </div>
+    {% endif %}
+{% endif %}
+<div class="login-form center">    
+    <form action="/accesos/login" class="form-style" method="POST">
+        {% csrf_token %}
+        <h2 class="text-center title-login">Ingreso</h2>		
+        <div class="text-center social-btn">            
+            <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary btn-block cente social-button border-button"><i class="fa fa-facebook"></i>Ingresar con Facebook</a>
+			<a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger btn-block social-button border-button"><i class="fa fa-google"></i>Ingresar con Google +</a>
+        </div>
+		<div class="or-seperator"><i class="or-login">o ingresa con</i></div>
         <div class="form-group">
         	<div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -96,14 +56,14 @@
             </div>
         </div>        
         <div class="form-group">
-            <button type="submit" class="btn btn-success btn-block login-btn">Ingresar</button>
+            <button type="submit" class="btn btn-primary btn-block login-btn border-button">Ingresar</button>
         </div>
         <div class="clearfix">
-            <label class="pull-left checkbox-inline"><input type="checkbox"> Recuerdame</label>
-            <a href="#" class="pull-right text-success">¿Olvidó su contraseña?</a>
+            <label class="pull-left checkbox-inline recuerdame"><input type="checkbox"> Recuerdame</label>
+            <a href="#" class="pull-right text-success olvido">¿Olvidó su contraseña?</a>
         </div>
     </form>
-    <div class="hint-text small">¿No tienes cuenta? <a href="/accesos/registro" class="text-success">Registrate aquí!</a></div>
+    <div class="hint-text small">¿No tienes cuenta? <a href="/accesos/registro" class="text-success registro">Registrate aquí!</a></div>
 </div>
 </body>
 </html>                            

@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from accesos.models import Cliente,Perfil
+from accesos.models import Perfil
 from reservas.models import Booking
+from accesos.models import Usr
 
 # Create your views here.
 def index(request):

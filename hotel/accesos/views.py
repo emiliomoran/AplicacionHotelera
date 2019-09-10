@@ -4,12 +4,10 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.hashers import make_password, check_password
 
 # Modelos
-from accesos.models import Cliente
+from accesos.models import Usr
 from accesos.models import Perfil
 
 # Create your views here.
-
-
 @csrf_protect
 def login_cliente(request):
     if request.method == 'POST':
@@ -18,32 +16,41 @@ def login_cliente(request):
         if email is None or password is None:
             return HttpResponse("Por favor ingrese el email y contrasena!")
         try:
-            cliente = Cliente.objects.get(email=email)
-            # print(cliente.nombres)
-            print(password)
-            print(cliente.password)
-            if(check_password(password, cliente.password)):
-                print("entra a true")                
-                request.session['estado'] = True
-                json_cliente = {
-                    'nombres': cliente.nombres,
-                    'apellidos': cliente.apellidos,
-                    'fecha_nacimiento': str(cliente.fecha_nacimiento),
-                    'email': cliente.email
+            usr = Usr.objects.get(email=email)
+            # print(password)
+            # print(usr.password)
+            if(check_password(password, usr.password)):
+                perfil = Perfil.objects.get(usr_id_id=usr.id)
+                if 'success_register' in request.session:
+                    del request.session['success_register']
+                request.session['success_login'] = True
+                request.session.modified = True
+                # print(perfil.name)    Para verificar si toma el perfil
+                customer_json = {
+                    'customer_id': perfil.id,
+                    'name': perfil.name,
+                    'last_name': perfil.last_name,
+                    'date_birth': str(perfil.date_birth),
+                    'email': usr.email,
+                    'username': usr.username
                 }
-    
-                request.session['cliente'] = json_cliente
-    
+
+                print(customer_json)
+                request.session['customer'] = customer_json
+
                 return redirect('/reservas')
             else:
                 print("entra a false")
-                return HttpResponse("No existe!")            
-            
+                request.session['success_login'] = False
+                return redirect('/accesos/login')
+
         except Exception as error:
             print(error)
-            return HttpResponse("No existe!")
+            request.session['success_login'] = False
+            return redirect('/accesos/login')
     else:
         return render(request, 'login_cliente.html')
+
 
 @csrf_protect
 def registro(request):
@@ -58,87 +65,124 @@ def registro(request):
             print(password)
             print(password_hash)
 
-            cliente = Cliente(
-                nombres=nombres,
-                apellidos=apellidos,
-                fecha_nacimiento=fecha_nacimiento,
+            usr = Usr(
+                username=email.split('@')[0],
                 email=email,
-                password=password_hash
+                password=password_hash,
+                is_admin=False
             )
 
-            cliente.save()
+            usr.save()
 
-            Perfil.objects.create(
-                usuario = cliente
+            perfil = Perfil(
+                usr_id=usr,
+                name=nombres,
+                last_name=apellidos,
+                date_birth=fecha_nacimiento,
             )
 
+            perfil.save()
 
+            request.session['success_register'] = True
             return redirect('/accesos/login')
 
         except Exception as error:
             print(error)
-
+            request.session['success_register'] = False
+            return redirect('/accesos/login')
     else:
         return render(request, 'registro_form.html')
 
 
 def login_social(request):
     try:
-        cliente = Cliente.objects.get(id=request.user.id)
-        request.session['estado'] = True
-        json_cliente = {
-            'nombres': cliente.nombres,
-            'apellidos': cliente.apellidos,
-            'fecha_nacimiento': str(cliente.fecha_nacimiento),
-            'email': cliente.email
+        usr = Usr.objects.get(id=request.user.id)
+
+        perfil = Perfil.objects.get(usr_id_id=usr.id)
+
+        if 'success_register' in request.session:
+            del request.session['success_register']
+        request.session['success_login'] = True
+        request.session.modified = True
+        # print(perfil.name)    Para verificar si toma el perfil
+        customer_json = {
+            'customer_id': perfil.id,
+            'name': perfil.name,
+            'last_name': perfil.last_name,
+            'date_birth': str(perfil.date_birth),
+            'email': usr.email,
+            'username': usr.username
         }
 
-        request.session['cliente'] = json_cliente
+        print(customer_json)
+        request.session['customer'] = customer_json
 
         return redirect('/reservas')
+
     except Exception as error:
         print(error)
+        request.session['success_register'] = False
+        return redirect('/accesos/login')
+
 
 @csrf_protect
 def registro_social(request):
     if request.method == 'POST':
         try:
-            cliente = Cliente.objects.get(id=request.user.id)
-            cliente.nombres = request.POST.get('nombres')
-            cliente.apellidos = request.POST.get('apellidos')
-            cliente.fecha_nacimiento = request.POST.get('fecha_nacimiento')
-            cliente.save()
+            usr = Usr.objects.get(id=request.user.id)
 
-            cliente_actualizado = Cliente.objects.get(id=request.user.id)
-            json_cliente = {
-                'nombres': cliente_actualizado.nombres,
-                'apellidos': cliente_actualizado.apellidos,
-                'fecha_nacimiento': str(cliente_actualizado.fecha_nacimiento),
-                'email': cliente_actualizado.email
+            perfil = Perfil(
+                usr_id=usr,
+                name=request.POST.get('nombres'),
+                last_name=request.POST.get('apellidos'),
+                date_birth=request.POST.get('fecha_nacimiento'),
+            )
+
+            perfil.save()
+
+            customer_json = {
+                'customer_id': perfil.id,
+                'name': perfil.name,
+                'last_name': perfil.last_name,
+                'date_birth': str(perfil.date_birth),
+                'email': usr.email,
+                'username': usr.username
             }
 
-            request.session['cliente'] = json_cliente
-            return redirect('/reservas')
+            print(customer_json)
+            request.session['customer'] = customer_json
 
+            return redirect('/reservas')
         except Exception as error:
             print(error)
+            request.session['success_register'] = False
+            return redirect('/accesos/login')
     else:
         try:
-            cliente = Cliente.objects.get(id=request.user.id)
-            request.session['estado'] = True
-            json_cliente = {
-                'nombres': cliente.nombres,
-                'apellidos': cliente.apellidos,
-                'fecha_nacimiento': cliente.fecha_nacimiento,
-                'email': cliente.email
+            usr = Usr.objects.get(id=request.user.id)
+
+            if 'success_register' in request.session:
+                del request.session['success_register']
+            request.session['success_login'] = True
+            request.session.modified = True
+
+            customer_json = {
+                'email': usr.email,
+                'username': usr.username
             }
-            request.session['cliente'] = json_cliente
+
+            print(customer_json)
+            request.session['customer'] = customer_json
 
             return render(request, 'registro_social.html')
+
         except Exception as error:
             print(error)
+            request.session['success_register'] = False
+            return redirect('/accesos/login')
+
 
 def my_profile(request):
-	my_user_profile = Perfil.objects.filter(usuario = request.usuario).first()
-	my_reservations = Reservas.objects.filter(estaReservado = True, owner = my_user_profile)
-	
+    my_user_profile = Perfil.objects.filter(usuario=request.usuario).first()
+    my_reservations = Reservas.objects.filter(
+        estaReservado=True, owner=my_user_profile)

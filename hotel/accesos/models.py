@@ -6,34 +6,26 @@ from django.db.models.signals import post_save
 
 from django.contrib.auth.models import AbstractBaseUser
 
-class Cliente(AbstractBaseUser):
-	nombres = models.CharField(max_length = 100)
-	apellidos = models.CharField(max_length = 100)
-	fecha_nacimiento = models.DateField(null=True)
+class Usr(AbstractBaseUser):	
 	username = models.CharField(max_length = 100, unique=True, null=True)
 	email = models.EmailField(unique=True)
 	password = models.TextField()
-	estado = models.BooleanField(default=True)
-	fecha_creacion = models.DateTimeField(auto_now_add=True)
-	fecha_modificacion = models.DateTimeField(auto_now=True)
+	is_admin = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
-
-	USERNAME_FIELD = 'username'
+	is_removed = models.BooleanField(default=False)
+	create_date = models.DateTimeField(auto_now_add = True,  blank = True)
+	update_date = models.DateTimeField(auto_now = True, blank = True)
 	
+	USERNAME_FIELD = 'username'
 	objects = UserManager()
 
-
 class Perfil(models.Model):
-	usuario = models.OneToOneField(Cliente,on_delete = models.CASCADE)
-	#reservas = models.ManyToManyField(Booking, blank =  True) CREO QUE NO DEBERIA IR ACA
-
-	def __str__(self):
-		return '{0} {1}'.format(self.usuario.nombres,self.usuario.apellidos)
-
-
-"""def post_save_profile_create(sender,instance,create,**kwargs):
-	if created:
-		Perfil.objects.create(usuario = instance)
-
-post_save.connect(post_save_profile_create, sender = Cliente)    """
+	usr_id = models.OneToOneField(Usr, on_delete = models.CASCADE)
+	name = models.CharField(max_length=100)
+	last_name = models.CharField(max_length=100)
+	phone = models.CharField(max_length=10, null=True)
+	date_birth = models.DateField()
+	is_removed = models.BooleanField(default=False)
+	create_date = models.DateTimeField(auto_now_add = True,  blank = True)
+	update_date = models.DateTimeField(auto_now = True, blank = True)
