@@ -22,10 +22,4 @@ def index(request):
     	'reservas': duos
     }
 
-
     return render(request, 'shopping_cart/index.html', context)
-
-
-
-
-
