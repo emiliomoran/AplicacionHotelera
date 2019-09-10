@@ -34,4 +34,4 @@ Si se ha hecho un pull, para que no exista conflicto con los migrate en la db se
 - Eliminar cada tabla de la base de datos, o eliminar directamente la base de datos completa.
 - Repetir de nuevo los pasos para compilar.
 
-Para llenar la db con data, utilizar el archivo .sql que se encuentra en la carpeta db.
+Para llenar la db con data, utilizar el archivo db_data.sql que se encuentra en la carpeta db.
