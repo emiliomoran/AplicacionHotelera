@@ -84,7 +84,6 @@ $(function() {
    * @param paymentez_client_app_key provided by Paymentez.
    */
   Paymentez.init('stg', 'INNOVA-EC-CLIENT', 'ZjgaQCbgAzNF7k8Fb1Qf4yYLHUsePk');
-  
   var form              = $("#add-card-form");
   var submitButton            = form.find("button");
   var submitInitialText = submitButton.text();
@@ -111,8 +110,8 @@ $(function() {
                         };
       */
       
-      var uid = "uid1234";
-      var email = "dev@paymentez.com";
+      var uid = "{{ uid }}";
+      var email = "{{ email }}";
       /* Add Card converts sensitive card data to a single-use token which you can safely pass to your server to charge the user.
        *
        * @param uid User identifier. This is the identifier you use inside your application; you will receive it in notifications.

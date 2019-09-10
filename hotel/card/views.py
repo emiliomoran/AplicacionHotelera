@@ -5,7 +5,7 @@ from accesos.models import Usr
 def index(request):
     # print(request.session['nombres'])
     print('card view')    
-    print(request.user.id)    
+    print(request.user.username)    
     print('###################')
-    return render(request, 'card/index.html')
+    return render(request, 'card/index.html', {"uid":request.user.username, "email":request.user.email})
     
