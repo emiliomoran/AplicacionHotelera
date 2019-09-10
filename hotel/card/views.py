@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from accesos.models import Usr
 
 # Create your views here.
 def index(request):
