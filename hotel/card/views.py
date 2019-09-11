@@ -12,12 +12,13 @@ def index(request):
     print('card view')    
     print(request.user.username)    
     print('###################')
-    return render(request, 'card/index.html', {"uid":request.user.username, "email":request.user.email})
+    print(type(request.user))
+    return render(request, 'card/index.html', {"uid":request.session['customer']['username'], "email":request.session['customer']['email']})
 
 def showCards(request):
     URL = "https://ccapi-stg.paymentez.com/v2/card/list"
     # location given here 
-    uid = request.user.username
+    uid = request.session['customer']['username']
     
     # defining a params dict for the parameters to be sent to the API 
     PARAMS = {'uid':uid} 
