@@ -133,7 +133,7 @@ $(function() {
                     "Card Token: " + cardResponse.card.token + "<br>" +
                     "transaction_reference: " + cardResponse.card.transaction_reference
                   );  */  
-        console.log("caso1")
+      window.location.replace("/card/showCards");
     }else if(cardResponse.card.status === 'review'){
       $('#messages').html('Card Under Review<br>'+
                     'status: ' + cardResponse.card.status + '<br>' +
