@@ -25,7 +25,7 @@ SECRET_KEY = 'm9#@w(e_l%y1$r(xxin2o17_=czb^98le!!!alt2f%^$lvl_$r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # app creadas
     'social_django',  # social
-    'rest_framework',
+    'rest_framework',    
+    'rest_framework.authtoken',
     'accesos.apps.AccesosConfig',
     'reservas.apps.ReservasConfig',
     'shopping_cart.apps.ShoppingCartConfig',
