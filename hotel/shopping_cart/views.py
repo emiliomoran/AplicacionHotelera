@@ -10,7 +10,8 @@ def index(request):
     print(request.user.id)    
     print('###################')
 
-    reservas = Booking.objects.filter(customer_id = 1)
+    #reservas = Booking.objects.filter(customer_id = 2)
+    reservas = Booking.objects.filter(customer_id = request.session['customer']['customer_id'])
     cuartos = [reserva.room_id for reserva in reservas]
 
     duos = []
