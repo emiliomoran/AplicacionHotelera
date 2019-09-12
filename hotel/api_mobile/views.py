@@ -74,6 +74,53 @@ def login(request):
             }, status=HTTP_404_NOT_FOUND)
 
 @csrf_exempt
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def registro(request):
+    try:
+        print("ENTRAAAAAA API REGISTER")
+        nombres = request.POST.get('nombres')
+        apellidos = request.POST.get('apellidos')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password_hash = make_password(password)
+
+        usr = Usr(
+            username=email.split('@')[0],
+            email=email,
+            password=password_hash,
+            is_admin=False
+        )
+
+        usr.save()
+
+        perfil = Perfil(
+            usr_id=usr,
+            name=nombres,
+            last_name=apellidos,
+            date_birth=fecha_nacimiento,
+        )
+
+        perfil.save()
+
+        return Response(
+            {
+                'error': False,
+                'message_success': 'Se ha registrado exitosamente!'
+            }, status=HTTP_200_OK)
+
+    except Exception as error:
+        print(error)
+        print("entrar a error")
+        return Response(
+            {
+                'error': True,
+                'message_error': 'Falló el registro!'
+            }, status=HTTP_404_NOT_FOUND)
+
+
+@csrf_exempt
 @api_view(["GET"])
 def sample_api(request):
     data = {'sample_data': 123}
