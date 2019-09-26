@@ -39,7 +39,8 @@ class TourEdit(UpdateView):
 class TourEliminar(DeleteView):
 	model = Tour_Package
 	success_url = reverse_lazy("tour_package:tour_listar")
-
+	template_name = 'tour_delete_form.html'
+	
 	def get_object(self):
 		id_ = self.kwargs.get("id_tour")
 		return get_object_or_404(Tour_Package,id = id_)
