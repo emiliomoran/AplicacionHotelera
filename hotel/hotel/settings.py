@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'reservas.apps.ReservasConfig',
     'shopping_cart.apps.ShoppingCartConfig',
     'card.apps.CardConfig',
-    'cardToken.apps.CardtokenConfig'
+    'cardToken.apps.CardtokenConfig',
+    'tour_package.apps.TourPackageConfig',
 ]
 
 MIDDLEWARE = [

@@ -5,6 +5,7 @@ from django.contrib.auth.models import UserManager
 from django.db.models.signals import post_save
 
 from django.contrib.auth.models import AbstractBaseUser
+from tour_package.models import Tour_Package
 
 class Usr(AbstractBaseUser):	
 	username = models.CharField(max_length = 100, unique=True, null=True)
@@ -29,3 +30,5 @@ class Perfil(models.Model):
 	is_removed = models.BooleanField(default=False)
 	create_date = models.DateTimeField(auto_now_add = True,  blank = True)
 	update_date = models.DateTimeField(auto_now = True, blank = True)
+
+	tour_packages = models.ManyToManyField(Tour_Package)

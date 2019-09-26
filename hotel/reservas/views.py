@@ -12,8 +12,6 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 
-# Create your views here.
-
 
 def index(request):
     room_type_list = list(RoomType.objects.values('id', 'nombre'))
