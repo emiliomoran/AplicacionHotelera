@@ -101,25 +101,33 @@
                     <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
-                
-                <!--{% for duo in reservas %}
+                {% if tours %}
+                {% for tour_package in tours %}
                     <tr>
                         <th scope="row">
                         <div class="p-2">
-                            <img src="{{ duo.1.path_image }}" alt="" width="70" class="img-fluid rounded shadow-sm">
+                            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-3_cexmhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
                             <div class="ml-3 d-inline-block align-middle">
                                 <h5 class="mb-0"> 
-                                    <a href="#" class="text-dark d-inline-block">{{duo.1.descripcion}}</a>
+                                    <a href="#" class="text-dark d-inline-block">{{tour_package.titulo}}</a>
                                 </h5>
-                                <span class="text-muted font-weight-normal font-italic">Reserva no. {{duo.0.id}}</span>
+                                <span class="text-muted font-weight-normal font-italic">{{tour_package.descripcion}}</span>
                             </div>
                         </div>
-                        <td class="align-middle"><strong>{{duo.1.precio}}</strong></td>
+                        <td class="align-middle"><strong>{{tour_package.precio}}</strong></td>
                         <td class="align-middle"><strong>1</strong></td>
+                        <td>
+                            <a class= "btn btn-primary" href="{% url 'tour_package:tour_editar' tour_package.id %}">Editar</a>
+                            <a class= "btn btn-danger" href="{% url 'tour_package:tour_eliminar' tour_package.id %}">Eliminar</a>
+                        </td>
                         <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
-                {% endfor %}-->
+                {% endfor %}
+
+                {% else %}
+                    <h4>No hay tours todavia</h4>
+                {% endif %}
                 </tbody>
             </table>
         </div>
