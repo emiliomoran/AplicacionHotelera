@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'reservas.apps.ReservasConfig',
     'shopping_cart.apps.ShoppingCartConfig',
     'card.apps.CardConfig',
-    'cardToken.apps.CardtokenConfig'
+    'cardToken.apps.CardtokenConfig',
+    'tour_package.apps.TourPackageConfig',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "root",
+        'PASSWORD': "admin",
         'HOST': "localhost",
         'PORT': "5432",
     }

@@ -1,0 +1,11 @@
+
+{% if rooms %}
+    {% for cuarto in rooms %}
+    <tr>
+        <td class="align-middle"><strong>{{cuarto.precio}}</strong></td>
+        <td class="align-middle"><strong>1</strong></td>
+        <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
+        </td>
+    </tr>
+{% endfor %}
+{% endif %}

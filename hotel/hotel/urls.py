@@ -24,6 +24,7 @@ urlpatterns = [
     path('shopping-cart/', include('shopping_cart.urls')),
     path('card/', include('card.urls')),
     path('cardToken/', include('cardToken.urls')),
+    path('tours/',include('tour_package.urls')),
     re_path('api/', include('cardToken.urls')),
     path('api_mobile/', include('api_mobile.urls')),
 ]

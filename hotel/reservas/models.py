@@ -10,18 +10,18 @@ class RoomType(models.Model):
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_modificacion = models.DateTimeField(auto_now=True)
 
-	# def __str__(self):
-	# 	return '%s %s' % (self.id, self.nombre)
+	def __str__(self):
+		return '%s. %s' % (self.id, self.nombre)
 
 class Room(models.Model):
-	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE)
-	descripcion = models.CharField(max_length = 200)
-	path_image = models.TextField(null=True)
-	calificacion = models.IntegerField(default=0)
-	num_camas = models.IntegerField(default=0)
-	num_adultos = models.IntegerField(default=0)
-	num_ninos = models.IntegerField(default=0)
-	precio = models.FloatField(default=0)
+	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE , verbose_name ="Tipo de Cuarto")
+	descripcion = models.CharField(max_length = 200, verbose_name ="Descripcion del Cuarto")
+	path_image = models.TextField(null=True, verbose_name="Url de Imagen")
+	calificacion = models.IntegerField(default=0, verbose_name="Calificacion")
+	num_camas = models.IntegerField(default=0, verbose_name="Numero de Camas")
+	num_adultos = models.IntegerField(default=0, verbose_name="Numero de Adultos")
+	num_ninos = models.IntegerField(default=0, verbose_name="Numero de Niños")
+	precio = models.FloatField(default=0, verbose_name="Precio")
 	disponible = models.BooleanField(default=True)		#True si esta disponible - False si esta reservada
 	eliminado = models.BooleanField(default=False)
 	fecha_creacion = models.DateTimeField(auto_now_add=True)

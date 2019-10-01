@@ -10,9 +10,10 @@ from reservas.models import BookingState
 from accesos.models import Usr, Perfil
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView,CreateView
+from django.urls import reverse_lazy
+from reservas.forms import RoomForm
 from django.shortcuts import redirect
-
-# Create your views here.
 
 
 def index(request):
@@ -108,6 +109,22 @@ def rooms(request, profile_id):
     return render(request, "list_reservas.html", context)
 
 
+
+#Para pantalla admin
+class RoomList(ListView):
+    model = Room
+    context_object_name = 'rooms'
+    template_name = 'admin/index_rooms.html'
+
+
+class RoomCreate(CreateView):
+    model = Room
+    form_class = RoomForm
+    template_name = "admin/create_room.html"
+
+    success_url = reverse_lazy("reservas:room_list")
+
+
 # @login_required(login_url = '/accesos/login')#revisar para mantener el login.
 def add_to_cart(request, id_cuarto):
 
@@ -117,9 +134,9 @@ def add_to_cart(request, id_cuarto):
             print(request.session['customer'])
             print('###################################')
             perfil = get_object_or_404(
-                Perfil, usuario=request.session['customer'])
-            cliente = Cliente.objects.filter(id=1).first()
-            perfil = Perfil.objects.filter(usuario=cliente).first()
+                Perfil, id=request.session["customer"]['customer_id'])
+            #cliente = Cliente.objects.filter(id=1).first()
+            #perfil = Perfil.objects.filter(usuario=cliente).first()
             # Lo siguiente deberia ser considerado como un Producto de manera general, pero por ahora sera un cuarto.
             cuarto = Room.objects.filter(id=id_cuarto).first()
             booking_type = BookingType.objects.filter(id=1).first()
@@ -144,6 +161,3 @@ def add_to_cart(request, id_cuarto):
 
     else:
         print("Ya fue")
-
-def prueba(request):
-    return render(request, "prueba.html")

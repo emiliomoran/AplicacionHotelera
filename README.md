@@ -26,6 +26,8 @@ Para compilar:
 - python manage.py migrate social_django
 - python manage.py makemigrations reservas
 - python manage.py migrate reservas
+- python manage.py makemigrations tour_package
+- python manage.py migrate tour_package
 - python manage.py runserver
 
 Si se ha hecho un pull, para que no exista conflicto con los migrate en la db se debe hacer:
