@@ -10,8 +10,8 @@ class RoomType(models.Model):
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_modificacion = models.DateTimeField(auto_now=True)
 
-	# def __str__(self):
-	# 	return '%s %s' % (self.id, self.nombre)
+	def __str__(self):
+		return '%s. %s' % (self.id, self.nombre)
 
 class Room(models.Model):
 	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE , verbose_name ="Tipo de Cuarto")
