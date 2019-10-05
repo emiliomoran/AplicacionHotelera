@@ -10,4 +10,5 @@ urlpatterns = [
     path('rooms/create',views.RoomCreate.as_view(), name="room_create"),
     path('login', views.login),
     path('administradores', views.administradores),
+    path('reservas', views.reservas),
 ]
