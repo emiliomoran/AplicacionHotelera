@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from reservas.models import Room
 from django.views.generic import ListView,CreateView
-from reservas.forms import RoomForm
+from administracion.forms import RoomForm
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
