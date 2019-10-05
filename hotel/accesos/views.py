@@ -14,7 +14,9 @@ def login_cliente(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         if email is None or password is None:
-            return HttpResponse("Por favor ingrese el email y contrasena!")
+            # return HttpResponse("Por favor ingrese el email y contrasena!")
+            request.session['success_login'] = False
+            return redirect('/accesos/login')
         try:
             usr = Usr.objects.get(email=email)
             # print(password)

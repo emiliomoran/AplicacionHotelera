@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'card.apps.CardConfig',
     'cardToken.apps.CardtokenConfig',
     'tour_package.apps.TourPackageConfig',
+    'administracion.apps.AdministracionConfig',
 ]
 
 MIDDLEWARE = [

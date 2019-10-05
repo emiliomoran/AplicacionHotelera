@@ -108,28 +108,6 @@ def rooms(request, profile_id):
     }
 
     return render(request, "list_reservas.html", context)
-    
-def Home(request):
-    template_name = "admin/index-admin.html"
-    return render(request, template_name)
-
-
-
-#Para pantalla admin
-class RoomList(ListView):
-    model = Room
-    context_object_name = 'rooms'
-    template_name = 'admin/index_rooms.html'
-
-
-   
-class RoomCreate(CreateView):
-    model = Room
-    form_class = RoomForm
-    template_name = "admin/create_room.html"
-
-    success_url = reverse_lazy("reservas:room_list")
-
 
 # @login_required(login_url = '/accesos/login')#revisar para mantener el login.
 def add_to_cart(request, id_cuarto):
