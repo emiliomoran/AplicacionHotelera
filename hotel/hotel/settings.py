@@ -75,7 +75,9 @@ TEMPLATES = [
             ],
         },
     },
+    
 ]
+
 
 WSGI_APPLICATION = 'hotel.wsgi.application'
 
