@@ -69,3 +69,6 @@ def login(request):
             return redirect('/administracion/login')
     else:
         return render(request, 'login.html')
+
+def administradores(request):
+    return render(request, 'administradores.html')
