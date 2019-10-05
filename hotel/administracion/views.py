@@ -15,6 +15,10 @@ def index(request):
     template_name = 'index-admin.html'
     return render(request, template_name)
 
+def reservas(request):
+    template_name = 'reservas-admin.html'
+    return render(request, template_name)
+
 class RoomList(ListView):
     model = Room
     context_object_name = 'rooms'
