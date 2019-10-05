@@ -75,7 +75,9 @@ TEMPLATES = [
             ],
         },
     },
+    
 ]
+
 
 WSGI_APPLICATION = 'hotel.wsgi.application'
 
@@ -88,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "admin",
+        'PASSWORD': "root",
         'HOST': "localhost",
         'PORT': "5432",
     }

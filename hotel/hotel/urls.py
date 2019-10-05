@@ -19,6 +19,7 @@ from django.urls import include, path, re_path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accesos/', include('accesos.urls')),
+    
     path('reservas/', include('reservas.urls')),
     path('social-auth/', include('social_django.urls', namespace="social")),
     path('shopping-cart/', include('shopping_cart.urls')),

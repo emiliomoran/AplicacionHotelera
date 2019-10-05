@@ -14,6 +14,7 @@ from django.views.generic import ListView,CreateView
 from django.urls import reverse_lazy
 from reservas.forms import RoomForm
 from django.shortcuts import redirect
+from django.http import HttpResponse 
 
 
 def index(request):
@@ -107,6 +108,10 @@ def rooms(request, profile_id):
     }
 
     return render(request, "list_reservas.html", context)
+    
+def Home(request):
+    template_name = "admin/index-admin.html"
+    return render(request, template_name)
 
 
 
@@ -117,6 +122,7 @@ class RoomList(ListView):
     template_name = 'admin/index_rooms.html'
 
 
+   
 class RoomCreate(CreateView):
     model = Room
     form_class = RoomForm

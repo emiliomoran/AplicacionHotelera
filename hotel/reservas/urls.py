@@ -12,5 +12,6 @@ urlpatterns = [
     path('add-to-cart/<int:id_cuarto>',views.add_to_cart, name="add-to-cart"),
     path('rooms',views.RoomList.as_view(), name="room_list"),
     path('rooms/create',views.RoomCreate.as_view(), name="room_create"),
+    path('adminhome', views.Home)
     
 ]
