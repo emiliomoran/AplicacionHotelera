@@ -1,91 +1,87 @@
 {% extends 'layout_administrador.html' %}
 {% block content %}
-{% comment %} {% load static %} {% endcomment %}
-{% comment %} {% load static %} {% endcomment %}
-<base href="https://demos.telerik.com/kendo-ui/grid/index">
-<style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
-<title></title>
-<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2019.3.917/styles/kendo.default-v2.min.css" />
-<script src="https://kendo.cdn.telerik.com/2019.3.917/js/jquery.min.js"></script>
-<script src="https://kendo.cdn.telerik.com/2019.3.917/js/kendo.all.min.js"></script>
-<div class="row">
-    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="page-header">
-            <h2 class="pageheader-title">Administradores </h2>                    
+<div>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">Administradores </h2>                    
+            </div>
         </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end pageheader  -->
+    <!-- ============================================================== -->
+    <div id="popup"></div>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered first">
+                <thead>
+                    <tr>
+                        <th>NOMBRES</th>
+                        <th>APELLIDOS</th>
+                        <th>EMAIL</th>
+                        <th>ESTADO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for administrador in administradores %}
+                    <tr>
+                        <td>{{ administrador.name }}</td>
+                        <td>{{ administrador.last_name }}</td>
+                        <td>{{ administrador.email }}</td>
+                        {% if administrador.is_removed %}
+                        <td>INACTIVO</td>
+                        {% else %}
+                        <td>ACTIVO</td>
+                        {% endif %}
+                        <td>
+                            <a onclick="return abrir_modal('/administracion/detalle-administrador/{{ administrador.id }}','DETALLES')" class="btn">
+                                <span><i class="fas fa-eye"></i></span>
+                            </a>
+                            {% comment %} <a onclick="return abrir_modal('{% url 'productos:detalle_producto' producto.pk %}','Productos / {{ producto.descripcion }}')" class="btn">
+                                <span><i class="fas fa-edit"></i></span>
+                            </a>                             {% endcomment %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>NOMBRES</th>
+                        <th>APELLIDOS</th>
+                        <th>EMAIL</th>
+                        <th>ESTADO</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>        
     </div>
 </div>
-<!-- ============================================================== -->
-<!-- end pageheader  -->
-<!-- ============================================================== -->
-    <div class="row">
-    <div id="example">
-            <div id="grid"></div>
+<script>
+var modal;
+function abrir_modal(url, titulo)
+{
+    modal = $('#popup').dialog(
+    {
+        title: titulo,
+        modal: true,
+        width: 450,
+        resizable: false
+    }).dialog('open').load(url)
+}
 
-            <script>
-                $(document).ready(function () {
-                    var crudServiceBaseUrl = "https://demos.telerik.com/kendo-ui/service",
-                        dataSource = new kendo.data.DataSource({
-                            transport: {
-                                read:  {
-                                    url: crudServiceBaseUrl + "/Products",
-                                    dataType: "jsonp"
-                                },
-                                update: {
-                                    url: crudServiceBaseUrl + "/Products/Update",
-                                    dataType: "jsonp"
-                                },
-                                destroy: {
-                                    url: crudServiceBaseUrl + "/Products/Destroy",
-                                    dataType: "jsonp"
-                                },
-                                create: {
-                                    url: crudServiceBaseUrl + "/Products/Create",
-                                    dataType: "jsonp"
-                                },
-                                parameterMap: function(options, operation) {
-                                    if (operation !== "read" && options.models) {
-                                        return {models: kendo.stringify(options.models)};
-                                    }
-                                }
-                            },
-                            batch: true,
-                            pageSize: 20,
-                            schema: {
-                                model: {
-                                    id: "ProductID",
-                                    fields: {
-                                        ProductID: { editable: false, nullable: true },
-                                        ProductName: { validation: { required: true } },
-                                        UnitPrice: { type: "number", validation: { required: true, min: 1} },
-                                        Discontinued: { type: "boolean" },
-                                        UnitsInStock: { type: "number", validation: { min: 0, required: true } }
-                                    }
-                                }
-                            }
-                        });
+function cerrar_modal()
+{
+    modal.dialog("close");
+}
 
-                    $("#grid").kendoGrid({
-                        dataSource: dataSource,
-                        pageable: true,
-                        height: 550,
-                        toolbar: ["create"],
-                        columns: [
-                            { field:"ProductName", title: "Product Name" },
-                            { field: "UnitPrice", title:"Unit Price", format: "{0:c}", width: "120px" },
-                            { field: "UnitsInStock", title:"Units In Stock", width: "120px" },
-                            { field: "Discontinued", width: "120px", editor: customBoolEditor },
-                            { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }],
-                        editable: "popup"
-                    });
-                });
-
-                function customBoolEditor(container, options) {
-                    var guid = kendo.guid();
-                    $('<input class="k-checkbox" id="' + guid + '" type="checkbox" name="Discontinued" data-type="boolean" data-bind="checked:Discontinued">').appendTo(container);
-                    $('<label class="k-checkbox-label" for="' + guid + '">&#8203;</label>').appendTo(container);
-                }
-            </script>
-        </div>
-    </div>
+$(document).ready(function()
+{
+    var table = $('#tabla').dataTable( {
+        "language": {
+        	url: "/static/localizacion/es_ES.json"
+        }
+    } );
+});
+</script>
 {% endblock %}
