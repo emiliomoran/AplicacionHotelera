@@ -11,6 +11,14 @@
     <!-- ============================================================== -->
     <!-- end pageheader  -->
     <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-lg-10">
+            <a onclick="return abrir_modal('/administracion/administrador-nuevo','AGREGAR')" class="btn btn-primary btn-agregar-adm">
+                <i class="fas fa-plus"></i> Agregar administrador
+            </a>
+        </div>
+    </div>
+    <br>
     <div id="popup"></div>
     <div class="row">
         <div class="table-responsive">
@@ -35,12 +43,12 @@
                         <td>ACTIVO</td>
                         {% endif %}
                         <td>
-                            <a onclick="return abrir_modal('/administracion/detalle-administrador/{{ administrador.id }}','DETALLES')" class="btn">
+                            <a onclick="return abrir_modal('/administracion/administrador-detalle/{{ administrador.id }}','DETALLES')" class="btn">
                                 <span><i class="fas fa-eye"></i></span>
                             </a>
-                            {% comment %} <a onclick="return abrir_modal('{% url 'productos:detalle_producto' producto.pk %}','Productos / {{ producto.descripcion }}')" class="btn">
+                            <a onclick="return abrir_modal('/administracion/administrador-edicion/{{ administrador.id }}','EDICIÓN')" class="btn">
                                 <span><i class="fas fa-edit"></i></span>
-                            </a>                             {% endcomment %}
+                            </a>                            
                         </td>
                     </tr>
                 {% endfor %}
@@ -74,14 +82,5 @@ function cerrar_modal()
 {
     modal.dialog("close");
 }
-
-$(document).ready(function()
-{
-    var table = $('#tabla').dataTable( {
-        "language": {
-        	url: "/static/localizacion/es_ES.json"
-        }
-    } );
-});
 </script>
 {% endblock %}

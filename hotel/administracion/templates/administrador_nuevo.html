@@ -1,0 +1,28 @@
+{% load static %}
+<form action="/administracion/administrador-nuevo" class="form-style" method="POST">
+    {% csrf_token %}    
+    <div class="form-group">
+        <label for="nombres">Nombres</label>
+        <input type="text" class="form-control" name="nombres" id="nombres" placeholder="" value="" required="required">        
+    </div>
+    <div class="form-group">
+        <label for="apellidos">Apellidos</label>
+        <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="" value="" required="required">
+    </div>
+    <div class="form-group">
+        <label for="fecha_nacimiento">Fecha de nacimiento</label>
+        <input type="date" class="form-control" name="fecha_nacimiento" id="fecha_nacimiento" value="" placeholder="" required="required">        
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" id="email" value="" placeholder="" required="required">
+    </div>
+    <div class="form-group">
+        <label for="telf">Teléfono</label>        
+        <input type="tel" pattern="[0-9]{10}" class="form-control" name="telf" id="telf" value="" placeholder="" required="required">
+    </div>    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block login-btn border-button">Guardar</button>
+    </div>
+</form>
+<script type="text/javascript" src="{% static "js/utils.js" %}"></script>

@@ -84,22 +84,96 @@ def login(request):
 def administradores(request):
     admin_list = []
     out_queries = Perfil.objects.raw('''
-        select ap.id, ap.name, ap.last_name, ap.phone, ap.date_birth, au.id as id_usr, au.email, au.is_removed
+        select ap.id, ap.name, ap.last_name, au.email, au.is_removed
         from accesos_perfil as ap, accesos_usr as au
         where ap.usr_id_id = au.id
         and au.is_admin = true;
     ''')
 
     for e in out_queries:
-        print(e.id_usr)
         admin_list.append(e)
 
     print(admin_list)
     return render(request, 'administradores.html', {'administradores': admin_list})
 
-def detalle_administrador(request, id):
-    admin_details = list(Perfil.objects.values('id', 'name', 'last_name', 'phone', 'date_birth', 'usr_id_id__email', 'is_removed').filter(id=id))
+
+def administrador_detalle(request, id):
+    admin_details = list(Perfil.objects.values('id', 'name', 'last_name',
+                                               'phone', 'date_birth', 'usr_id_id__email', 'is_removed').filter(id=id))
     print(admin_details)
 
-    return render(request, 'detalle_administrador.html', {'administrador': admin_details[0]})
+    return render(request, 'administrador_detalle.html', {'administrador': admin_details[0]})
 
+
+def administrador_edicion(request, id):
+    if request.method == 'POST':
+        name = request.POST.get('nombres')
+        last_name = request.POST.get('apellidos')
+        date_birth = request.POST.get('fecha_nacimiento')
+        email = request.POST.get('email')
+        phone = request.POST.get('telf')
+        is_removed = request.POST.get('is_removed')
+
+        perfil = Perfil.objects.get(id=id)
+        usr = Usr.objects.get(id=perfil.usr_id_id)
+
+        perfil.name = name
+        perfil.last_name = last_name
+        perfil.date_birth = date_birth
+        perfil.phone = phone
+        if(is_removed == '0'):
+            perfil.is_removed = True
+        else:
+            perfil.is_removed = False
+        usr.email = email
+        if(is_removed == '0'):
+            usr.is_removed = True
+        else:
+            usr.is_removed = False
+
+        perfil.save()
+        usr.save()
+
+        return redirect('/administracion/administradores')
+
+    else:
+        admin = list(Perfil.objects.values('id', 'name', 'last_name', 'phone',
+                                           'date_birth', 'usr_id_id__email', 'is_removed').filter(id=id))
+        admin[0]['date_birth'] = admin[0]['date_birth'].strftime("%Y-%m-%d")
+        print(admin)
+
+        return render(request, 'administrador_edicion.html', {'administrador': admin[0]})
+
+
+def administrador_nuevo(request):
+    if request.method == "POST":
+        name = request.POST.get('nombres')
+        last_name = request.POST.get('apellidos')
+        date_birth = request.POST.get('fecha_nacimiento')
+        email = request.POST.get('email')
+        phone = request.POST.get('telf')
+        password_hash = make_password('Admin2019')
+        
+        usr = Usr(
+            username=email.split('@')[0],
+            email=email,
+            password=password_hash,
+            is_admin=True
+        )
+
+        usr.save()
+
+        perfil = Perfil(
+            usr_id=usr,
+            name=name,
+            last_name=last_name,
+            date_birth=date_birth,
+            phone=phone,
+        )
+
+        perfil.save()
+
+        return redirect('/administracion/administradores')
+
+    else:
+        return render(request, 'administrador_nuevo.html')

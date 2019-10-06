@@ -1,0 +1,34 @@
+{% load static %}
+<form action="/administracion/administrador-edicion/{{ administrador.id }}" class="form-style" method="POST">
+    {% csrf_token %}    
+    <div class="form-group">
+        <label for="nombres">Nombres</label>
+        <input type="text" class="form-control" name="nombres" id="nombres" placeholder="" value={{ administrador.name }} required="required">        
+    </div>
+    <div class="form-group">
+        <label for="apellidos">Apellidos</label>
+        <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder="" value={{ administrador.last_name }} required="required">
+    </div>
+    <div class="form-group">
+        <label for="fecha_nacimiento">Fecha de nacimiento</label>
+        <input type="date" class="form-control" name="fecha_nacimiento" id="fecha_nacimiento" value={{ administrador.date_birth }} placeholder="" required="required">        
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" id="email" value={{ administrador.usr_id_id__email }} placeholder="" required="required">
+    </div>
+    <div class="form-group">
+        <label for="telf">Teléfono</label>        
+        <input type="tel" pattern="[0-9]{10}" class="form-control" name="telf" id="telf" value={{ administrador.phone }} placeholder="" required="required">
+    </div>
+    <div class="form-group">
+        <label for="removed" class="be-checkbox custom-control custom-checkbox">
+        <input type="hidden" name="is_removed" id="is_removed" {% if administrador.is_removed %} value="0" {% else %} value="1" {% endif %} />
+        <input type="checkbox" name="removed" id="removed" class="custom-control-input" {% if administrador.is_removed == False %} checked {% endif %} onclick="handle_estado();"><span class="custom-control-label">Activo</span>
+    </label>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block login-btn border-button">Guardar</button>
+    </div>
+</form>
+<script type="text/javascript" src="{% static "js/utils.js" %}"></script>

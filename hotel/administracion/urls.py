@@ -11,5 +11,7 @@ urlpatterns = [
     path('login', views.login),
     path('administradores', views.administradores),
     path('reservas', views.reservas),
-    path('detalle-administrador/<int:id>', views.detalle_administrador),
+    path('administrador-detalle/<int:id>', views.administrador_detalle),
+    path('administrador-edicion/<int:id>', views.administrador_edicion),
+    path('administrador-nuevo', views.administrador_nuevo),
 ]
