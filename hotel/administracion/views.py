@@ -6,6 +6,7 @@ from administracion.forms import RoomForm
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import logout
 
 # Modelos
 from accesos.models import Usr
@@ -13,10 +14,9 @@ from accesos.models import Perfil
 
 
 def index(request):
-    print("Entra a index")
-    template_name = 'index-admin.html'
-    return render(request, template_name)
-
+    if('success_login' in request.session and request.session['success_login']):
+        return render(request, 'index-admin.html')
+    return redirect('/administracion/login')
 
 def reservas(request):
     template_name = 'reservas-admin.html'
@@ -77,9 +77,14 @@ def login(request):
             print(error)
             request.session['success_login'] = False
             return redirect('/administracion/login')
-    else:
-        return render(request, 'login.html')
+    else:        
+        if('success_login' in request.session and request.session['success_login']):
+            return redirect('/administracion')
+        return render(request, 'accesos/login.html')
 
+def logout_admin(request):
+    logout(request)
+    return redirect('/administracion/login')
 
 def administradores(request):
     admin_list = []
@@ -94,7 +99,7 @@ def administradores(request):
         admin_list.append(e)
 
     print(admin_list)
-    return render(request, 'administradores.html', {'administradores': admin_list})
+    return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list})
 
 
 def administrador_detalle(request, id):
@@ -102,7 +107,7 @@ def administrador_detalle(request, id):
                                                'phone', 'date_birth', 'usr_id_id__email', 'is_removed').filter(id=id))
     print(admin_details)
 
-    return render(request, 'administrador_detalle.html', {'administrador': admin_details[0]})
+    return render(request, 'admin_administradores/administrador_detalle.html', {'administrador': admin_details[0]})
 
 
 def administrador_edicion(request, id):
@@ -142,7 +147,7 @@ def administrador_edicion(request, id):
         admin[0]['date_birth'] = admin[0]['date_birth'].strftime("%Y-%m-%d")
         print(admin)
 
-        return render(request, 'administrador_edicion.html', {'administrador': admin[0]})
+        return render(request, 'admin_administradores/administrador_edicion.html', {'administrador': admin[0]})
 
 
 def administrador_nuevo(request):
@@ -176,4 +181,4 @@ def administrador_nuevo(request):
         return redirect('/administracion/administradores')
 
     else:
-        return render(request, 'administrador_nuevo.html')
+        return render(request, 'admin_administradores/administrador_nuevo.html')

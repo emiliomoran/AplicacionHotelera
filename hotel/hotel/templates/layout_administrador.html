@@ -91,12 +91,10 @@
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static "assets/images/avatar-1.jpg" %}" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
-                                    <span class="status"></span><span class="ml-2">Available</span>
+                                    <h5 class="mb-0 text-white nav-user-name">{{ request.session.customer.name }} {{ request.session.customer.last_name }} </h5>
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Mi perfil</a>
-                                
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Cerrar sesion</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Mi perfil</a>                                
+                                <a class="dropdown-item" href="/administracion/logout"><i class="fas fa-power-off mr-2"></i>Cerrar sesion</a>
                             </div>
                         </li>
                     </ul>
@@ -204,14 +202,14 @@
                                 <div id="submenu-6" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/blank-page.html">Agregar nuevo administrador</a>
+                                            <a class="nav-link" href="/administracion/administradores">Listado</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/blank-page-header.html">Permisos</a>
+                                            <a class="nav-link" href="#">Permisos</a>
                                         </li>
                                        
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/pricing.html">Actividades</a>
+                                            <a class="nav-link" href="#">Actividades</a>
                                         </li>
                                         
                                     </ul>
