@@ -130,7 +130,7 @@
                                             <div id="submenu-1-2" class="collapse submenu" style="">
                                                 <ul class="nav flex-column">
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="Perfil.html">Editar habitacion </a>
+                                                        <a class="nav-link" href="{% url 'administracion:room_list' %}">Editar habitacion </a>
                                                     </li>
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="ecommerce-product.html">Agregar</a>
@@ -166,10 +166,10 @@
                                 <div id="submenu-3" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/chart-c3.html">Agregar</a>
+                                            <a class="nav-link" href="{% url 'administracion:tour_crear' %}">Agregar</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/chart-chartist.html">Editar</a>
+                                            <a class ="nav-link" href="{% url 'administracion:tour_listar' %}">Editar</a>
                                         </li>
                                     </ul>
                                 </div>

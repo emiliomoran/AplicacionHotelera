@@ -2,15 +2,17 @@ from django.shortcuts import redirect, render
 from reservas.models import Room
 from accesos.models import Usr, Perfil
 from django.views.generic import ListView, CreateView
-from administracion.forms import RoomForm
+from django.views.generic.edit import UpdateView,DeleteView
+from administracion.forms import RoomForm, TourForm
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 
 # Modelos
 from accesos.models import Usr
 from accesos.models import Perfil
-
+from tour_package.models import Tour_Package
 
 def index(request):
     print("Entra a index")
@@ -26,15 +28,37 @@ def reservas(request):
 class RoomList(ListView):
     model = Room
     context_object_name = 'rooms'
-    template_name = 'index_rooms.html'
+    template_name = 'rooms/index_rooms.html'
 
 
 class RoomCreate(CreateView):
     model = Room
     form_class = RoomForm
-    template_name = "create_room.html"
+    template_name = "rooms/create_room.html"
 
     success_url = reverse_lazy("reservas:room_list")
+
+class RoomEdit(UpdateView):
+
+    model = Room
+    context_object_name = 'room'
+    template_name = 'rooms/room_edit.html'
+    form_class = RoomForm
+
+    def get_object(self):
+        id_ = self.kwargs.get("id_room")
+        return get_object_or_404(Room,id = id_)
+
+    success_url = reverse_lazy("administracion:room_list")
+
+class RoomDelete(DeleteView):
+    model = Room
+    success_url = reverse_lazy("administracion:room_list")
+    template_name = 'rooms/room_delete_form.html'
+    
+    def get_object(self):
+        id_ = self.kwargs.get("id_room")
+        return get_object_or_404(Room,id = id_)
 
 
 def login(request):
@@ -177,3 +201,41 @@ def administrador_nuevo(request):
 
     else:
         return render(request, 'administrador_nuevo.html')
+
+####PAQUETES TURISTICOS####
+class TourList(ListView):
+    
+    model = Tour_Package
+    context_object_name = 'tours'
+    template_name = 'tour-package/index_tours.html'
+
+class TourCreate(CreateView):
+
+    model = Tour_Package
+    form_class = TourForm
+    template_name = "tour-package/tour_create_form.html"
+
+    success_url = reverse_lazy("administracion:tour_listar")
+
+class TourEdit(UpdateView):
+
+    model = Tour_Package
+    context_object_name = 'tour'
+    template_name = 'tour-package/tour_edit.html'
+    form_class = TourForm
+
+    def get_object(self):
+        id_ = self.kwargs.get("id_tour")
+        return get_object_or_404(Tour_Package,id = id_)
+
+    success_url = reverse_lazy("administracion:tour_listar")
+
+class TourEliminar(DeleteView):
+    model = Tour_Package
+    success_url = reverse_lazy("administracion:tour_listar")
+    template_name = 'tour-package/tour_delete_form.html'
+    
+    def get_object(self):
+        id_ = self.kwargs.get("id_tour")
+        return get_object_or_404(Tour_Package,id = id_)
+
