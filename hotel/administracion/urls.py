@@ -13,6 +13,7 @@ urlpatterns = [
     path('login', views.login),
     path('logout', views.logout_admin),
     path('administradores', views.administradores),
+    path('lista_reservas/', views.lista_reservas),
     path('reservas', views.reservas),
     path('administrador-detalle/<int:id>', views.administrador_detalle),
     path('administrador-edicion/<int:id>', views.administrador_edicion),

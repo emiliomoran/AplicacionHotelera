@@ -13,6 +13,8 @@ from django.contrib.auth import logout
 # Modelos
 from accesos.models import Usr
 from accesos.models import Perfil
+from reservas.models import Booking
+
 from tour_package.models import Tour_Package
 
 def index(request):
@@ -124,6 +126,22 @@ def administradores(request):
 
     print(admin_list)
     return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list})
+
+def lista_reservas(request):
+    reservas_list = []
+    out_queries = Booking.objects.raw('''
+        select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name
+        from reservas_booking as b, accesos_perfil as p
+        where b.customer_id_id = p.id
+       
+    ''')
+
+    for e in out_queries:
+        reservas_list.append(e)
+        print(e)
+
+    
+    return render(request, 'reservas-admin.html', {'lista_reservas': reservas_list})
 
 
 def administrador_detalle(request, id):
