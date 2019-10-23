@@ -246,6 +246,26 @@ def lista_reservas(request):
 
 ###Administracion de reservas###
 
+
+###Administracion de clientes###
+
+def clientes(request):
+    clientes_list = []
+    out_queries = Perfil.objects.raw('''
+        select ap.id, ap.name, ap.last_name, au.email, ap.phone, ap.date_birth, au.is_removed
+        from accesos_perfil as ap, accesos_usr as au
+        where ap.usr_id_id = au.id
+        and au.is_admin = false
+        and au.is_staff = false
+        and au.is_superuser=false;
+    ''')
+
+    for e in out_queries:
+        clientes_list.append(e)
+
+    print(clientes_list)
+    return render(request, 'clientes/clientes.html', {'clientes': clientes_list})
+
 ####PAQUETES TURISTICOS####
 class TourList(ListView):
     
