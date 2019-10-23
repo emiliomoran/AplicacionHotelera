@@ -87,6 +87,7 @@ class RoomDelete(DeleteView):
         id_ = self.kwargs.get("id_room")
         return get_object_or_404(Room,id = id_)
 
+###Accesos de administrador###
 
 def login(request):
     if request.method == 'POST':
@@ -137,6 +138,10 @@ def logout_admin(request):
     logout(request)
     return redirect('/administracion/login')
 
+###Accesos de administrador###
+
+###Administracion de administradores###
+
 def administradores(request):
     admin_list = []
     out_queries = Perfil.objects.raw('''
@@ -151,23 +156,6 @@ def administradores(request):
 
     print(admin_list)
     return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list})
-
-def lista_reservas(request):
-    reservas_list = []
-    out_queries = Booking.objects.raw('''
-        select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name
-        from reservas_booking as b, accesos_perfil as p
-        where b.customer_id_id = p.id
-       
-    ''')
-
-    for e in out_queries:
-        reservas_list.append(e)
-        print(e)
-
-    
-    return render(request, 'reservas-admin.html', {'lista_reservas': reservas_list})
-
 
 def administrador_detalle(request, id):
     admin_details = list(Perfil.objects.values('id', 'name', 'last_name',
@@ -249,6 +237,39 @@ def administrador_nuevo(request):
 
     else:
         return render(request, 'admin_administradores/administrador_nuevo.html')
+
+###Administracion de administradores###
+
+###Habitaciones disponibles###
+
+
+
+###Habitaciones disponibles###
+def habitaciones_disponibilidad(request):
+    room_list = []
+    room_list = list(Room.objects.values('id', 'descripcion', 'calificacion', 'num_camas', 'num_adultos', 'num_ninos', 'precio', 'disponible', 'id_roomtype_id__nombre'))
+    print(room_list)
+    return render(request, 'habitaciones_disponibles/habitaciones_disponibles.html', {'habitaciones_disponibles': room_list})
+
+###Administracion de reservas###
+
+def lista_reservas(request):
+    reservas_list = []
+    out_queries = Booking.objects.raw('''
+        select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name
+        from reservas_booking as b, accesos_perfil as p
+        where b.customer_id_id = p.id
+       
+    ''')
+
+    for e in out_queries:
+        reservas_list.append(e)
+        print(e)
+
+    
+    return render(request, 'reservas-admin.html', {'lista_reservas': reservas_list})
+
+###Administracion de reservas###
 
 ####PAQUETES TURISTICOS####
 class TourList(ListView):
