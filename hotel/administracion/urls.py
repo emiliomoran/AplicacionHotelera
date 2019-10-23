@@ -22,4 +22,8 @@ urlpatterns = [
     path('tours/crear/',views.TourCreate.as_view(),name = 'tour_crear'),
 	path('tours/editar/<int:id_tour>/',views.TourEdit.as_view(),name = 'tour_editar'),
 	path('tours/eliminar/<int:id_tour>/', views.TourEliminar.as_view(), name = 'tour_eliminar'), 
+    ###Habitaciones disponibles###
+    path('habitaciones-disponibles', views.habitaciones_disponibilidad),
+    ###Habitaciones disponibles###
+
 ]
