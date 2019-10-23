@@ -9,6 +9,8 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
+from django.core.files.storage import FileSystemStorage
+from django.db.models import Max
 
 # Modelos
 from accesos.models import Usr
@@ -40,6 +42,29 @@ class RoomCreate(CreateView):
 
     success_url = reverse_lazy("reservas:room_list")
 
+def upload_image_room(request):
+
+    if request.method == 'POST':
+        file = request.FILES['path_image']
+        form = RoomForm(request.POST,request.FILES)
+        fs = FileSystemStorage()
+
+        if form.is_valid():
+            numero_cuarto = get_last_item_id() + 1
+            nombre_imagen = "imagen_cuarto_"+ str(numero_cuarto) + '.' + (file.name.split('.'))[1]
+            fs.save(nombre_imagen,file)
+            form.save()
+            return redirect('/administracion/')
+    else:
+        form = RoomForm()
+    
+    return render(request,'rooms/index_rooms.html',{'form':form})
+
+def get_last_item_id():
+    if len(Room.objects.all()) > 0:
+        return Room.objects.all().order_by("-id")[0].id
+    else:
+        return 0
 class RoomEdit(UpdateView):
 
     model = Room

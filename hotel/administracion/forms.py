@@ -13,7 +13,7 @@ class RoomForm(forms.ModelForm):
 		widgets = {
 			'titulo': forms.TextInput(attrs={'class':'form-control'}),
 			'calificacion': forms.NumberInput(attrs={'class':'form-control'}),
-			'path_image':forms.TextInput(attrs={'class':'form-contro'}),
+			'path_image':forms.FileInput(attrs={'class':'form-control'}),
 			'num_camas': forms.NumberInput(attrs={'class':'form-control'}),
 			'num_adultos': forms.NumberInput(attrs={'class':'form-control'}),
 			'num_ninos': forms.NumberInput(attrs={'class':'form-control'}),
