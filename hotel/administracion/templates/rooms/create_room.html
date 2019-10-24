@@ -1,6 +1,6 @@
 {% extends 'layout_administrador.html' %}
 {% block content %}
-<form action= "test/" method="post" enctype="multipart/form-data">
+<form method="post" >
 	{% csrf_token %}
 	{{ form.as_p }}
 	<button type = "submit">Guardar</button>

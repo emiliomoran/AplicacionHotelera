@@ -41,7 +41,7 @@ class RoomCreate(CreateView):
     form_class = RoomForm
     template_name = "rooms/create_room.html"
 
-    success_url = reverse_lazy("reservas:room_list")
+    success_url = reverse_lazy("administracion:room_list")
 
 def upload_image_room(request):
 
