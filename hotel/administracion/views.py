@@ -11,6 +11,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Max
+import datetime
 
 # Modelos
 from accesos.models import Usr
@@ -290,6 +291,15 @@ def clientes(request):
 
     print(clientes_list)
     return render(request, 'clientes/clientes.html', {'clientes': clientes_list})
+
+###Administracion de clientes###
+
+def makeCheckIn(request, pk):
+    bookingActual = Booking.objects.get_object_or_404(pk = pk)
+    bookingActual.check_in_date = datetime.datetime.now()
+    bookingActual.save()
+
+    return render(request, 'clientes/clientes.html')
 
 ####PAQUETES TURISTICOS####
 class TourList(ListView):
