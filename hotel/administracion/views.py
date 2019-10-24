@@ -11,6 +11,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Max
+import datetime
 
 # Modelos
 from accesos.models import Usr
@@ -270,6 +271,35 @@ def lista_reservas(request):
     return render(request, 'reservas-admin.html', {'lista_reservas': reservas_list})
 
 ###Administracion de reservas###
+
+
+###Administracion de clientes###
+
+def clientes(request):
+    clientes_list = []
+    out_queries = Perfil.objects.raw('''
+        select ap.id, ap.name, ap.last_name, au.email, ap.phone, ap.date_birth, au.is_removed
+        from accesos_perfil as ap, accesos_usr as au
+        where ap.usr_id_id = au.id
+        and au.is_admin = false
+        and au.is_staff = false
+        and au.is_superuser=false;
+    ''')
+
+    for e in out_queries:
+        clientes_list.append(e)
+
+    print(clientes_list)
+    return render(request, 'clientes/clientes.html', {'clientes': clientes_list})
+
+###Administracion de clientes###
+
+def makeCheckIn(request, pk):
+    bookingActual = Booking.objects.get_object_or_404(pk = pk)
+    bookingActual.check_in_date = datetime.datetime.now()
+    bookingActual.save()
+
+    return render(request, 'clientes/clientes.html')
 
 ####PAQUETES TURISTICOS####
 class TourList(ListView):

@@ -26,5 +26,6 @@ urlpatterns = [
     ###Habitaciones disponibles###
     path('habitaciones-disponibles', views.habitaciones_disponibilidad),
     ###Habitaciones disponibles###
-
+    path('clientes', views.clientes),
+    path('makeCheckIn/<pk>/', views.makeCheckIn, name="hacer_checkin"),
 ]
