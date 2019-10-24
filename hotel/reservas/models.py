@@ -16,7 +16,8 @@ class RoomType(models.Model):
 class Room(models.Model):
 	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE , verbose_name ="Tipo de Cuarto")
 	descripcion = models.CharField(max_length = 200, verbose_name ="Descripcion del Cuarto")
-	path_image = models.FileField(null=True, upload_to='rooms/',verbose_name="Url de Imagen")
+	#path_image = models.FileField(null=True, upload_to='rooms/',verbose_name="Url de Imagen")
+	path_image = models.CharField(max_length = 200, verbose_name="Url de la imagen")
 	calificacion = models.IntegerField(default=0, verbose_name="Calificacion")
 	num_camas = models.IntegerField(default=0, verbose_name="Numero de Camas")
 	num_adultos = models.IntegerField(default=0, verbose_name="Numero de Adultos")

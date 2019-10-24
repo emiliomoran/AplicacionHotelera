@@ -13,7 +13,8 @@ class RoomForm(forms.ModelForm):
 		widgets = {
 			'titulo': forms.TextInput(attrs={'class':'form-control'}),
 			'calificacion': forms.NumberInput(attrs={'class':'form-control'}),
-			'path_image':forms.FileInput(attrs={'class':'form-control'}),
+			#'path_image':forms.FileInput(attrs={'class':'form-control'}),
+			'path_image':forms.TextInput(attrs={'class':'form-control'}),
 			'num_camas': forms.NumberInput(attrs={'class':'form-control'}),
 			'num_adultos': forms.NumberInput(attrs={'class':'form-control'}),
 			'num_ninos': forms.NumberInput(attrs={'class':'form-control'}),
@@ -26,19 +27,22 @@ class TourForm(forms.ModelForm):
 		model = Tour_Package
 
 		fields = [
-			'titulo',
-			'descripcion',
-			'precio',
+			'title',
+			'description',
+			'price',
+			'path_image',
 		]
 
 		labels = {
-			'titulo':'Titulo del Paquete',
-			'descripcion':'Descripcion del Paquete',
-			'precio':'Precio del Paquete',
+			'title':'Titulo del Paquete',
+			'description':'Descripcion del Paquete',
+			'price':'Precio del Paquete',
+			'path_image':'Url de la Imagen',
 		}
 
 		widgets = {
-			'titulo': forms.TextInput(attrs={'class':'form-control'}),
-			'descripcion': forms.TextInput(attrs={'class':'form-control'}),
-			'precio':forms.NumberInput(attrs={'class':'form-control'}),
+			'title': forms.TextInput(attrs={'class':'form-control'}),
+			'description': forms.TextInput(attrs={'class':'form-control'}),
+			'price':forms.NumberInput(attrs={'class':'form-control'}),
+			'path_image':forms.TextInput(attrs={'class':'form-control'}),
 		}
