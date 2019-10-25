@@ -13,8 +13,16 @@ urlpatterns = [
     path('login', views.login),
     path('logout', views.logout_admin),
     path('administradores', views.administradores),
-    path('lista_reservas/', views.lista_reservas),
+
+
+    path('lista_reservas', views.lista_reservas),
+    ## path('buscarcliente/<str:nombres>', views.buscarcliente),
+    path('eliminar_reserva/<int:id>', views.eliminar_reserva),
+    path('agregar_reserva', views.agregar_reserva),
     path('reservas', views.reservas),
+    path('nueva_reserva', views.nueva_reserva),
+
+
     path('administrador-detalle/<int:id>', views.administrador_detalle),
     path('administrador-edicion/<int:id>', views.administrador_edicion),
     path('administrador-nuevo', views.administrador_nuevo),

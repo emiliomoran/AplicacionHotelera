@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from reservas.models import Room
+from reservas.models import Room, BookingState, BookingType
 from accesos.models import Usr, Perfil
 from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView,DeleteView
@@ -9,6 +9,9 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
+from datetime import date
+from datetime import datetime
+import dateutil.parser
 
 # Modelos
 from accesos.models import Usr
@@ -127,21 +130,6 @@ def administradores(request):
     print(admin_list)
     return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list})
 
-def lista_reservas(request):
-    reservas_list = []
-    out_queries = Booking.objects.raw('''
-        select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name
-        from reservas_booking as b, accesos_perfil as p
-        where b.customer_id_id = p.id
-       
-    ''')
-
-    for e in out_queries:
-        reservas_list.append(e)
-        print(e)
-
-    
-    return render(request, 'reservas-admin.html', {'lista_reservas': reservas_list})
 
 
 def administrador_detalle(request, id):
@@ -224,6 +212,87 @@ def administrador_nuevo(request):
 
     else:
         return render(request, 'admin_administradores/administrador_nuevo.html')
+
+
+####Reservas####
+
+def lista_reservas(request):
+    reservas_list = []
+    out_queries = Booking.objects.raw('''
+        select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name, r.descripcion
+        from reservas_booking as b, accesos_perfil as p, reservas_room as r
+        where b.customer_id_id = p.id and b.room_id_id = r.id and b.state_id_id > 1
+    ''')
+    for e in out_queries:
+        reservas_list.append(e)
+        print(type(e.check_in_date))
+
+    return render(request, 'reservas/reservas-admin.html', {'lista_reservas': reservas_list})
+
+def eliminar_reserva(request, id):
+    Booking.objects.filter(id=id).delete()
+    return render(request, 'reservas/reservas-admin.html', {'lista_reservas': reservas_list})
+
+def agregar_reserva(request):
+    return render(request, 'reservas/addreserva.html')
+
+##def buscarcliente(request, nombres):
+  ##  querie = Perfil.objects.raw('''select *
+	##	from accesos_perfil as u
+	##	where u.name like '%nombres%' ''')
+      ##  return 'ok'
+def nueva_reserva(request):
+    if request.method == "POST":
+        name = request.POST.get('nombres')
+        last_name = request.POST.get('apellidos')
+        date_birth = request.POST.get('fecha_nacimiento')
+        email = request.POST.get('email')
+        phone = request.POST.get('telf')
+        ingreso = request.POST.get('fechain')
+        salida = request.POST.get('fechasal')
+        password_hash = make_password('12345')
+        room = Room.objects.get(id = 1)
+        estado = request.POST.get('estado')
+        
+        
+        r_estado = BookingState.objects.get(id=estado)
+        r_tipo = BookingType.objects.get(id = 1)
+        usr = Usr(
+            username=email.split('@')[0],
+            email=email,
+            password=password_hash,
+            is_admin=False
+        )
+
+        usr.save()
+
+        perfil = Perfil(
+            usr_id=usr,
+            name=name,
+            last_name=last_name,
+            date_birth=date_birth,
+            phone=phone,
+        )
+
+        perfil.save()
+
+        reserva = Booking(
+            check_in_date = ingreso,
+            check_out_date = salida,
+            room_id = room,
+            customer_id = perfil,
+            state_id = r_estado,
+            bookingtype_id = r_tipo
+
+        )
+        reserva.save()
+
+        return redirect('/administracion/lista_reservas')
+
+    else:
+        return render(request, 'reservas/administrador_nuevo.html')
+
+
 
 ####PAQUETES TURISTICOS####
 class TourList(ListView):

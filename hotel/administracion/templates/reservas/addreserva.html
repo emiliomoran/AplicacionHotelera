@@ -1,0 +1,186 @@
+{% extends 'layout_administrador.html' %}
+{% block content %}
+
+<div>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">Reserva manual </h2>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end pageheader  -->
+    <!-- ============================================================== -->
+    <div class="row">
+        <div class="col-lg-10">
+            <button data-toggle="modal" data-target="#cliente" class="btn btn-primary btn-agregar-adm">
+                <i class="fas fa-search"></i> Buscar cliente
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="cliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Search</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" class="form-control" name="nombres" id="inputnombres"
+                                placeholder="Nombres" value="" required="required">
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="button" onclick="buscarcliente()" class="btn btn-primary">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="card">
+            <h5 class="card-header">
+                <font style="vertical-align: inherit;">
+                    <font style="vertical-align: inherit;">Reserva: </font>
+                </font>
+            </h5>
+            <div class="card-body">
+
+                <form action="/administracion/nueva_reserva" class="form-style" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xl-6 col-md-6 col-sm-6 ">
+                            <div class="form-group">
+                                <label for="nomb">Nombres</label>
+                                <input type="text" class="form-control" name="nombres" id="nombres" placeholder=""
+                                    value="" required="required">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-md-6 col-sm-6 ">
+                            <div class="form-group">
+                                <label for="apellidos">Apellidos</label>
+                                <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder=""
+                                    value="" required="required">
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                            <div class="form-group">
+                                <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                                <input type="date" class="form-control" name="fecha_nacimiento" id="fecha_nacimiento"
+                                    value="" placeholder="" required="required">
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" value="" placeholder=""
+                                    required="required">
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+                            <div class="form-group">
+                                <label for="telf">Teléfono</label>
+                                <input type="tel" pattern="[0-9]{10}" class="form-control" name="telf" id="telf"
+                                    value="" placeholder="" required="required">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-md-6 col-sm-6 ">
+                            <div class="form-group">
+                                <label for="ingreso">Fecha de ingreso</label>
+                                <input type="date" class="form-control" name="fechain" id="fechain" value=""
+                                    placeholder="" required="required">
+                                <input type="number" class="form-control" name="estado" id="estado" hidden>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-md-6 col-sm-6 ">
+                            <div class="form-group">
+                                <label for="ingreso">Fecha de salida</label>
+                                <input type="date" class="form-control" name="fechasal" id="fechasal" value=""
+                                    placeholder="" required="required">
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="habitacion">Habitacion</label>
+                        <input type="number" class="form-control" name="habitacion" id="habitacion" value=""
+                            placeholder="" required="required">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block login-btn border-button">Guardar</button>
+                    </div>
+            </div>
+            </form>
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    var modal;
+    function abrir_modal(url, titulo) {
+        modal = $('#popup').dialog(
+            {
+                title: titulo,
+                modal: true,
+                width: 450,
+                resizable: false
+            }).dialog('open').load(url)
+    }
+
+    function cerrar_modal() {
+
+    }
+
+    function buscarcliente() {
+        var nombres = $('#inputnombres').val();
+        $('#cliente').removeClass('show');
+        $.ajax({
+            method: 'POST',
+            url: '/administracion/buscarcliente/' + nombres,
+            error: function () { alert('An error occured'); }
+        });
+    }
+
+    $("#fechain").change(function () {
+        var today = new Date();
+        var d = today.getDate()
+        var m = today.getMonth()
+        var y = today.getFullYear()
+        var x = new Date(y,m,d);
+        var aux = $('#fechain').val().split("-")
+        var fecha = new Date(aux[2]+'-'+aux[1]+'-'+aux[0])
+        
+        if (fecha == x) 
+            $("#estado").val(2);
+        if (fecha > x )
+            $("#estado").val(3);
+        else
+            $("#estado").val(1);
+        alert( x+ '  '+ fecha)
+
+    });
+
+</script>
+{% endblock %}

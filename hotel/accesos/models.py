@@ -23,7 +23,8 @@ class Usr(AbstractBaseUser):
 
 class Perfil(models.Model):
 	usr_id = models.OneToOneField(Usr, on_delete = models.CASCADE)
-	name = models.CharField(max_length=100)
+	name = models.CharField(max_length=100, unique = True)
+	cedula = models.CharField(max_length=10)
 	last_name = models.CharField(max_length=100)
 	phone = models.CharField(max_length=10, null=True)
 	date_birth = models.DateField()

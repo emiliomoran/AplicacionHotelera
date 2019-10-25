@@ -1,5 +1,6 @@
 {% extends 'layout_administrador.html' %}
 {% block content %}
+
 <div>
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -13,7 +14,7 @@
     <!-- ============================================================== -->
     <div class="row">
         <div class="col-lg-10">
-            <a onclick="return abrir_modal('/administracion/administrador-nuevo','AGREGAR')"
+            <a href="agregar_reserva"
                 class="btn btn-primary btn-agregar-adm">
                 <i class="fas fa-plus"></i> Agregar reserva
             </a>
@@ -31,17 +32,26 @@
                         <th>Apellido-Cliente</th>
                         <th>Fecha Entrada</th>
                         <th>Fecha Salida</th>
+                        <th>Habitacion</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for reserva in lista_reservas %}
                     <tr>
-                        <td>{ reserva.id }</td>
+                        <td>{{ reserva.id }}</td>
                         <td>{{ reserva.name }}</td>
 
                         <td>{{ reserva.last_name }}</td>
                         <td>{{ reserva.chek_in_date}}</td>
                         <td>{{ reserva.chek_out_date}}</td>
+                        <td>{{ reserva.descripcion}}</td>
+                        <td>
+                            
+                            <a onclick="return abrir_modal('/administracion/administrador-edicion/{{ administrador.id }}','EDICIÓN')"
+                                class="btn">
+                                <span><i class="fas fa-edit"></i></span>
+                            </a>
+                        </td>
 
 
                     </tr>
@@ -54,12 +64,14 @@
                         <th>Apellido-Cliente</th>
                         <th>Fecha Entrada</th>
                         <th>Fecha Salida</th>
+                        <th>Habitacion</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     var modal;
     function abrir_modal(url, titulo) {
@@ -75,5 +87,16 @@
     function cerrar_modal() {
         modal.dialog("close");
     }
+    /*function confirmDelete(id) {
+        var reply = confirm("¿Seguro que desea eliminar esta reserva?");
+        if (reply == true) {
+            $.ajax({
+                method: 'POST',
+                url: '/administracion/eliminar_reserva/'+id,
+                error: function () { alert('An error occured'); }
+            });
+        }
+    }*/
+    
 </script>
 {% endblock %}
