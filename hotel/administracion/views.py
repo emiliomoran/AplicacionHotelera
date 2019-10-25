@@ -9,9 +9,15 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
+
 from datetime import date
 from datetime import datetime
 import dateutil.parser
+
+from django.core.files.storage import FileSystemStorage
+from django.db.models import Max
+
+
 
 # Modelos
 from accesos.models import Usr
@@ -41,8 +47,31 @@ class RoomCreate(CreateView):
     form_class = RoomForm
     template_name = "rooms/create_room.html"
 
-    success_url = reverse_lazy("reservas:room_list")
+    success_url = reverse_lazy("administracion:room_list")
 
+def upload_image_room(request):
+
+    if request.method == 'POST':
+        file = request.FILES['path_image']
+        form = RoomForm(request.POST,request.FILES)
+        fs = FileSystemStorage()
+
+        if form.is_valid():
+            numero_cuarto = get_last_item_id() + 1
+            nombre_imagen = "imagen_cuarto_"+ str(numero_cuarto) + '.' + (file.name.split('.'))[1]
+            fs.save(nombre_imagen,file)
+            form.save()
+            return redirect('/administracion/')
+    else:
+        form = RoomForm()
+    
+    return render(request,'rooms/index_rooms.html',{'form':form})
+
+def get_last_item_id():
+    if len(Room.objects.all()) > 0:
+        return Room.objects.all().order_by("-id")[0].id
+    else:
+        return 0
 class RoomEdit(UpdateView):
 
     model = Room
@@ -65,6 +94,7 @@ class RoomDelete(DeleteView):
         id_ = self.kwargs.get("id_room")
         return get_object_or_404(Room,id = id_)
 
+###Accesos de administrador###
 
 def login(request):
     if request.method == 'POST':
@@ -115,6 +145,10 @@ def logout_admin(request):
     logout(request)
     return redirect('/administracion/login')
 
+###Accesos de administrador###
+
+###Administracion de administradores###
+
 def administradores(request):
     admin_list = []
     out_queries = Perfil.objects.raw('''
@@ -129,8 +163,6 @@ def administradores(request):
 
     print(admin_list)
     return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list})
-
-
 
 def administrador_detalle(request, id):
     admin_details = list(Perfil.objects.values('id', 'name', 'last_name',
@@ -214,7 +246,25 @@ def administrador_nuevo(request):
         return render(request, 'admin_administradores/administrador_nuevo.html')
 
 
-####Reservas####
+
+
+
+###Administracion de administradores###
+
+###Habitaciones disponibles###
+
+
+
+###Habitaciones disponibles###
+def habitaciones_disponibilidad(request):
+    room_list = []
+    room_list = list(Room.objects.values('id', 'descripcion', 'calificacion', 'num_camas', 'num_adultos', 'num_ninos', 'precio', 'disponible', 'id_roomtype_id__nombre'))
+    print(room_list)
+    return render(request, 'habitaciones_disponibles/habitaciones_disponibles.html', {'habitaciones_disponibles': room_list})
+
+
+
+###Administracion de reservas###
 
 def lista_reservas(request):
     reservas_list = []
@@ -292,6 +342,37 @@ def nueva_reserva(request):
     else:
         return render(request, 'reservas/administrador_nuevo.html')
 
+
+###Administracion de reservas###
+
+
+###Administracion de clientes###
+
+def clientes(request):
+    clientes_list = []
+    out_queries = Perfil.objects.raw('''
+        select ap.id, ap.name, ap.last_name, au.email, ap.phone, ap.date_birth, au.is_removed
+        from accesos_perfil as ap, accesos_usr as au
+        where ap.usr_id_id = au.id
+        and au.is_admin = false
+        and au.is_staff = false
+        and au.is_superuser=false;
+    ''')
+
+    for e in out_queries:
+        clientes_list.append(e)
+
+    print(clientes_list)
+    return render(request, 'clientes/clientes.html', {'clientes': clientes_list})
+
+###Administracion de clientes###
+
+def makeCheckIn(request, pk):
+    bookingActual = Booking.objects.get_object_or_404(pk = pk)
+    bookingActual.check_in_date = datetime.datetime.now()
+    bookingActual.save()
+
+    return render(request, 'clientes/clientes.html')
 
 
 ####PAQUETES TURISTICOS####

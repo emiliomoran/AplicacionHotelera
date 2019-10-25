@@ -4,7 +4,8 @@ from django.db import models
 
 class Tour_Package(models.Model):
 
-	titulo = models.CharField(max_length = 100)
-	descripcion = models.CharField(max_length = 250)
-	precio = models.IntegerField(default = 0)
+	title = models.CharField(max_length = 100)
+	description = models.CharField(max_length = 250)
+	price = models.IntegerField(default = 0)
+	path_image = models.CharField(max_length= 250)
 

@@ -1,7 +1,6 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
- 
 <head>
     <!-- Required meta tags -->    
     <meta charset="utf-8">
@@ -20,7 +19,6 @@
     <link rel="stylesheet" href="{% static "css/style_own.css" %}">
     <title>Hotel Salinas</title>
 </head>
-
 <body>
     <!-- ============================================================== -->
     <!-- main wrapper -->
@@ -131,7 +129,7 @@
                                                         <a class="nav-link" href="{% url 'administracion:room_list' %}">Editar habitacion </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="ecommerce-product.html">Agregar</a>
+                                                        <a class="nav-link" href="{% url 'administracion:room_create' %}">Agregar</a>
                                                     </li>
                                                     
                                                 </ul>
@@ -216,36 +214,25 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7"><i class="fas fa-fw fa-inbox"></i>Reportes <span class="badge badge-secondary">New</span></a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i> Habitaciones </a>
                                 <div id="submenu-7" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/inbox.html">Presupuesto</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/email-details.html">Clientes</a>
-                                        </li>
-                    
+                                            <a class="nav-link" href="/administracion/habitaciones-disponibles">Disponibilidad</a>
+                                        </li>                                                                                
                                     </ul>
                                 </div>
-                            </li>
+                            </li> 
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-columns"></i>Data</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-file"></i> Clientes </a>
                                 <div id="submenu-8" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/icon-fontawesome.html">1</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/icon-material.html">2</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="pages/icon-simple-lineicon.html">3</a>
-                                        </li>
-                                        
+                                            <a class="nav-link" href="/administracion/clientes">Ver</a>
+                                        </li>                                                                                
                                     </ul>
                                 </div>
-                            </li>                                                            
+                            </li>                                                                                         
                         </ul>
                     </div>
                 </nav>
@@ -294,7 +281,7 @@
     <!-- ============================================================== -->
     <!-- Optional JavaScript -->
     <!-- jquery 3.3.1 -->
-    {% comment %} <script src="{% static "assets/vendor/jquery/jquery-3.3.1.min.js" %}"></script> {% endcomment %}
+    <script src="{% static "assets/vendor/jquery/jquery-3.3.1.min.js" %}"></script>
     <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
     <!-- bootstap bundle js -->
     <script src="{% static "assets/vendor/bootstrap/js/bootstrap.bundle.js" %}"></script>

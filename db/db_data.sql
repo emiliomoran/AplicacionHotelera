@@ -34,9 +34,9 @@ insert into reservas_bookingtype(name, description, is_removed, create_date, upd
 /* */
 
 /*Booking state*/
-insert into reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Pasada', 'Reserva pasada', false, now(), now());
-insert into reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Actual', 'Reserva actual', false, now(), now());
-insert into reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Futura', 'Reserva futura', false, now(), now());
+insert into public.reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Pasada', 'Reserva pasada', false, now(), now());
+insert into public.reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Actual', 'Reserva actual', false, now(), now());
+insert into public.reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Futura', 'Reserva futura', false, now(), now());
 /* */
 
 /* Booking */
@@ -56,3 +56,9 @@ values(now(), '2019-09-05 23:34:39.554642-05', '2019-09-07 21:34:39.554642-05', 
 (now(), '2019-09-12 21:34:39.554642-05', '2019-09-14 21:34:39.554642-05', 2, false, now(), now(), 1, 1, 1, 3),
 (now(), '2019-09-20 21:34:39.554642-05', '2019-09-21 21:34:39.554642-05', 2, false, now(), now(), 1, 1, 3, 3);
 /* */
+
+/* Tour_Package */
+INSERT INTO public.tour_package_tour_package(
+	id, titulo, descripcion, precio)
+	VALUES (1,'Paquete 1','Nadar con tortugas',100),
+	(2, 'Paquete 2', 'Tour a las Islas', 300);

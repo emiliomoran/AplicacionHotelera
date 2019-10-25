@@ -32,7 +32,10 @@
                         <th>Apellido-Cliente</th>
                         <th>Fecha Entrada</th>
                         <th>Fecha Salida</th>
+
                         <th>Habitacion</th>
+                    
+                        <th>Check In</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +47,7 @@
                         <td>{{ reserva.last_name }}</td>
                         <td>{{ reserva.chek_in_date}}</td>
                         <td>{{ reserva.chek_out_date}}</td>
+
                         <td>{{ reserva.descripcion}}</td>
                         <td>
                             
@@ -53,6 +57,11 @@
                             </a>
                         </td>
 
+                        <td>
+                            <a href="{% url 'hacer_checkin' reserva.id %}" class="btn btn-primary btn-agregar-adm">
+                                <i class="fas"></i> Check In
+                            </a>
+                        </td>
 
                     </tr>
                     {% endfor %}
@@ -65,6 +74,9 @@
                         <th>Fecha Entrada</th>
                         <th>Fecha Salida</th>
                         <th>Habitacion</th>
+
+                        <th>Check In</th>
+
                     </tr>
                 </tfoot>
             </table>
