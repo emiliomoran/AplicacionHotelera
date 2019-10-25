@@ -2,22 +2,23 @@
 {% block content %}
 
 <div>
+     <!-- ============================================================== 
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
                 <h2 class="pageheader-title">Reserva manual </h2>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- ============================================================== -->
     <!-- end pageheader  -->
     <!-- ============================================================== -->
     <div class="row">
-        <div class="col-lg-10">
+        <!--  <div class="col-lg-10">
             <button data-toggle="modal" data-target="#cliente" class="btn btn-primary btn-agregar-adm">
                 <i class="fas fa-search"></i> Buscar cliente
             </button>
-            <!-- Modal -->
+           
             <div class="modal fade" id="cliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -40,7 +41,7 @@
                 </div>
             </div>
 
-        </div>
+        </div>-->
     </div>
     <br>
 
@@ -56,18 +57,28 @@
                 <form action="/administracion/nueva_reserva" class="form-style" method="POST">
                     {% csrf_token %}
                     <div class="row">
+                            <div class="col-xl-6 col-md-6 col-sm-6 ">
+                                    <div class="form-group">
+                                        <label for="nomb">Cedula</label>
+                                        <input type="text" class="form-control" name="nombres" id="nombres" placeholder=""
+                                            value="" required="required"  maxlength="10" onkeyup="this.value=this.value.replace(/[^\d]/,'')">
+                                    </div>
+                                </div>
+                    </div>
+                    <div class="row">
+                        
                         <div class="col-xl-6 col-md-6 col-sm-6 ">
                             <div class="form-group">
                                 <label for="nomb">Nombres</label>
                                 <input type="text" class="form-control" name="nombres" id="nombres" placeholder=""
-                                    value="" required="required">
+                                    value="" required="required" disabled>
                             </div>
                         </div>
                         <div class="col-xl-6 col-md-6 col-sm-6 ">
                             <div class="form-group">
                                 <label for="apellidos">Apellidos</label>
                                 <input type="text" class="form-control" name="apellidos" id="apellidos" placeholder=""
-                                    value="" required="required">
+                                    value="" required="required" disabled>
                             </div>
                         </div>
 
@@ -75,21 +86,21 @@
                             <div class="form-group">
                                 <label for="fecha_nacimiento">Fecha de nacimiento</label>
                                 <input type="date" class="form-control" name="fecha_nacimiento" id="fecha_nacimiento"
-                                    value="" placeholder="" required="required">
+                                    value="" placeholder="" required="required" disabled>
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" name="email" id="email" value="" placeholder=""
-                                    required="required">
+                                    required="required" disabled>
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
                             <div class="form-group">
                                 <label for="telf">Teléfono</label>
                                 <input type="tel" pattern="[0-9]{10}" class="form-control" name="telf" id="telf"
-                                    value="" placeholder="" required="required">
+                                    value="" placeholder="" required="required" disabled>
                             </div>
                         </div>
 
@@ -115,11 +126,27 @@
 
 
                     </div>
-                    <div class="form-group">
-                        <label for="habitacion">Habitacion</label>
-                        <input type="number" class="form-control" name="habitacion" id="habitacion" value=""
-                            placeholder="" required="required">
+                    <div class="card">
+                            <h5 class="card-header">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">Habitacion </font>
+                                    </font>
+                                </h5>
+                                <div class="card-body">
+                                        <div class="form-group">
+                                                <label for="Adultos">Adultos</label>
+                                                <input type="number"  name="habitacion" id="adultos" value=""
+                                                    placeholder="" required="required">
+                                                    <label for="niños">Niños</label>
+                                                    <input type="number"  name="habitacion" id="niños" value=""
+                                                        placeholder="" required="required">
+                                                <button  class="btn btn-primary" disabled>
+                                                            <i class="fas fa-search"></i> 
+                                            </div>
+
+                                </div>
                     </div>
+                    
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block login-btn border-button">Guardar</button>
