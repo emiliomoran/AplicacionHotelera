@@ -19,6 +19,8 @@ from django.db.models import Max
 
 import datetime
 
+from django.http import JsonResponse
+
 # Modelos
 from accesos.models import Usr
 from accesos.models import Perfil
@@ -286,13 +288,32 @@ def eliminar_reserva(request, id):
 def agregar_reserva(request):
     return render(request, 'reservas/addreserva.html')
 
-##def buscarcliente(request, nombres):
-  ##  querie = Perfil.objects.raw('''select *
-	##	from accesos_perfil as u
-	##	where u.name like '%nombres%' ''')
-      ##  return 'ok'
+def buscarcliente(request):
+    ced = request.GET.get('cedula', None)
+    print("cedula"+ced)
+    is_taken = Perfil.objects.filter(cedula__iexact=ced).exists()
+    user = Perfil.objects.filter(cedula=ced)[0]
+    u = Usr.objects.filter(id=user.usr_id_id)[0]
+    print(u)
+    if(is_taken):
+        data = {
+           'existe': is_taken,
+           'nombres': user.name,
+           'apellidos': user.last_name,
+           'fecha_nacimiento': user.date_birth,
+           'telfono': user.phone,
+           'email': u.email
+        }
+    else:
+        data = {
+         'existe': is_taken
+        }
+    return JsonResponse(data)
+   
+    
 def nueva_reserva(request):
     if request.method == "POST":
+        ced = request.POST.get('cedula')
         name = request.POST.get('nombres')
         last_name = request.POST.get('apellidos')
         date_birth = request.POST.get('fecha_nacimiento')
@@ -300,31 +321,37 @@ def nueva_reserva(request):
         phone = request.POST.get('telf')
         ingreso = request.POST.get('fechain')
         salida = request.POST.get('fechasal')
-        password_hash = make_password('12345')
+        password_hash = make_password(ced)
         room = Room.objects.get(id = 1)
         estado = request.POST.get('estado')
-        
-        
+        #cliente
+        is_taken = Perfil.objects.filter(cedula__iexact=ced).exists()
+        print(is_taken)
+        if(is_taken):
+            perfil = Perfil.objects.filter(cedula=ced)[0]
+        else:
+            usr = Usr(
+                username=email.split('@')[0],
+                email=email,
+                password=password_hash,
+                is_admin=False
+            )
+
+            usr.save()
+
+            perfil = Perfil(
+                usr_id=usr,
+                cedula = ced,
+                name=name,
+                last_name=last_name,
+                date_birth=date_birth,
+                phone=phone,
+            )
+
+            perfil.save()
         r_estado = BookingState.objects.get(id=estado)
         r_tipo = BookingType.objects.get(id = 1)
-        usr = Usr(
-            username=email.split('@')[0],
-            email=email,
-            password=password_hash,
-            is_admin=False
-        )
-
-        usr.save()
-
-        perfil = Perfil(
-            usr_id=usr,
-            name=name,
-            last_name=last_name,
-            date_birth=date_birth,
-            phone=phone,
-        )
-
-        perfil.save()
+            
 
         reserva = Booking(
             check_in_date = ingreso,

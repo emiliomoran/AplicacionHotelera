@@ -2,7 +2,7 @@
 {% block content %}
 
 <div>
-     <!-- ============================================================== 
+    <!-- ============================================================== 
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="page-header">
@@ -57,16 +57,17 @@
                 <form action="/administracion/nueva_reserva" class="form-style" method="POST">
                     {% csrf_token %}
                     <div class="row">
-                            <div class="col-xl-6 col-md-6 col-sm-6 ">
-                                    <div class="form-group">
-                                        <label for="nomb">Cedula</label>
-                                        <input type="text" class="form-control" name="nombres" id="nombres" placeholder=""
-                                            value="" required="required"  maxlength="10" onkeyup="this.value=this.value.replace(/[^\d]/,'')">
-                                    </div>
-                                </div>
+                        <div class="col-xl-6 col-md-6 col-sm-6 ">
+                            <div class="form-group">
+                                <label for="ced">Cedula</label>
+                                <input type="text" class="form-control" name="cedula" id="cedula" placeholder="Cedula"
+                                    value="" required="required" maxlength="10"
+                                    onkeyup="this.value=this.value.replace(/[^\d]/,'')">
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
-                        
+
                         <div class="col-xl-6 col-md-6 col-sm-6 ">
                             <div class="form-group">
                                 <label for="nomb">Nombres</label>
@@ -127,26 +128,26 @@
 
                     </div>
                     <div class="card">
-                            <h5 class="card-header">
-                                    <font style="vertical-align: inherit;">
-                                        <font style="vertical-align: inherit;">Habitacion </font>
-                                    </font>
-                                </h5>
-                                <div class="card-body">
-                                        <div class="form-group">
-                                                <label for="Adultos">Adultos</label>
-                                                <input type="number"  name="habitacion" id="adultos" value=""
-                                                    placeholder="" required="required">
-                                                    <label for="niños">Niños</label>
-                                                    <input type="number"  name="habitacion" id="niños" value=""
-                                                        placeholder="" required="required">
-                                                <button  class="btn btn-primary" disabled>
-                                                            <i class="fas fa-search"></i> 
-                                            </div>
+                        <h5 class="card-header">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Habitacion </font>
+                            </font>
+                        </h5>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="Adultos">Adultos</label>
+                                <input type="number" name="habitacion" id="adultos" value="" placeholder=""
+                                    required="required">
+                                <label for="niños">Niños</label>
+                                <input type="number" name="habitacion" id="niños" value="" placeholder=""
+                                    required="required">
+                                <button class="btn btn-primary" disabled>
+                                    <i class="fas fa-search"></i>
+                            </div>
 
-                                </div>
+                        </div>
                     </div>
-                    
+
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary btn-block login-btn border-button">Guardar</button>
@@ -165,49 +166,67 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-    var modal;
-    function abrir_modal(url, titulo) {
-        modal = $('#popup').dialog(
-            {
-                title: titulo,
-                modal: true,
-                width: 450,
-                resizable: false
-            }).dialog('open').load(url)
-    }
+    let id_cliente = 0;
 
-    function cerrar_modal() {
-
-    }
-
-    function buscarcliente() {
-        var nombres = $('#inputnombres').val();
-        $('#cliente').removeClass('show');
-        $.ajax({
-            method: 'POST',
-            url: '/administracion/buscarcliente/' + nombres,
-            error: function () { alert('An error occured'); }
-        });
-    }
 
     $("#fechain").change(function () {
         var today = new Date();
         var d = today.getDate()
         var m = today.getMonth()
         var y = today.getFullYear()
-        var x = new Date(y,m,d);
+        var x = new Date(y, m, d); //hoy
         var aux = $('#fechain').val().split("-")
-        var fecha = new Date(aux[2]+'-'+aux[1]+'-'+aux[0])
-        
-        if (fecha == x) 
+        var fecha = new Date(aux[2] + '-' + aux[1] + '-' + aux[0])//fecha ingresada
+        alert(fecha)
+        if (fecha == x)
             $("#estado").val(2);
-        if (fecha > x )
-            $("#estado").val(3);
-        else
+        if (fecha > x)
             $("#estado").val(1);
-        alert( x+ '  '+ fecha)
+        if (fecha < x)
+            $("#estado").val(3);
+
+
 
     });
+    $("#cedula").change(function () {
+
+        var cedula = $('#cedula').val();
+
+        var nombres = $("#nombres").val;
+        var apellidos = $("#apellidos").val;
+        var fn = $("#fecha_nacimiento").val;
+        var emai = $("#email").val();
+        var telefono = $("#telf").val;
+        $.ajax({
+
+            url: '/administracion/buscarcliente/',
+            data: {
+                'cedula': cedula
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result.existe) {
+
+                    $("#nombres").val(result.nombres)
+                    $("#apellidos").val(result.apellidos)
+                    $("#fecha_nacimiento").val(result.fecha)
+                    $("#email").val(result.email)
+                    $("#telf").val(result.telefono)
+                }
+                else {
+
+                    $("#nombres").removeAttr('disabled');
+                    $("#apellidos").removeAttr('disabled');
+                    $("#fecha_nacimiento").removeAttr('disabled');
+                    $("#email").removeAttr('disabled');
+                    $("#telf").removeAttr('disabled');
+                }
+
+            },
+            error: function () { alert('An error occured'); }
+        });
+    });
+
 
 </script>
 {% endblock %}
