@@ -373,6 +373,49 @@ def nueva_reserva(request):
     else:
         return render(request, 'reservas/administrador_nuevo.html')
 
+def buscarhabitaciones(request):
+    fechain= request.GET.get('fechain', None)
+    fechaout= request.GET.get('fechaout', None)
+    num = request.GET.get("tipo", None)
+    
+    adultos = request.GET.get("select_num_adultos", None)
+    ninos = request.GET.get("select_num_ninos", None)
+    rooms_list = []
+    
+    # Búsqueda de habitaciones solo disponibles
+    room_list_filter_1 = list(Room.objects.values('id', 'precio', 'calificacion', 'id_roomtype_id__nombre').filter(
+                disponible=True, id_roomtype_id=num, num_adultos=adultos, num_ninos=ninos))
+    check_in_date = fechain
+    check_out_date =fechaout
+    out_queries = Room.objects.raw('''
+                select r.id as id, r.precio as precio, r.calificacion as calificacion, rt.nombre as id_roomtype_id__nombre
+                from reservas_room as r, reservas_roomtype as rt
+                where r.id_roomtype_id=rt.id
+                and disponible = %s
+                and num_adultos = %s
+                and num_ninos = %s
+                and id_roomtype_id = %s
+                and r.id not in
+                (
+                    select distinct b.room_id_id
+                    from reservas_booking as b, reservas_bookingstate as bs, reservas_bookingtype as bt
+                    where b.state_id_id = bs.id
+                    and b.bookingtype_id_id = bt.id
+                    and b.check_out_date > %s
+                    and b.check_in_date < %s)
+            ''',[True, adultos, ninos, num, check_out_date, check_in_date])
+    for e in out_queries:
+        room_list_filter_1.append(e)
+    
+    print(room_list_filter_1)
+    return render(request, 'reservas/addreserva.html', {'habitaciones_disponibles': room_list_filter_1})
+   
+def convert_date(string_date):
+    dia = string_date.split('-')[2]
+    mes = string_date.split('-')[1]
+    ano = string_date.split('-')[0]
+
+    return ano+'-'+mes+'-'+dia
 
 ###Administracion de reservas###
 

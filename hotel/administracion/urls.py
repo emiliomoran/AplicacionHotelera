@@ -20,9 +20,10 @@ urlpatterns = [
     path('lista_reservas/', views.lista_reservas),
     path('buscarcliente/', views.buscarcliente),
     path('eliminar_reserva/<int:id>', views.eliminar_reserva),
-    path('agregar_reserva/', views.agregar_reserva),
-    path('reservas/', views.reservas),
-    path('nueva_reserva/', views.nueva_reserva),
+    path('agregar_reserva', views.agregar_reserva),
+    path('reservas', views.reservas),
+    path('nueva_reserva', views.nueva_reserva),
+     path('buscarhabitaciones/', views.buscarhabitaciones),
 
 
     path('administrador-detalle/<int:id>', views.administrador_detalle),
