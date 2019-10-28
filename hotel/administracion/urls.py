@@ -23,6 +23,7 @@ urlpatterns = [
     path('agregar_reserva', views.agregar_reserva),
     path('reservas', views.reservas),
     path('nueva_reserva', views.nueva_reserva),
+     path('buscarhabitaciones/', views.buscarhabitaciones),
 
 
     path('administrador-detalle/<int:id>', views.administrador_detalle),
