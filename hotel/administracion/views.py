@@ -10,6 +10,10 @@ from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
 
+from rest_framework import generics
+from rest_framework import views
+from rest_framework.response import Response
+
 from datetime import date
 from datetime import datetime
 import dateutil.parser
@@ -34,7 +38,7 @@ def index(request):
     return redirect('/administracion/login')
 
 def reservas(request):
-    template_name = 'reservas-admin.html'
+    template_name = 'reservas/reservas-admin.html'
     return render(request, template_name)
 
 
@@ -394,12 +398,16 @@ def clientes(request):
 
 ###Administracion de clientes###
 
-def makeCheckIn(request, pk):
-    bookingActual = Booking.objects.get_object_or_404(pk = pk)
-    bookingActual.check_in_date = datetime.datetime.now()
-    bookingActual.save()
-
-    return render(request, 'clientes/clientes.html')
+class makeCheckInView(views.APIView):
+    def post(self, request, pk):
+        bookingActual = get_object_or_404(Booking, pk = pk) #Booking.bookings.get_object(pk = pk)
+        print(Booking.objects)
+        print("TEST")
+        fecha_ingreso = datetime.datetime.now()
+        bookingActual.fecha_ingresado = fecha_ingreso
+        bookingActual.save()
+        respuesta = { 'detail' :  fecha_ingreso}
+        return JsonResponse(respuesta)
 
 
 ####PAQUETES TURISTICOS####

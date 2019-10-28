@@ -17,12 +17,12 @@ urlpatterns = [
 
 
 
-    path('lista_reservas', views.lista_reservas),
+    path('lista_reservas/', views.lista_reservas),
     path('buscarcliente/', views.buscarcliente),
     path('eliminar_reserva/<int:id>', views.eliminar_reserva),
-    path('agregar_reserva', views.agregar_reserva),
-    path('reservas', views.reservas),
-    path('nueva_reserva', views.nueva_reserva),
+    path('agregar_reserva/', views.agregar_reserva),
+    path('reservas/', views.reservas),
+    path('nueva_reserva/', views.nueva_reserva),
 
 
     path('administrador-detalle/<int:id>', views.administrador_detalle),
@@ -38,5 +38,6 @@ urlpatterns = [
     path('habitaciones-disponibles', views.habitaciones_disponibilidad),
     ###Habitaciones disponibles###
     path('clientes', views.clientes),
-    path('makeCheckIn/<pk>/', views.makeCheckIn, name="hacer_checkin"),
+    #path('makeCheckIn/<pk>/', views.makeCheckIn, name="hacer_checkin"),
+    path('makeCheckIn/<pk>/', views.makeCheckInView.as_view(), name="hacer_checkin")
 ]

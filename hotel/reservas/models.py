@@ -1,5 +1,7 @@
 from django.db import models
 from accesos.models import Perfil
+from django.db.models import Manager
+
 
 # Create your models here.
 
@@ -50,12 +52,15 @@ class Booking(models.Model):
 	bookingtype_id = models.ForeignKey(BookingType, on_delete = models.CASCADE)
 	state_id = models.ForeignKey(BookingState, on_delete = models.CASCADE)
 	booking_date = models.DateTimeField(auto_now_add = True)
-	check_in_date = models.DateTimeField(null= True)
+	check_in_date = models.DateTimeField(null= True) #Estas son las fechas de ingreso y salida en la reserva
 	check_out_date = models.DateTimeField(null= True)
+	fecha_ingresado = models.DateTimeField(null= True) #Estas son las fechas reales en las que el cliente ingresa al hotel
+	fecha_salida = models.DateTimeField(null= True)
 	no_nights = models.IntegerField(default = 0)
 	is_removed = models.BooleanField(default = False)
 	create_date = models.DateTimeField(auto_now_add = True)
 	update_date = models.DateTimeField(auto_now = True)
+	objects = Manager()
 
 	def get_total_price(self):
 
