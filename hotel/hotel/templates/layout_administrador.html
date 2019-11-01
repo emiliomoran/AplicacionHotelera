@@ -121,20 +121,6 @@
                                 <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
                                 <div id="submenu-1" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-2" aria-controls="submenu-1-2">Habitaciones</a>
-                                            <div id="submenu-1-2" class="collapse submenu" style="">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="{% url 'administracion:room_list' %}">Editar habitacion </a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="{% url 'administracion:room_create' %}">Agregar</a>
-                                                    </li>
-                                                    
-                                                </ul>
-                                            </div>
-                                        </li>
                                         
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-1" aria-controls="submenu-1-1">Reservas</a>
@@ -219,8 +205,15 @@
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link" href="/administracion/habitaciones-disponibles">Disponibilidad</a>
-                                        </li>                                                                                
+                                        </li>   
+                                        <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'administracion:room_list' %}">Editar habitacion </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'administracion:room_create' %}">Agregar</a>
+                                        </li>                                                                             
                                     </ul>
+                                    
                                 </div>
                             </li> 
                             <li class="nav-item">
