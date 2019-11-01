@@ -4,8 +4,8 @@ values(now(), 'admin', 'admin@example.com', 'pbkdf2_sha256$150000$A1NCffAdapJu$6
 /* */
 
 /*Perfil */
-insert into accesos_perfil(name, last_name, phone, date_birth, is_removed, create_date, update_date, usr_id_id)
-values('admin', 'admin', null, now(), false, now(), now(), 1);
+insert into accesos_perfil(name,cedula, last_name, phone, date_birth, is_removed, create_date, update_date, usr_id_id)
+values('admin','0912345678', 'admin', null, now(), false, now(), now(), 1);
 /* */
 
 /*RoomType */
