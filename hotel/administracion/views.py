@@ -452,6 +452,16 @@ class makeCheckInView(views.APIView):
         respuesta = { 'detail' :  fecha_ingreso}
         return JsonResponse(respuesta)
 
+class makeCheckOutView(views.APIView):
+    def post(self, request, pk):
+        bookingActual = get_object_or_404(Booking, pk = pk) #Booking.bookings.get_object(pk = pk)
+        print(Booking.objects)
+        print("TEST")
+        fecha_salida = datetime.datetime.now()
+        bookingActual.fecha_salida = fecha_salida
+        bookingActual.save()
+        respuesta = { 'detail' :  fecha_salida}
+        return JsonResponse(respuesta)
 
 ####PAQUETES TURISTICOS####
 class TourList(ListView):
