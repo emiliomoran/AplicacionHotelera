@@ -1,11 +1,14 @@
 /*Usr */
 insert into accesos_usr(last_login, username, email, password, is_admin, is_staff, is_superuser, is_removed, create_date, update_date)
-values(now(), 'admin', 'admin@example.com', 'pbkdf2_sha256$150000$A1NCffAdapJu$6WOJc4OM4nb48ctxktlqfsF7olj/j4PlsEYSR4PSJ2o=', false, false, false, false, now(), now());
+values(now(), 'customer', 'customer@example.com', 'pbkdf2_sha256$150000$A1NCffAdapJu$6WOJc4OM4nb48ctxktlqfsF7olj/j4PlsEYSR4PSJ2o=', false, false, false, false, now(), now()),
+(now(), 'admin', 'admin@example.com', 'pbkdf2_sha256$150000$A1NCffAdapJu$6WOJc4OM4nb48ctxktlqfsF7olj/j4PlsEYSR4PSJ2o=', true, false, false, false, now(), now());
+
 /* */
 
 /*Perfil */
 insert into accesos_perfil(name,cedula, last_name, phone, date_birth, is_removed, create_date, update_date, usr_id_id)
-values('admin','0912345678', 'admin', null, now(), false, now(), now(), 1);
+values('admin','0912345678', 'admin', null, now(), false, now(), now(), 1),
+values('customer','0911122233', 'customer', null, now(), false, now(), now(), 1);
 /* */
 
 /*RoomType */
@@ -58,7 +61,6 @@ values(now(), '2019-09-05 23:34:39.554642-05', '2019-09-07 21:34:39.554642-05', 
 /* */
 
 /* Tour_Package */
-INSERT INTO public.tour_package_tour_package(
-	id, titulo, descripcion, precio)
-	VALUES (1,'Paquete 1','Nadar con tortugas',100),
-	(2, 'Paquete 2', 'Tour a las Islas', 300);
+INSERT INTO tour_package_tour_package(title, description, price, path_image)
+VALUES('Paquete 1','Nadar con tortugas',10,'path'),
+('Paquete 2', 'Tour a las Islas', 300,'path');

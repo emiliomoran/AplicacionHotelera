@@ -38,6 +38,7 @@
                         <th>Habitacion</th>
                     
                         <th>Check In</th>
+                        <th>Check Out</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,7 +51,7 @@
                         <td>{{ reserva.chek_in_date}}</td>
                         <td>{{ reserva.chek_out_date}}</td>
                         <td class="fechaIngreso">{{ reserva.fecha_ingresado}}</td>
-                        <td>{{ reserva.fecha_salida}}</td>
+                        <td class="fechaSalida">{{ reserva.fecha_salida}}</td>
 
                         <td>{{ reserva.descripcion}}</td>
                         <td>
@@ -64,6 +65,9 @@
                         <td>
                             <button class="checkInButton btn btn-primary btn-agregar-adm"> Check In </button>
                             
+                        </td>
+                        <td>
+                            <button class="checkOutButton btn btn-primary btn-agregar-adm" disabled="disabled"> Check Out </button>
                         </td>
 
                     </tr>
@@ -91,7 +95,26 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $( document ).ready(function() {
-        console.log( "ready!" );
+        $(".table tbody tr td:nth-child(6)").each( function(){
+            var fechaIngresado = $(this).text();
+            let tableRow = $(this).closest("tr")
+            if (fechaIngresado != "None") {
+                tableRow.find(".checkInButton").prop("disabled", true);
+                tableRow.find(".checkInButton").addClass("disabled");
+                tableRow.find(".checkOutButton").removeClass("disabled");
+                tableRow.find(".checkOutButton").removeProp("disabled")
+            }
+        });
+
+        $(".table tbody tr td:nth-child(7)").each( function(){
+            var fechaSalida = $(this).text();
+            let tableRow = $(this).closest("tr")
+            if (fechaSalida != "None") {
+                tableRow.find(".checkOutButton").prop("disabled", true);
+                tableRow.find(".checkOutButton").addClass("disabled");
+            }
+        });
+
         $(".checkInButton").click(function(){
             var $item = $(this).closest("tr")   // Finds the closest row <tr> 
                        .find(".id")     // Gets a descendent with class="nr"
@@ -111,6 +134,37 @@
                     alert("Check In hecho el: "+ detalle);
                     tableRow.find(".fechaIngreso")     // Gets a descendent with class="nr"
                        .html(detalle); 
+                    tableRow.find(".checkInButton").prop("disabled", true);
+                    tableRow.find(".checkInButton").addClass("disabled");
+                    tableRow.find(".checkOutButton").removeAttr("disabled");
+                },
+                error: function() {
+                    alert("Check In fallido");
+                }
+            });
+                
+        });
+        $(".checkOutButton").click(function(){
+            var $item = $(this).closest("tr")   // Finds the closest row <tr> 
+                       .find(".id")     // Gets a descendent with class="nr"
+                       .text();       
+            console.log($item);
+            
+            let tableRow = $(this).closest("tr")
+            $.ajax({
+                type: "POST",
+                url: "/administracion/makeCheckOut/"+$item+"/",
+                success: function(data) {
+                    var detalle = data.detail;
+                    if(detalle == "Not found") {
+                        alert("Check Out fallido");
+                    }
+                    console.log(tableRow);
+                    alert("Check Out hecho el: "+ detalle);
+                    tableRow.find(".fechaSalida")     // Gets a descendent with class="nr"
+                       .html(detalle); 
+                    tableRow.find(".checkOutButton").addClass("disabled");
+                    tableRow.find(".checkOutButton").prop("disabled", true)
                 },
                 error: function() {
                     alert("Check In fallido");
