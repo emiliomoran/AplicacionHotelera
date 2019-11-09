@@ -1,5 +1,5 @@
 from django.db import models
-
+from administracion.choices import GENERO,TIPO_DE_IDENTIFICACION
 # Create your models here.
 from django.contrib.auth.models import UserManager
 from django.db.models.signals import post_save
@@ -22,9 +22,11 @@ class Usr(AbstractBaseUser):
 	objects = UserManager()
 
 class Perfil(models.Model):
+	doc_type = models.CharField(max_length = 9, choices = TIPO_DE_IDENTIFICACION, null=True)
+	genero = models.CharField(max_length = 1, choices = GENERO, null=True)
 	usr_id = models.OneToOneField(Usr, on_delete = models.CASCADE)
 	name = models.CharField(max_length=100)
-	cedula = models.CharField(max_length=10, unique = True, null=True)
+	cedula = models.CharField(max_length=15, unique = True, null=True)#ESTO NO SOLO PUEDE SER CEDULA, SINO MAS DOCUMENTOS
 	last_name = models.CharField(max_length=100)
 	phone = models.CharField(max_length=10, null=True)
 	date_birth = models.DateField()

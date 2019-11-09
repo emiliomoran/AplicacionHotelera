@@ -56,11 +56,24 @@
 
                 <form action="/administracion/nueva_reserva" class="form-style" method="POST">
                     {% csrf_token %}
+                    <div class ="row">
+                        <div class ="col-xl-6 col-md-6 col-sm-6">
+                            <div class="form-group">
+                                <label for="dropdown-docs">Tipo de Documento de Identificacion</label>
+                                <select id="dropdown-docs" name= "dropwdown-docs" class = "form-control">
+                                    {% for tipo_doc,tipo_doc_humano in choices_id %}
+                                    <option value="{{tipo_doc}}">{{tipo_doc_humano}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-xl-6 col-md-6 col-sm-6 ">
                             <div class="form-group">
-                                <label for="ced">Cedula</label>
-                                <input type="text" class="form-control" name="cedula" id="cedula" placeholder="Cedula"
+                                <label for="ced">Documento</label>
+                                <input type="text" class="form-control" name="cedula" id="cedula" placeholder="Ingrese su Documento"
                                     value="" required="required" maxlength="10"
                                     onkeyup="this.value=this.value.replace(/[^\d]/,'')">
                             </div>

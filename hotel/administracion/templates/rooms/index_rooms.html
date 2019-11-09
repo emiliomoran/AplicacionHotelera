@@ -5,8 +5,11 @@
 	<table class="table">
         <thead>
         <tr>
+            <div class="float-right">Número de Habitaciones: {{rooms.count}}</div>
+        </tr>
+        <tr>
             <th scope="col" class="border-0 bg-light">
-            <div class="p-2 px-3 text-uppercase">ID Cuarto</div>
+            <div class="p-2 px-3 text-uppercase">Código</div>
             </th>
             <th scope="col" class="border-0 bg-light">
             <div class="p-2 px-3 text-uppercase">Tipo de Cuarto</div>
@@ -29,22 +32,22 @@
         </tr>
         {% if rooms %}
         {% for cuarto in rooms %}
-            <tr>
-                <th scope="row">
-                <div class="p-2">
-                    <img src="{{cuarto.path_image.url}}" alt="" width="70" class="img-fluid rounded shadow-sm">
-                    <div class="ml-3 d-inline-block align-middle">
-                        <h5 class="mb-0"> 
-                            <a href="#" class="text-dark d-inline-block">Habitacion {{cuarto.id}}</a>
-                        </h5>
-                    </div>
+        <tr>
+            <th scope="col">
+            <div class="p-2">
+                <img src="{{cuarto.path_image.url}}" alt="" width="70" class="img-fluid rounded shadow-sm">
+                <div class="ml-3 d-inline-block align-middle">
+                    <h5 class="mb-0"> 
+                        <a href="#" class="text-dark d-inline-block">{{cuarto.codigo}}</a>
+                    </h5>
                 </div>
-                <td class="align-middle"><strong>{{cuarto.id_roomtype}}</strong></td> 
-                <td class="align-middle"><strong>{{cuarto.descripcion}}</strong></td>   
-                <td class="align-middle"><strong>{{cuarto.precio}}</strong></td>               
-                <td class="align-middle"><a href="{% url 'administracion:room_delete' cuarto.id %}" class="text-dark"><i class="fa fa-trash"></i></a></td>
-                <td><a class= "btn btn-primary" href="{% url 'administracion:room_edit' cuarto.id %}">Editar</a></td>
-            </tr>
+            </div></th>
+            <td class="align-middle"><strong>{{cuarto.id_roomtype}}</strong></td> 
+            <td class="align-middle"><strong>{{cuarto.descripcion}}</strong></td>   
+            <td class="align-middle"><strong>{{cuarto.precio}}</strong></td>               
+            <td class="align-middle"><a href="{% url 'administracion:room_delete' cuarto.id %}" class="text-dark"><i class="fa fa-trash"></i></a></td>
+            <td><a class= "btn btn-primary" href="{% url 'administracion:room_edit' cuarto.id %}">Editar</a></td>
+        </tr>
         {% endfor %}
 
         {% else %}

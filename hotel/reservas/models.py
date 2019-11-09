@@ -16,8 +16,9 @@ class RoomType(models.Model):
 		return '%s. %s' % (self.id, self.nombre)
 
 class Room(models.Model):
+	codigo = models.CharField(max_length=15,verbose_name="Codigo de Habitacion")
 	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE , verbose_name ="Tipo de Cuarto")
-	descripcion = models.TextField(max_length = 400, verbose_name ="Descripcion del Cuarto")
+	descripcion = models.TextField(max_length = 300, verbose_name ="Descripcion del Cuarto")
 	#path_image = models.FileField(null=True, upload_to='rooms/',verbose_name="Url de Imagen")
 	path_image = models.CharField(max_length = 500, verbose_name="Url de la imagen")
 	calificacion = models.IntegerField(default=0, verbose_name="Calificacion")
@@ -46,7 +47,11 @@ class BookingState(models.Model):
 	update_date = models.DateTimeField(auto_now = True, blank = True)
 
 
+#Reservas
+
+
 class Booking(models.Model):
+	
 	customer_id = models.ForeignKey(Perfil, on_delete = models.CASCADE)
 	room_id = models.ForeignKey(Room,on_delete = models.CASCADE)
 	bookingtype_id = models.ForeignKey(BookingType, on_delete = models.CASCADE)

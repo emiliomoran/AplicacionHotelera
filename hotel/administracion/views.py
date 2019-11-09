@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from reservas.models import Room, BookingState, BookingType
 from accesos.models import Usr, Perfil
+from administracion.choices import TIPO_DE_IDENTIFICACION,GENERO
 from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView,DeleteView
 from administracion.forms import RoomForm, TourForm
@@ -168,7 +169,8 @@ def administradores(request):
         admin_list.append(e)
 
     print(admin_list)
-    return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list})
+    return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list,
+    'choices':TIPO_DE_IDENTIFICACION,'genero':GENERO})
 
 def administrador_detalle(request, id):
     admin_details = list(Perfil.objects.values('id', 'name', 'last_name',
@@ -272,6 +274,8 @@ def habitaciones_disponibilidad(request):
 
 ###Administracion de reservas###
 
+
+
 def lista_reservas(request):
     reservas_list = []
     out_queries = Booking.objects.raw('''
@@ -290,7 +294,7 @@ def eliminar_reserva(request, id):
     return render(request, 'reservas/reservas-admin.html', {'lista_reservas': reservas_list})
 
 def agregar_reserva(request):
-    return render(request, 'reservas/addreserva.html')
+    return render(request, 'reservas/addreserva.html',{'choices_id':TIPO_DE_IDENTIFICACION})
 
 def buscarcliente(request):
     ced = request.GET.get('cedula', None)
@@ -317,6 +321,7 @@ def buscarcliente(request):
     
 def nueva_reserva(request):
     if request.method == "POST":
+        tipo_documento = request.POST.get('dropdown-docs')
         ced = request.POST.get('cedula')
         name = request.POST.get('nombres')
         last_name = request.POST.get('apellidos')
@@ -328,6 +333,7 @@ def nueva_reserva(request):
         password_hash = make_password(ced)
         room = Room.objects.get(id = 1)
         estado = request.POST.get('estado')
+        
         #cliente
         is_taken = Perfil.objects.filter(cedula__iexact=ced).exists()
         print(is_taken)
@@ -350,6 +356,7 @@ def nueva_reserva(request):
                 last_name=last_name,
                 date_birth=date_birth,
                 phone=phone,
+                doc_type=tipo_documento,
             )
 
             perfil.save()

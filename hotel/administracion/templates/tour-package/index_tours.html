@@ -8,6 +8,15 @@
                 <div class="p-2 px-3 text-uppercase">Paquete</div>
                 </th>
                 <th scope="col" class="border-0 bg-light">
+                <div class="p-2 px-3 text-uppercase">Compañía</div>
+                </th>
+                <th scope="col" class="border-0 bg-light">
+                <div class="p-2 px-3 text-uppercase">Dias</div>
+                </th>
+                <th scope="col" class="border-0 bg-light">
+                <div class="p-2 px-3 text-uppercase">Horas</div>
+                </th>
+                <th scope="col" class="border-0 bg-light">
                 <div class="py-2 text-uppercase">Precio</div>
                 </th>
                 <th scope="col" class="border-0 bg-light">
@@ -19,12 +28,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row" class ="border-0">
-
-                </th>
+            
+            <!--
+                <tr>
+                <th scope="row" class ="border-0"></th>
             </tr>
-            <tr>
+                
+                <tr>
                 <th scope="row" class="border-0">
                 <div class="p-2">
                     <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
@@ -50,25 +60,30 @@
                 <td class="align-middle"><strong>1</strong></td>
                 <td class="align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a>
                 </td>
-            </tr>
+            </tr>-->
             {% if tours %}
             {% for tour_package in tours %}
-                <tr>
-                    <th scope="row">
-                    <div class="p-2">
-                        <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-3_cexmhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
-                        <div class="ml-3 d-inline-block align-middle">
-                            <h5 class="mb-0"> 
-                                <a href="#" class="text-dark d-inline-block">{{tour_package.title}}</a>
-                            </h5>
-                            <span class="text-muted font-weight-normal font-italic">{{tour_package.description}}</span>
-                        </div>
+            <tr>
+                <!--<th scope="row"></th>-->
+                <td class="align-middle">
+                <div class="p-2">
+                    <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-3_cexmhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+                    <div class="ml-3 d-inline-block align-middle">
+                        <h5 class="mb-0"> 
+                            <a href="#" class="text-dark d-inline-block">{{tour_package.title}}</a>
+                        </h5>
+                        <span class="text-muted font-weight-normal font-italic">{{tour_package.description}}</span>
                     </div>
-                    <td class="align-middle"><strong>{{tour_package.price}}</strong></td>
-                    <td class="align-middle"><strong>1</strong></td>                 
-                    <td class="align-middle"><a href="{% url 'administracion:tour_eliminar' tour_package.id %}" class="text-dark"><i class="fa fa-trash"></i></a></td>
-                    <td><a class= "btn btn-primary" href="{% url 'administracion:tour_editar' tour_package.id %}">Editar</a></td>
-                </tr>
+                </div>
+                </td>
+                <td class="align-middle"><strong>{{tour_package.company}}</strong></td>
+                <td class="align-middle"><strong>{{tour_package.days}}</strong></td>
+                <td class="align-middle"><strong>{{tour_package.hours}}</strong></td>
+                <td class="align-middle"><strong>{{tour_package.price}}</strong></td>
+                <td class="align-middle"><strong>1</strong></td>                 
+                <td class="align-middle"><a href="{% url 'administracion:tour_eliminar' tour_package.id %}" class="text-dark"><i class="fa fa-trash"></i></a>
+                <a class= "btn btn-primary" href="{% url 'administracion:tour_editar' tour_package.id %}">Editar</a></td>
+            </tr>
             {% endfor %}
 
             {% else %}

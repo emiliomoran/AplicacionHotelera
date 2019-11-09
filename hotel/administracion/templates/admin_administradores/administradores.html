@@ -19,7 +19,9 @@
         </div>
     </div>
     <br>
-    <div id="popup"></div>
+    <div id="popup">
+
+    </div>
     <div class="row">
         <div class="table-responsive">
             <table class="table table-striped table-bordered first">
@@ -65,22 +67,25 @@
         </div>        
     </div>
 </div>
-<script>
-var modal;
-function abrir_modal(url, titulo)
-{
-    modal = $('#popup').dialog(
-    {
-        title: titulo,
-        modal: true,
-        width: 450,
-        resizable: false
-    }).dialog('open').load(url)
-}
 
-function cerrar_modal()
-{
-    modal.dialog("close");
-}
+
+<script>
+    var modal;
+    //var docs = "{{ choices }}";
+    function abrir_modal(url, titulo)
+    {
+        modal = $('#popup').dialog(
+        {
+            title: titulo,
+            modal: true,
+            width: 450,
+            resizable: false
+        }).dialog('open').load(url)
+    }
+
+    function cerrar_modal()
+    {
+        modal.dialog("close");
+    }
 </script>
 {% endblock %}
