@@ -15,8 +15,8 @@ from rest_framework import generics
 from rest_framework import views
 from rest_framework.response import Response
 
-from datetime import date
-from datetime import datetime
+# from datetime import date
+# from datetime import datetime
 import dateutil.parser
 
 from django.core.files.storage import FileSystemStorage
@@ -162,32 +162,45 @@ def administradores(request):
         select ap.id, ap.name, ap.last_name, au.email, au.is_removed
         from accesos_perfil as ap, accesos_usr as au
         where ap.usr_id_id = au.id
-        and au.is_admin = true;
+        and au.is_admin = true
+        and ap.is_removed = false
+        and au.is_removed = false;
     ''')
 
     for e in out_queries:
+        print(e)
         admin_list.append(e)
 
     print(admin_list)
     return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list,
     'choices':TIPO_DE_IDENTIFICACION,'genero':GENERO})
 
-def administrador_detalle(request, id):
-    admin_details = list(Perfil.objects.values('id', 'name', 'last_name',
-                                               'phone', 'date_birth', 'usr_id_id__email', 'is_removed').filter(id=id))
-    print(admin_details)
+def administrador_eliminacion(request, id):
+    perfil = Perfil.objects.get(id=id)
+    usr = Usr.objects.get(id=perfil.usr_id_id)
 
-    return render(request, 'admin_administradores/administrador_detalle.html', {'administrador': admin_details[0]})
+    perfil.is_removed = True
+    perfil.update_date = datetime.datetime.now()
+    usr.is_removed = True
+    usr.update_date = datetime.datetime.now()
 
+    perfil.save()
+    usr.save()
+
+    return redirect('/administracion/administradores')
 
 def administrador_edicion(request, id):
     if request.method == 'POST':
+        print(request.POST)
         name = request.POST.get('nombres')
         last_name = request.POST.get('apellidos')
         date_birth = request.POST.get('fecha_nacimiento')
         email = request.POST.get('email')
         phone = request.POST.get('telf')
         is_removed = request.POST.get('is_removed')
+        cedula = request.POST.get('documento')
+        doc_type = request.POST.get('dropwdown-docs')
+        genero = request.POST.get('dropwdown-generos')
 
         perfil = Perfil.objects.get(id=id)
         usr = Usr.objects.get(id=perfil.usr_id_id)
@@ -196,15 +209,9 @@ def administrador_edicion(request, id):
         perfil.last_name = last_name
         perfil.date_birth = date_birth
         perfil.phone = phone
-        if(is_removed == '0'):
-            perfil.is_removed = True
-        else:
-            perfil.is_removed = False
-        usr.email = email
-        if(is_removed == '0'):
-            usr.is_removed = True
-        else:
-            usr.is_removed = False
+        cedula=cedula,
+        doc_type=doc_type,
+        genero=genero
 
         perfil.save()
         usr.save()
@@ -213,21 +220,29 @@ def administrador_edicion(request, id):
 
     else:
         admin = list(Perfil.objects.values('id', 'name', 'last_name', 'phone',
-                                           'date_birth', 'usr_id_id__email', 'is_removed').filter(id=id))
+                                           'date_birth', 'usr_id_id__email', 'is_removed', 'cedula', 'doc_type', 'genero').filter(id=id))
         admin[0]['date_birth'] = admin[0]['date_birth'].strftime("%Y-%m-%d")
         print(admin)
 
-        return render(request, 'admin_administradores/administrador_edicion.html', {'administrador': admin[0]})
+        return render(request, 'admin_administradores/administrador_edicion.html', {
+            'administrador': admin[0],
+            'docs':TIPO_DE_IDENTIFICACION,
+            'generos':GENERO
+            })
 
 
 def administrador_nuevo(request):
     if request.method == "POST":
+        print(request.POST)
         name = request.POST.get('nombres')
         last_name = request.POST.get('apellidos')
         date_birth = request.POST.get('fecha_nacimiento')
         email = request.POST.get('email')
         phone = request.POST.get('telf')
         password_hash = make_password('Admin2019')
+        cedula = request.POST.get('documento')
+        doc_type = request.POST.get('dropwdown-docs')
+        genero = request.POST.get('dropwdown-generos')
         
         usr = Usr(
             username=email.split('@')[0],
@@ -244,6 +259,9 @@ def administrador_nuevo(request):
             last_name=last_name,
             date_birth=date_birth,
             phone=phone,
+            cedula=cedula,
+            doc_type=doc_type,
+            genero=genero
         )
 
         perfil.save()
@@ -251,7 +269,9 @@ def administrador_nuevo(request):
         return redirect('/administracion/administradores')
 
     else:
-        return render(request, 'admin_administradores/administrador_nuevo.html')
+        return render(request, 'admin_administradores/administrador_nuevo.html', {
+            'docs':TIPO_DE_IDENTIFICACION,
+            'generos':GENERO})
 
 
 
@@ -432,7 +452,7 @@ def convert_date(string_date):
 def clientes(request):
     clientes_list = []
     out_queries = Perfil.objects.raw('''
-        select ap.id, ap.name, ap.last_name, au.email, ap.phone, ap.date_birth, au.is_removed
+        select ap.id, ap.name, ap.last_name, ap.cedula, ap.genero, au.email, ap.phone, ap.date_birth, au.is_removed
         from accesos_perfil as ap, accesos_usr as au
         where ap.usr_id_id = au.id
         and au.is_admin = false
@@ -441,6 +461,10 @@ def clientes(request):
     ''')
 
     for e in out_queries:
+        if(e.cedula==None):
+            e.phone = 'Sin dato'
+        if(e.phone==None):
+            e.phone = 'Sin dato'
         clientes_list.append(e)
 
     print(clientes_list)

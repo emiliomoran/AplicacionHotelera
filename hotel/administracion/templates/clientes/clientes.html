@@ -19,9 +19,11 @@
                     <tr>
                         <th>NOMBRES</th>
                         <th>APELLIDOS</th>
-                        <th>EMAIL</th>
-                        <th>TELÉFONO</th>
+                        <th>DOCUMENTO</th>
+                        <th>GÉNERO</th>
                         <th>FECHA DE NACIMIENTO</th>
+                        <th>TELÉFONO</th>
+                        <th>EMAIL</th>                                            
                         <th>ESTADO</th>
                     </tr>
                 </thead>
@@ -30,9 +32,11 @@
                     <tr>
                         <td>{{ cliente.name }}</td>
                         <td>{{ cliente.last_name }}</td>
-                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.cedula }}</td>
+                        <td>{{ cliente.genero }}</td>
+                        <td>{{ cliente.date_birth }}</td>                        
                         <td>{{ cliente.phone }}</td>
-                        <td>{{ cliente.date_birth }}</td>
+                        <td>{{ cliente.email }}</td>                                                
                         {% if cliente.is_removed %}
                         <td>INACTIVO</td>
                         {% else %}

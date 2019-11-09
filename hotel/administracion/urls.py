@@ -26,7 +26,7 @@ urlpatterns = [
      path('buscarhabitaciones/', views.buscarhabitaciones),
 
 
-    path('administrador-detalle/<int:id>', views.administrador_detalle),
+    path('administrador-eliminacion/<int:id>', views.administrador_eliminacion),
     path('administrador-edicion/<int:id>', views.administrador_edicion),
     path('administrador-nuevo', views.administrador_nuevo),
     path('tours',views.TourList.as_view(), name="tour_listar"),

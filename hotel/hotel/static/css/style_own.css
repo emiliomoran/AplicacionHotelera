@@ -37,3 +37,18 @@
 .closebtn:hover {
     color: black;
 }
+
+/**
+Administrador
+*/
+.form-row {
+    margin-bottom: 20px;
+}
+
+#confirm:hover {
+    cursor: pointer;
+}
+
+#deny:hover {
+    cursor: pointer;
+}

@@ -6,9 +6,9 @@ values(now(), 'customer', 'customer@example.com', 'pbkdf2_sha256$150000$A1NCffAd
 /* */
 
 /*Perfil */
-insert into accesos_perfil(name,cedula, last_name, phone, date_birth, is_removed, create_date, update_date, usr_id_id)
-values('admin','0912345678', 'admin', null, now(), false, now(), now(), 1),
-values('customer','0911122233', 'customer', null, now(), false, now(), now(), 1);
+insert into accesos_perfil(name, cedula, last_name, phone, date_birth, is_removed, create_date, update_date, usr_id_id, doc_type, genero)
+values('customer','0911122233', 'customer', null, now(), false, now(), now(), 1, 'CEDULA', 'M'),
+('admin','0912345678', 'admin', null, now(), false, now(), now(), 2, 'CEDULA', 'M');
 /* */
 
 /*RoomType */

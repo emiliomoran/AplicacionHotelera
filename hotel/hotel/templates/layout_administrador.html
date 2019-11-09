@@ -113,48 +113,9 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav flex-column">
-                            <li class="nav-divider">
-                                Menu
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
-                                <div id="submenu-1" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-1" aria-controls="submenu-1-1">Reservas</a>
-                                            <div id="submenu-1-1" class="collapse submenu" style="">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="dashboard-influencer.html">Editar</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="/administracion/lista_reservas">Reservar</a>
-                                                    </li>
-                                                   
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="ecommerce-product.html">Servicios adicionales</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                           
+                        <ul class="navbar-nav flex-column">                            
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Paquetes turisticos</a>
-                                <div id="submenu-3" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'administracion:tour_crear' %}">Agregar</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class ="nav-link" href="{% url 'administracion:tour_listar' %}">Editar</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <a class="nav-link" href="pages/general-table.html">Dashboard</a>
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Hotel</a>
@@ -178,8 +139,45 @@
                                     </ul>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-file"></i> Clientes </a>
+                                <div id="submenu-8" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/administracion/clientes">Ver</a>
+                                        </li>                                                                                
+                                    </ul>
+                                </div>
+                            </li>
                             <li class="nav-divider">
                                 Administracion
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-1" aria-controls="submenu-1-1"><i class="fas fa-fw fa-file"></i> Reservas</a>
+                                <div id="submenu-1-1" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="dashboard-influencer.html">Editar</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/administracion/lista_reservas">Reservar</a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Paquetes turisticos</a>
+                                <div id="submenu-3" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'administracion:tour_crear' %}">Agregar</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class ="nav-link" href="{% url 'administracion:tour_listar' %}">Editar</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i> Administradores </a>
@@ -215,17 +213,7 @@
                                     </ul>
                                     
                                 </div>
-                            </li> 
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8"><i class="fas fa-fw fa-file"></i> Clientes </a>
-                                <div id="submenu-8" class="collapse submenu" style="">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/administracion/clientes">Ver</a>
-                                        </li>                                                                                
-                                    </ul>
-                                </div>
-                            </li>                                                                                         
+                            </li>                                                                                                             
                         </ul>
                     </div>
                 </nav>
