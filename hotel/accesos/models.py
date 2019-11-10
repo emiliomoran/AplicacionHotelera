@@ -34,4 +34,4 @@ class Perfil(models.Model):
 	create_date = models.DateTimeField(auto_now_add = True,  blank = True)
 	update_date = models.DateTimeField(auto_now = True, blank = True)
 
-	tour_packages = models.ManyToManyField(Tour_Package)
+	#tour_packages = models.ManyToManyField(Tour_Package)

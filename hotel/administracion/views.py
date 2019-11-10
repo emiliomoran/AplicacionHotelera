@@ -4,7 +4,7 @@ from accesos.models import Usr, Perfil
 from administracion.choices import TIPO_DE_IDENTIFICACION,GENERO
 from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView,DeleteView
-from administracion.forms import RoomForm, TourForm
+from administracion.forms import RoomForm, TourForm, DocumentForm
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
@@ -33,6 +33,18 @@ from reservas.models import Booking
 
 from tour_package.models import Tour_Package
 
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/administracion/')
+    else:
+        form = DocumentForm()
+    return render(request, 'rooms/documento_form.html', {
+        'form': form
+    })
+
 def index(request):
     if('success_login' in request.session and request.session['success_login']):
         return render(request, 'index-admin.html')
@@ -48,6 +60,17 @@ class RoomList(ListView):
     context_object_name = 'rooms'
     template_name = 'rooms/index_rooms.html'
 
+def room_create_form(request):
+    if request.method == 'POST':
+        form = RoomForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/administracion/')
+    else:
+        form = RoomForm()
+    return render(request, 'rooms/create_room.html', {
+        'form': form
+    })
 
 class RoomCreate(CreateView):
     model = Room

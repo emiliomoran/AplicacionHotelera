@@ -2,18 +2,23 @@ from django.urls import path
 
 from . import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 app_name = 'administracion'
 
 urlpatterns = [
     path('', views.index),
     path('rooms',views.RoomList.as_view(), name="room_list"),
-    path('rooms/create',views.RoomCreate.as_view(), name="room_create"),
+    path('rooms/create',views.room_create_form, name="room_create"),
     path('rooms/editar/<int:id_room>/',views.RoomEdit.as_view(),name = 'room_edit'),
     path('rooms/eliminar/<int:id_room>/',views.RoomDelete.as_view(),name = 'room_delete'),
     path('rooms/test/',views.upload_image_room),
     path('login', views.login),
     path('logout', views.logout_admin),
     path('administradores', views.administradores),
+
+    path('form', views.model_form_upload, name='model_form_upload'),
 
 
 
@@ -23,7 +28,7 @@ urlpatterns = [
     path('agregar_reserva', views.agregar_reserva),
     path('reservas', views.reservas),
     path('nueva_reserva', views.nueva_reserva),
-     path('buscarhabitaciones/', views.buscarhabitaciones),
+    path('buscarhabitaciones/', views.buscarhabitaciones),
 
 
     path('administrador-eliminacion/<int:id>', views.administrador_eliminacion),

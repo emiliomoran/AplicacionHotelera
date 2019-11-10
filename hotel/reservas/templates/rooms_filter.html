@@ -16,10 +16,11 @@
     <section class="ftco-section bg-light ftco-no-pb">    	
 			{% load range %}
     		<div class="row no-gutters">
-				{% for room in rooms_1 %}
+				{% for room in rooms %}
 					<div class="col-lg-6">
 						<div class="room-wrap d-md-flex">
-							<a href="/reservas/habitacion-detalles/{{ room.id }}" class="img" style="background-image: url({{ room.path_image }});"></a>
+							{% comment %} <a href="/reservas/habitacion-detalles/{{ room.id }}" class="img" style="background-image: url('C:\Users\Lenovo\Desktop\8S\descarga.png');"></a> {% endcomment %}
+							<img alt="test" src="{{ room.path_image.url }}"/>
 							<div class="half left-arrow d-flex align-items-center">
 								<div class="text p-4 p-xl-5 text-center">
 									<p class="star mb-0">

@@ -72,7 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages',                
             ],
         },
     },
@@ -176,9 +176,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #MEDIA_ROOT = os.path.join(BASE_DIR,'recursos/')
-MEDIA_ROOT = "C:/Users/gabpa/Documents/Proyecto Software/hotel emilio/AplicacionHotelera/recursos/"
-MEDIA_URL = '/recursos/'
+# MEDIA_ROOT = "C:/Users/gabpa/Documents/Proyecto Software/hotel emilio/AplicacionHotelera/recursos/"
 
+MEDIA_URL = '/recursos/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'recursos')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "hotel/static"),

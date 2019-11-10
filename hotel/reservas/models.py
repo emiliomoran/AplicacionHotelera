@@ -15,12 +15,13 @@ class RoomType(models.Model):
 	def __str__(self):
 		return '%s. %s' % (self.id, self.nombre)
 
-class Room(models.Model):
-	codigo = models.CharField(max_length=15,verbose_name="Codigo de Habitacion")
-	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE , verbose_name ="Tipo de Cuarto")
-	descripcion = models.TextField(max_length = 300, verbose_name ="Descripcion del Cuarto")
-	#path_image = models.FileField(null=True, upload_to='rooms/',verbose_name="Url de Imagen")
-	path_image = models.CharField(max_length = 500, verbose_name="Url de la imagen")
+class Room(models.Model):	
+	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE , verbose_name ="Tipo de Habitación")
+	nombre = models.CharField(max_length=200,verbose_name="Nombre de Habitación")
+	numero = models.IntegerField(verbose_name="Codigo de Habitación")
+	descripcion = models.TextField(max_length = 300, verbose_name ="Descripcion de la Habitación")	
+	# path_image = models.CharField(max_length = 500, verbose_name="Url de la imagen")
+	path_image = models.FileField(upload_to='documents/')
 	calificacion = models.IntegerField(default=0, verbose_name="Calificacion")
 	num_camas = models.IntegerField(default=0, verbose_name="Numero de Camas")
 	num_adultos = models.IntegerField(default=0, verbose_name="Numero de Adultos")
@@ -74,3 +75,8 @@ class Booking(models.Model):
 		
 		return room.precio
 
+#Prueba documento
+class Document(models.Model):
+	description = models.CharField(max_length=255, blank=True)
+	document = models.FileField(upload_to='documents/')
+	uploaded_at = models.DateTimeField(auto_now_add=True)

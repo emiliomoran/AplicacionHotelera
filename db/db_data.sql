@@ -16,6 +16,9 @@ insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fe
 insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Familiar','Habitación de tipo familiar', false, now(), now());
 insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Deluxe','Habitación de tipo deluxe', false, now(), now());
 insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Clásico','Habitación de tipo clásico', false, now(), now());
+
+insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Normal','Habitación de tipo normal', false, now(), now());
+insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Matrimonial','Habitación de tipo matrimonial', false, now(), now());
 /* */
 
 /*Room */

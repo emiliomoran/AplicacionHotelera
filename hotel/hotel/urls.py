@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -27,12 +26,11 @@ urlpatterns = [
     path('shopping-cart/', include('shopping_cart.urls')),
     path('card/', include('card.urls')),
     path('cardToken/', include('cardToken.urls')),
-    path('tours/',include('tour_package.urls')),
+    path('tours/', include('tour_package.urls')),
     re_path('api/', include('cardToken.urls')),
     path('api_mobile/', include('api_mobile.urls')),
     path('administracion/', include('administracion.urls')),
 ]
 
-
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
