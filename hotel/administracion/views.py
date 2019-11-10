@@ -343,10 +343,9 @@ def buscarcliente(request):
     ced = request.GET.get('cedula', None)
     print("cedula"+ced)
     is_taken = Perfil.objects.filter(cedula__iexact=ced).exists()
-    user = Perfil.objects.filter(cedula=ced)[0]
-    u = Usr.objects.filter(id=user.usr_id_id)[0]
-    print(u)
     if(is_taken):
+        user = Perfil.objects.filter(cedula=ced)[0]
+        u = Usr.objects.filter(id=user.usr_id_id)[0]
         data = {
            'existe': is_taken,
            'nombres': user.name,
@@ -357,7 +356,7 @@ def buscarcliente(request):
         }
     else:
         data = {
-         'existe': is_taken
+         'existe': False
         }
     return JsonResponse(data)
    
@@ -424,41 +423,37 @@ def nueva_reserva(request):
         return render(request, 'reservas/administrador_nuevo.html')
 
 def buscarhabitaciones(request):
-    fechain= request.GET.get('fechain', None)
-    fechaout= request.GET.get('fechaout', None)
-    num = request.GET.get("tipo", None)
-    
-    adultos = request.GET.get("select_num_adultos", None)
-    ninos = request.GET.get("select_num_ninos", None)
-    rooms_list = []
+    fechain= request.GET.get('fechain')
+    fechaout= request.GET.get('fechaout')
+    num = request.GET.get("tipo")
+    adultos = request.GET.get("select_num_adultos")
+    ninos = request.GET.get("select_num_ninos")
+    room_list = []
     
     # Búsqueda de habitaciones solo disponibles
-    room_list_filter_1 = list(Room.objects.values('id', 'precio', 'calificacion', 'id_roomtype_id__nombre').filter(
-                disponible=True, id_roomtype_id=num, num_adultos=adultos, num_ninos=ninos))
-    check_in_date = fechain
-    check_out_date =fechaout
+    
     out_queries = Room.objects.raw('''
-                select r.id as id, r.precio as precio, r.calificacion as calificacion, rt.nombre as id_roomtype_id__nombre
+               select r.id as id, r.precio as precio, rt.nombre as id_roomtype_id__nombre
                 from reservas_room as r, reservas_roomtype as rt
                 where r.id_roomtype_id=rt.id
-                and disponible = %s
-                and num_adultos = %s
-                and num_ninos = %s
-                and id_roomtype_id = %s
-                and r.id not in
-                (
+                and disponible = true
+                and num_adultos = 2
+                and num_ninos = 1
+                and id_roomtype_id = 1
+                and r.id not in 
+				(
                     select distinct b.room_id_id
                     from reservas_booking as b, reservas_bookingstate as bs, reservas_bookingtype as bt
                     where b.state_id_id = bs.id
                     and b.bookingtype_id_id = bt.id
-                    and b.check_out_date > %s
-                    and b.check_in_date < %s)
-            ''',[True, adultos, ninos, num, check_out_date, check_in_date])
+                    and b.check_out_date > '2020-11-10'
+                    and b.check_in_date < '2020-11-10') ''')
     for e in out_queries:
-        room_list_filter_1.append(e)
+        room_list.append(e)
+        print(e)
     
-    print(room_list_filter_1)
-    return render(request, 'reservas/addreserva.html', {'habitaciones_disponibles': room_list_filter_1})
+    print(room_list)
+    return render(request, 'reservas/addreserva.html', {'habitaciones_disponibles': room_list})
    
 def convert_date(string_date):
     dia = string_date.split('-')[2]
