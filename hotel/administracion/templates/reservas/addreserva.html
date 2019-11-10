@@ -56,11 +56,11 @@
 
                 <form action="/administracion/nueva_reserva" class="form-style" method="POST">
                     {% csrf_token %}
-                    <div class ="row">
-                        <div class ="col-xl-6 col-md-6 col-sm-6">
+                    <div class="row">
+                        <div class="col-xl-6 col-md-6 col-sm-6">
                             <div class="form-group">
                                 <label for="dropdown-docs">Tipo de Documento de Identificacion</label>
-                                <select id="dropdown-docs" name= "dropwdown-docs" class = "form-control">
+                                <select id="dropdown-docs" name="dropwdown-docs" class="form-control">
                                     {% for tipo_doc,tipo_doc_humano in choices_id %}
                                     <option value="{{tipo_doc}}">{{tipo_doc_humano}}</option>
                                     {% endfor %}
@@ -73,8 +73,8 @@
                         <div class="col-xl-6 col-md-6 col-sm-6 ">
                             <div class="form-group">
                                 <label for="ced">Documento</label>
-                                <input type="text" class="form-control" name="cedula" id="cedula" placeholder="Ingrese su Documento"
-                                    value="" required="required" maxlength="10"
+                                <input type="text" class="form-control" name="cedula" id="cedula"
+                                    placeholder="Ingrese su Documento" value="" required="required" maxlength="10"
                                     onkeyup="this.value=this.value.replace(/[^\d]/,'')">
                             </div>
                         </div>
@@ -159,125 +159,132 @@
                         </h5>
                         <div class="card-body">
                             <div class="form-group">
-                                    <label for="ingreso">Tipo</label>
-                                    <select class="form-control selectpicker" name="tipohabitacio" id="tipohabitacion" required>
-                                        <option disabled selected>Seleccione..</option>
-                                        <option value="1">Suite</option>
-                                        <option value="2">Familiar</option>
-                                        <option value="3">Deluxe</option>
-                                        <option value="4">Clasico</option>
-                                    </select>
+                                <label for="ingreso">Tipo</label>
+                                <select class="form-control selectpicker" name="tipohabitacio" id="tipohabitacion"
+                                    required>
+                                    <option disabled selected>Seleccione..</option>
+                                    <option value="1">Suite</option>
+                                    <option value="2">Familiar</option>
+                                    <option value="3">Deluxe</option>
+                                    <option value="4">Clasico</option>
+                                </select>
                                 <label for="Adultos">Adultos</label>
                                 <input type="number" name="habitacion" id="adultos" value="" placeholder=""
                                     required="required">
                                 <label for="niños">Niños</label>
                                 <input type="number" name="habitacion" id="ninos" value="" placeholder=""
                                     required="required">
-                                <button class="btn btn-primary" onclick=buscarhabitacion()>
+                                <button type="button" class="btn btn-primary" onclick=buscarhabitacion()>
                                     <i class="fas fa-search"></i>
                             </div>
 
                             <div class="row">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered first">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Nombre</th>
-                                                    <th>Precio</th>
-                                                   
-                                                
-                                                  
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for room in  habitaciones_disponibles %}
-                                                <tr>
-                                                    <td>{{ room.id }}</td>
-                                                    <td>{{ room.precio }}</td>
-                                                    <td>{{ room.id_roomtype_id__nombre }}</td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                           
-                                        </table>
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered first">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nombre</th>
+                                                <th>Precio</th>
 
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for room in  habitaciones_disponibles %}
+                                            <tr>
+                                                <td>{{ room.id }}</td>
+                                                <td>{{ room.precio }}</td>
+                                                <td>{{ room.id_roomtype_id__nombre }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <button type="submit"
+                                class="btn btn-primary btn-block login-btn border-button">Guardar</button>
                         </div>
                     </div>
-
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block login-btn border-button">Guardar</button>
-                    </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-    
-    $("#cedula").change(function () {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
 
-        var cedula = $('#cedula').val();
+        $("#cedula").change(function () {
 
-        var nombres = $("#nombres").val;
-        var apellidos = $("#apellidos").val;
-        var fn = $("#fecha_nacimiento").val;
-        var emai = $("#email").val();
-        var telefono = $("#telf").val;
-        $.ajax({
+            var cedula = $('#cedula').val();
 
-            url: '/administracion/buscarcliente/',
-            data: {
-                'cedula': cedula
-            },
-            dataType: 'json',
-            success: function (result) {
-                if (result.existe) {
+            var nombres = $("#nombres").val;
+            var apellidos = $("#apellidos").val;
+            var fn = $("#fecha_nacimiento").val;
+            var emai = $("#email").val();
+            var telefono = $("#telf").val;
+            $.ajax({
 
-                    $("#nombres").val(result.nombres)
-                    $("#apellidos").val(result.apellidos)
-                    $("#fecha_nacimiento").val(result.fecha)
-                    $("#email").val(result.email)
-                    $("#telf").val(result.telefono)
-                }
-                else {
+                url: '/administracion/buscarcliente/',
+                data: {
+                    'cedula': cedula
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.existe) {
 
-                    $("#nombres").removeAttr('disabled');
-                    $("#apellidos").removeAttr('disabled');
-                    $("#fecha_nacimiento").removeAttr('disabled');
-                    $("#email").removeAttr('disabled');
-                    $("#telf").removeAttr('disabled');
-                }
+                        $("#nombres").val(result.nombres)
+                        $("#apellidos").val(result.apellidos)
+                        $("#fecha_nacimiento").val(result.fecha)
+                        $("#email").val(result.email)
+                        $("#telf").val(result.telefono)
+                    }
+                    else {
 
-            },
-            error: function () { alert('An error occured'); }
-        });
-    });
+                        $("#nombres").removeAttr('disabled');
+                        $("#apellidos").removeAttr('disabled');
+                        $("#fecha_nacimiento").removeAttr('disabled');
+                        $("#email").removeAttr('disabled');
+                        $("#telf").removeAttr('disabled');
+                        $("#nombres").val('');
+                        $("#apellidos").val('');
+                        $("#fecha_nacimiento").val('');
+                        $("#email").val('');
+                        $("#telf").val('');
 
-    function buscarhabitacion(){
-        var tipo = $("#tipohabitacion").val();
-        var fechain= $("#fechain").val();
-        var fechaout= $("#fechasal").val();
-        var ninos = $("#ninos").val();
-        var adultos = $("adultos").val();
-        alert(tipo)
-        $.ajax({
+                    }
 
-            url: '/administracion/buscarhabitaciones/',
-            data: {
-                'select_num_ninos': ninos,
-                'select_num_adultos': adultos,
-                'fechain': fechain,
-                'fechaout': fechaout,
-                'tipo': tipo
-            },
+                },
+                error: function () { alert('An error occured'); }
+            });
         });
 
+        function buscarhabitacion() {
+            var tipo = $("#tipohabitacion").val();
+            var fechain = $("#fechain").val();
+            var fechaout = $("#fechasal").val();
+            var ninos = $("#ninos").val();
+            var adultos = $("adultos").val();
+            $.ajax({
 
-    }
+                url: '/administracion/buscarhabitaciones/',
+                data: {
+                    'select_num_ninos': ninos,
+                    'select_num_adultos': adultos,
+                    'fechain': fechain,
+                    'fechaout': fechaout,
+                    'tipo': tipo
+                },
+            });
 
-</script>
-{% endblock %}
+
+        }
+
+    </script>
+    {% endblock %}
