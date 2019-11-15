@@ -91,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "root",
+        'PASSWORD': "admin",
         'HOST': "localhost",
         'PORT': "5432",
     }
@@ -179,7 +179,7 @@ STATIC_URL = '/static/'
 # MEDIA_ROOT = "C:/Users/gabpa/Documents/Proyecto Software/hotel emilio/AplicacionHotelera/recursos/"
 
 MEDIA_URL = '/recursos/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'recursos')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'recursos/')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "hotel/static"),

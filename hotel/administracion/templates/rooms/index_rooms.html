@@ -9,7 +9,13 @@
         </tr>
         <tr>
             <th scope="col" class="border-0 bg-light">
+            <div class="p-2 px-3 text-uppercase">Imágenes</div>
+            </th>
+            <th scope="col" class="border-0 bg-light">
             <div class="p-2 px-3 text-uppercase">Código</div>
+            </th>
+            <th scope="col" class="border-0 bg-light">
+            <div class="p-2 px-3 text-uppercase">Número</div>
             </th>
             <th scope="col" class="border-0 bg-light">
             <div class="p-2 px-3 text-uppercase">Tipo de Cuarto</div>
@@ -41,7 +47,10 @@
                         <a href="#" class="text-dark d-inline-block">{{cuarto.codigo}}</a>
                     </h5>
                 </div>
-            </div></th>
+            </div>
+            </th>
+            <td class="align-middle"><strong>{{cuarto.nombre}}</strong></td> 
+            <td class="align-middle"><strong>{{cuarto.numero}}</strong></td> 
             <td class="align-middle"><strong>{{cuarto.id_roomtype}}</strong></td> 
             <td class="align-middle"><strong>{{cuarto.descripcion}}</strong></td>   
             <td class="align-middle"><strong>{{cuarto.precio}}</strong></td>               

@@ -10,5 +10,5 @@ class Tour_Package(models.Model):
 	days = models.CharField(max_length = 150)
 	hours = models.CharField(max_length = 100)
 	price = models.IntegerField(default = 0)
-	path_image = models.CharField(max_length= 250)
+	path_image = models.FileField(max_length= 250)
 

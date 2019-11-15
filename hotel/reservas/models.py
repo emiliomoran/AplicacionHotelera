@@ -17,11 +17,12 @@ class RoomType(models.Model):
 
 class Room(models.Model):	
 	id_roomtype = models.ForeignKey(RoomType, on_delete = models.CASCADE , verbose_name ="Tipo de Habitación")
+	#codigo = models.CharField(max_length=200,verbose_name="Código de Habitación")
 	nombre = models.CharField(max_length=200,verbose_name="Nombre de Habitación")
 	numero = models.IntegerField(verbose_name="Codigo de Habitación")
 	descripcion = models.TextField(max_length = 300, verbose_name ="Descripcion de la Habitación")	
 	# path_image = models.CharField(max_length = 500, verbose_name="Url de la imagen")
-	path_image = models.FileField(upload_to='documents/')
+	path_image = models.FileField(upload_to='documents/',verbose_name = "Subir Imagen",max_length = 250)
 	calificacion = models.IntegerField(default=0, verbose_name="Calificacion")
 	num_camas = models.IntegerField(default=0, verbose_name="Numero de Camas")
 	num_adultos = models.IntegerField(default=0, verbose_name="Numero de Adultos")

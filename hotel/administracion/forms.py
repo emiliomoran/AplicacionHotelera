@@ -39,6 +39,9 @@ class TourForm(forms.ModelForm):
 		fields = [
 			'title',
 			'description',
+			'company',
+			'days',
+			'hours',
 			'price',
 			'path_image',
 		]
@@ -46,15 +49,22 @@ class TourForm(forms.ModelForm):
 		labels = {
 			'title':'Titulo del Paquete',
 			'description':'Descripcion del Paquete',
+			'company':'Compañia',
+			'days':'Dias del Tour',
+			'hours':'Horas del Tour',
 			'price':'Precio del Paquete',
-			'path_image':'Url de la Imagen',
+			'path_image':'Subir Imagen',
 		}
 
 		widgets = {
 			'title': forms.TextInput(attrs={'class':'form-control'}),
 			'description': forms.TextInput(attrs={'class':'form-control'}),
+			'company':forms.TextInput(attrs={'class':'form.control'}),
+			'days':forms.TextInput(attrs={'class':'form-control'}),
+			'hours':forms.TextInput(attrs={'class':'form-control'}),
 			'price':forms.NumberInput(attrs={'class':'form-control'}),
-			'path_image':forms.TextInput(attrs={'class':'form-control'}),
+			'path_image':forms.FileInput(attrs={'class':'form-control'}),
+
 		}
 
 class DocumentForm(forms.ModelForm):

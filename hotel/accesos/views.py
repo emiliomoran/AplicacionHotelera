@@ -185,6 +185,8 @@ def registro_social(request):
 
 
 def my_profile(request):
-    my_user_profile = Perfil.objects.filter(usuario=request.usuario).first()
-    my_reservations = Reservas.objects.filter(
-        estaReservado=True, owner=my_user_profile)
+    user = Usr.objects.filter(username=request.user).first()
+
+    return render(request,'profile.html', {'user':user_profile})
+    
+
