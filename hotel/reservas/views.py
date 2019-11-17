@@ -155,3 +155,6 @@ def add_to_cart(request, id_cuarto):
 
     else:
         print("Ya fue")
+
+def show_packages(request):
+    return render(request, 'paquete_turistico.html')
