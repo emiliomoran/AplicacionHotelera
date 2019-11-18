@@ -2,10 +2,16 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.hashers import make_password, check_password
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
 
 # Modelos
 from accesos.models import Usr
 from accesos.models import Perfil
+
+#Formularios
+from accesos.forms import ProfileForm
 
 # Create your views here.
 @csrf_protect
@@ -185,8 +191,21 @@ def registro_social(request):
 
 
 def my_profile(request):
-    user = Usr.objects.filter(username=request.user).first()
+    perfil = Perfil.objects.filter(id=request.session['customer']['customer_id']).first()
+    #user = Usr.objects.filter(id=perfil.usr_id_id)
 
-    return render(request,'profile.html', {'user':user_profile})
+    return render(request,'profile.html', {'user':perfil})
     
+class ProfileEdit(UpdateView):
+
+    model = Perfil
+    context_object_name = 'perfil'
+    template_name = 'profile/profile_edit.html'
+    form_class = ProfileForm
+
+    def get_object(self):
+        id_perfil = self.request.session['customer']['customer_id']
+        return get_object_or_404(Perfil,id=id_perfil)
+
+    success_url = reverse_lazy("accesos:profile")
 

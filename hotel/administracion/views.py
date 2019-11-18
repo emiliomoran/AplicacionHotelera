@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render,get_object_or_404
 from reservas.models import Room, BookingState, BookingType
 from accesos.models import Usr, Perfil
 from administracion.choices import TIPO_DE_IDENTIFICACION,GENERO
@@ -6,7 +6,6 @@ from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView,DeleteView
 from administracion.forms import RoomForm, TourForm, DocumentForm
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
