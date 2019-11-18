@@ -1,9 +1,9 @@
 from django.shortcuts import redirect, render
-from reservas.models import Room, BookingState, BookingType
+from reservas.models import Room, BookingState, BookingType, RoomType
 from accesos.models import Usr, Perfil
-from administracion.choices import TIPO_DE_IDENTIFICACION,GENERO
+from administracion.choices import TIPO_DE_IDENTIFICACION, GENERO
 from django.views.generic import ListView, CreateView
-from django.views.generic.edit import UpdateView,DeleteView
+from django.views.generic.edit import UpdateView, DeleteView
 from administracion.forms import RoomForm, TourForm, DocumentForm
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
@@ -33,6 +33,7 @@ from reservas.models import Booking
 
 from tour_package.models import Tour_Package
 
+
 def model_form_upload(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
@@ -45,10 +46,12 @@ def model_form_upload(request):
         'form': form
     })
 
+
 def index(request):
     if('success_login' in request.session and request.session['success_login']):
         return render(request, 'index-admin.html')
     return redirect('/administracion/login')
+
 
 def reservas(request):
     template_name = 'reservas/reservas-admin.html'
@@ -59,6 +62,7 @@ class RoomList(ListView):
     model = Room
     context_object_name = 'rooms'
     template_name = 'rooms/index_rooms.html'
+
 
 def room_create_form(request):
     if request.method == 'POST':
@@ -72,6 +76,7 @@ def room_create_form(request):
         'form': form
     })
 
+
 class RoomCreate(CreateView):
     model = Room
     form_class = RoomForm
@@ -79,29 +84,34 @@ class RoomCreate(CreateView):
 
     success_url = reverse_lazy("administracion:room_list")
 
+
 def upload_image_room(request):
 
     if request.method == 'POST':
         file = request.FILES['path_image']
-        form = RoomForm(request.POST,request.FILES)
+        form = RoomForm(request.POST, request.FILES)
         fs = FileSystemStorage()
 
         if form.is_valid():
             numero_cuarto = get_last_item_id() + 1
-            nombre_imagen = "imagen_cuarto_"+ str(numero_cuarto) + '.' + (file.name.split('.'))[1]
-            fs.save(nombre_imagen,file)
+            nombre_imagen = "imagen_cuarto_" + \
+                str(numero_cuarto) + '.' + (file.name.split('.'))[1]
+            fs.save(nombre_imagen, file)
             form.save()
             return redirect('/administracion/')
     else:
         form = RoomForm()
-    
-    return render(request,'rooms/index_rooms.html',{'form':form})
+
+    return render(request, 'rooms/index_rooms.html', {'form': form})
+
 
 def get_last_item_id():
     if len(Room.objects.all()) > 0:
         return Room.objects.all().order_by("-id")[0].id
     else:
         return 0
+
+
 class RoomEdit(UpdateView):
 
     model = Room
@@ -111,20 +121,22 @@ class RoomEdit(UpdateView):
 
     def get_object(self):
         id_ = self.kwargs.get("id_room")
-        return get_object_or_404(Room,id = id_)
+        return get_object_or_404(Room, id=id_)
 
     success_url = reverse_lazy("administracion:room_list")
+
 
 class RoomDelete(DeleteView):
     model = Room
     success_url = reverse_lazy("administracion:room_list")
     template_name = 'rooms/room_delete_form.html'
-    
+
     def get_object(self):
         id_ = self.kwargs.get("id_room")
-        return get_object_or_404(Room,id = id_)
+        return get_object_or_404(Room, id=id_)
 
 ###Accesos de administrador###
+
 
 def login(request):
     if request.method == 'POST':
@@ -166,10 +178,11 @@ def login(request):
             print(error)
             request.session['success_login'] = False
             return redirect('/administracion/login')
-    else:        
+    else:
         if('success_login' in request.session and request.session['success_login']):
             return redirect('/administracion')
         return render(request, 'accesos/login.html')
+
 
 def logout_admin(request):
     logout(request)
@@ -178,6 +191,7 @@ def logout_admin(request):
 ###Accesos de administrador###
 
 ###Administracion de administradores###
+
 
 def administradores(request):
     admin_list = []
@@ -196,7 +210,8 @@ def administradores(request):
 
     print(admin_list)
     return render(request, 'admin_administradores/administradores.html', {'administradores': admin_list,
-    'choices':TIPO_DE_IDENTIFICACION,'genero':GENERO})
+                                                                          'choices': TIPO_DE_IDENTIFICACION, 'genero': GENERO})
+
 
 def administrador_eliminacion(request, id):
     perfil = Perfil.objects.get(id=id)
@@ -211,6 +226,7 @@ def administrador_eliminacion(request, id):
     usr.save()
 
     return redirect('/administracion/administradores')
+
 
 def administrador_edicion(request, id):
     if request.method == 'POST':
@@ -232,9 +248,9 @@ def administrador_edicion(request, id):
         perfil.last_name = last_name
         perfil.date_birth = date_birth
         perfil.phone = phone
-        cedula=cedula,
-        doc_type=doc_type,
-        genero=genero
+        cedula = cedula,
+        doc_type = doc_type,
+        genero = genero
 
         perfil.save()
         usr.save()
@@ -249,9 +265,9 @@ def administrador_edicion(request, id):
 
         return render(request, 'admin_administradores/administrador_edicion.html', {
             'administrador': admin[0],
-            'docs':TIPO_DE_IDENTIFICACION,
-            'generos':GENERO
-            })
+            'docs': TIPO_DE_IDENTIFICACION,
+            'generos': GENERO
+        })
 
 
 def administrador_nuevo(request):
@@ -266,7 +282,7 @@ def administrador_nuevo(request):
         cedula = request.POST.get('documento')
         doc_type = request.POST.get('dropwdown-docs')
         genero = request.POST.get('dropwdown-generos')
-        
+
         usr = Usr(
             username=email.split('@')[0],
             email=email,
@@ -293,11 +309,8 @@ def administrador_nuevo(request):
 
     else:
         return render(request, 'admin_administradores/administrador_nuevo.html', {
-            'docs':TIPO_DE_IDENTIFICACION,
-            'generos':GENERO})
-
-
-
+            'docs': TIPO_DE_IDENTIFICACION,
+            'generos': GENERO})
 
 
 ###Administracion de administradores###
@@ -305,18 +318,16 @@ def administrador_nuevo(request):
 ###Habitaciones disponibles###
 
 
-
 ###Habitaciones disponibles###
 def habitaciones_disponibilidad(request):
     room_list = []
-    room_list = list(Room.objects.values('id', 'descripcion', 'calificacion', 'num_camas', 'num_adultos', 'num_ninos', 'precio', 'disponible', 'id_roomtype_id__nombre'))
+    room_list = list(Room.objects.values('id', 'descripcion', 'calificacion', 'num_camas',
+                                         'num_adultos', 'num_ninos', 'precio', 'disponible', 'id_roomtype_id__nombre'))
     print(room_list)
     return render(request, 'habitaciones_disponibles/habitaciones_disponibles.html', {'habitaciones_disponibles': room_list})
 
 
-
 ###Administracion de reservas###
-
 
 
 def lista_reservas(request):
@@ -332,106 +343,55 @@ def lista_reservas(request):
 
     return render(request, 'reservas/reservas-admin.html', {'lista_reservas': reservas_list})
 
+
 def eliminar_reserva(request, id):
     Booking.objects.filter(id=id).delete()
     return render(request, 'reservas/reservas-admin.html', {'lista_reservas': reservas_list})
 
+
 def agregar_reserva(request):
-    return render(request, 'reservas/addreserva.html',{'choices_id':TIPO_DE_IDENTIFICACION})
+    if request.method == 'POST':
+        print(request.GET)
+        
+    room_type_list = list(RoomType.objects.values('id', 'nombre'))
+    return render(request, 'reservas/addreserva.html', {'choices_id': TIPO_DE_IDENTIFICACION, 'room_type': room_type_list})
+
 
 def buscarcliente(request):
     ced = request.GET.get('cedula', None)
-    print("cedula"+ced)
-    is_taken = Perfil.objects.filter(cedula__iexact=ced).exists()
+    doc_type = request.GET.get('tipo_documento', None)
+    """ print("cedula"+ced) """
+    is_taken = Perfil.objects.filter(
+        cedula__iexact=ced, doc_type=doc_type).exists()
     if(is_taken):
         user = Perfil.objects.filter(cedula=ced)[0]
         u = Usr.objects.filter(id=user.usr_id_id)[0]
         data = {
-           'existe': is_taken,
-           'nombres': user.name,
-           'apellidos': user.last_name,
-           'fecha_nacimiento': user.date_birth,
-           'telfono': user.phone,
-           'email': u.email
+            'existe': is_taken,
+            'nombres': user.name,
+            'apellidos': user.last_name,
+            'fecha_nacimiento': user.date_birth.strftime("%Y-%m-%d"),
+            'telfono': user.phone,
+            'email': u.email
         }
+        print(data)
     else:
         data = {
-         'existe': False
+            'existe': False
         }
     return JsonResponse(data)
-   
-    
-def nueva_reserva(request):
-    if request.method == "POST":
-        tipo_documento = request.POST.get('dropdown-docs')
-        ced = request.POST.get('cedula')
-        name = request.POST.get('nombres')
-        last_name = request.POST.get('apellidos')
-        date_birth = request.POST.get('fecha_nacimiento')
-        email = request.POST.get('email')
-        phone = request.POST.get('telf')
-        ingreso = request.POST.get('fechain')
-        salida = request.POST.get('fechasal')
-        password_hash = make_password(ced)
-        room = Room.objects.get(id = 1)
-        estado = request.POST.get('estado')
-        
-        #cliente
-        is_taken = Perfil.objects.filter(cedula__iexact=ced).exists()
-        print(is_taken)
-        if(is_taken):
-            perfil = Perfil.objects.filter(cedula=ced)[0]
-        else:
-            usr = Usr(
-                username=email.split('@')[0],
-                email=email,
-                password=password_hash,
-                is_admin=False
-            )
-
-            usr.save()
-
-            perfil = Perfil(
-                usr_id=usr,
-                cedula = ced,
-                name=name,
-                last_name=last_name,
-                date_birth=date_birth,
-                phone=phone,
-                doc_type=tipo_documento,
-            )
-
-            perfil.save()
-        r_estado = BookingState.objects.get(id=estado)
-        r_tipo = BookingType.objects.get(id = 1)
-            
-
-        reserva = Booking(
-            check_in_date = ingreso,
-            check_out_date = salida,
-            room_id = room,
-            customer_id = perfil,
-            state_id = r_estado,
-            bookingtype_id = r_tipo
-
-        )
-        reserva.save()
-
-        return redirect('/administracion/lista_reservas')
-
-    else:
-        return render(request, 'reservas/administrador_nuevo.html')
 
 def buscarhabitaciones(request):
-    fechain= request.GET.get('fechain')
-    fechaout= request.GET.get('fechaout')
+    print(request.GET)
+    """ fechain = request.GET.get('fechain')
+    fechaout = request.GET.get('fechaout')
     num = request.GET.get("tipo")
     adultos = request.GET.get("select_num_adultos")
     ninos = request.GET.get("select_num_ninos")
     room_list = []
-    
+
     # Búsqueda de habitaciones solo disponibles
-    
+
     out_queries = Room.objects.raw('''
                select r.id as id, r.precio as precio, rt.nombre as id_roomtype_id__nombre
                 from reservas_room as r, reservas_roomtype as rt
@@ -451,10 +411,11 @@ def buscarhabitaciones(request):
     for e in out_queries:
         room_list.append(e)
         print(e)
-    
+
     print(room_list)
-    return render(request, 'reservas/addreserva.html', {'habitaciones_disponibles': room_list})
-   
+    return render(request, 'reservas/addreserva.html', {'habitaciones_disponibles': room_list}) """
+
+
 def convert_date(string_date):
     dia = string_date.split('-')[2]
     mes = string_date.split('-')[1]
@@ -479,9 +440,9 @@ def clientes(request):
     ''')
 
     for e in out_queries:
-        if(e.cedula==None):
+        if(e.cedula == None):
             e.phone = 'Sin dato'
-        if(e.phone==None):
+        if(e.phone == None):
             e.phone = 'Sin dato'
         clientes_list.append(e)
 
@@ -490,34 +451,41 @@ def clientes(request):
 
 ###Administracion de clientes###
 
+
 class makeCheckInView(views.APIView):
     def post(self, request, pk):
-        bookingActual = get_object_or_404(Booking, pk = pk) #Booking.bookings.get_object(pk = pk)
+        # Booking.bookings.get_object(pk = pk)
+        bookingActual = get_object_or_404(Booking, pk=pk)
         print(Booking.objects)
         print("TEST")
         fecha_ingreso = datetime.datetime.now()
         bookingActual.fecha_ingresado = fecha_ingreso
         bookingActual.save()
-        respuesta = { 'detail' :  fecha_ingreso}
+        respuesta = {'detail':  fecha_ingreso}
         return JsonResponse(respuesta)
+
 
 class makeCheckOutView(views.APIView):
     def post(self, request, pk):
-        bookingActual = get_object_or_404(Booking, pk = pk) #Booking.bookings.get_object(pk = pk)
+        # Booking.bookings.get_object(pk = pk)
+        bookingActual = get_object_or_404(Booking, pk=pk)
         print(Booking.objects)
         print("TEST")
         fecha_salida = datetime.datetime.now()
         bookingActual.fecha_salida = fecha_salida
         bookingActual.save()
-        respuesta = { 'detail' :  fecha_salida}
+        respuesta = {'detail':  fecha_salida}
         return JsonResponse(respuesta)
 
 ####PAQUETES TURISTICOS####
+
+
 class TourList(ListView):
-    
+
     model = Tour_Package
     context_object_name = 'tours'
     template_name = 'tour-package/index_tours.html'
+
 
 class TourCreate(CreateView):
 
@@ -526,6 +494,7 @@ class TourCreate(CreateView):
     template_name = "tour-package/tour_create_form.html"
 
     success_url = reverse_lazy("administracion:tour_listar")
+
 
 class TourEdit(UpdateView):
 
@@ -536,17 +505,16 @@ class TourEdit(UpdateView):
 
     def get_object(self):
         id_ = self.kwargs.get("id_tour")
-        return get_object_or_404(Tour_Package,id = id_)
+        return get_object_or_404(Tour_Package, id=id_)
 
     success_url = reverse_lazy("administracion:tour_listar")
+
 
 class TourEliminar(DeleteView):
     model = Tour_Package
     success_url = reverse_lazy("administracion:tour_listar")
     template_name = 'tour-package/tour_delete_form.html'
-    
+
     def get_object(self):
         id_ = self.kwargs.get("id_tour")
-        return get_object_or_404(Tour_Package,id = id_)
-        
-        
+        return get_object_or_404(Tour_Package, id=id_)

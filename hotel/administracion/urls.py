@@ -26,8 +26,7 @@ urlpatterns = [
     path('buscarcliente/', views.buscarcliente),
     path('eliminar_reserva/<int:id>', views.eliminar_reserva),
     path('agregar_reserva', views.agregar_reserva),
-    path('reservas', views.reservas),
-    path('nueva_reserva', views.nueva_reserva),
+    path('reservas', views.reservas),    
     path('buscarhabitaciones/', views.buscarhabitaciones),
 
 
