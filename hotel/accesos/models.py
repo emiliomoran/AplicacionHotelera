@@ -22,14 +22,14 @@ class Usr(AbstractBaseUser):
 	objects = UserManager()
 
 class Perfil(models.Model):
-	doc_type = models.CharField(max_length = 9, choices = TIPO_DE_IDENTIFICACION, null=True)
-	genero = models.CharField(max_length = 1, choices = GENERO, null=True)
+	doc_type = models.CharField(max_length = 9, choices = TIPO_DE_IDENTIFICACION, null=True, verbose_name = 'Tipo de Documento')
+	genero = models.CharField(max_length = 1, choices = GENERO, null=True,verbose_name='Género')
 	usr_id = models.OneToOneField(Usr, on_delete = models.CASCADE)
-	name = models.CharField(max_length=100)
-	cedula = models.CharField(max_length=15, unique = True, null=True)#ESTO NO SOLO PUEDE SER CEDULA, SINO MAS DOCUMENTOS
-	last_name = models.CharField(max_length=100)
-	phone = models.CharField(max_length=10, null=True)
-	date_birth = models.DateField()
+	name = models.CharField(max_length=100, verbose_name='Nombre')
+	cedula = models.CharField(max_length=15, unique = True, null=True,verbose_name='Documento de Identificación')#ESTO NO SOLO PUEDE SER CEDULA, SINO MAS DOCUMENTOS
+	last_name = models.CharField(max_length=100, verbose_name='Apellido')
+	phone = models.CharField(max_length=10, null=True, verbose_name= 'Número de Teléfono')
+	date_birth = models.DateField(verbose_name='Fecha de Nacimiento')
 	is_removed = models.BooleanField(default=False)
 	create_date = models.DateTimeField(auto_now_add = True,  blank = True)
 	update_date = models.DateTimeField(auto_now = True, blank = True)
