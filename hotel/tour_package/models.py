@@ -18,6 +18,6 @@ class Tour_Package(models.Model):
 
 class TourOrder(Product):
 
-	tour = models.OneToOneField(Tour_Package, on_delete = models.SET_NULL, null = True)
-	reservation_name = models.OneToOneField(Perfil,on_delete = models.SET_NULL, null = True)
+	tour = models.ForeignKey(Tour_Package, on_delete = models.SET_NULL, null = True)
+	reservation_name = models.ForeignKey(Perfil,on_delete = models.SET_NULL, null = True)
 	

@@ -89,8 +89,10 @@ class ParticularOrder(FormMixin,DetailView):
 		self.object = self.get_object()
 		form = self.get_form()
 		if form.is_valid():
+
 			return self.form_valid(form)
 		else:
+			print(form.errors)
 			return self.form_invalid(form)
 
 	def form_valid(self, form):
