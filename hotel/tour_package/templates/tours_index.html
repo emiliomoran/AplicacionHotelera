@@ -1,0 +1,16 @@
+
+<div class="row">
+    {% for object in tours %}
+        <div class="col-sm-3">
+            <p>{{ object.title }}</p>
+            <p>Price: ${{ object.price }}</p>
+            <p>Company: {{ object.company }}</p>
+            {% if object in tours_out_of_stock %}
+            <!-- add a button here to see the product -->
+            No hay más cupos.
+            {% else %}
+            <a href="{% url 'tour_package:detail_view' object.id %}" class="btn btn-warning">Add to Cart</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>

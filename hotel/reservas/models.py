@@ -69,12 +69,12 @@ class Booking(models.Model):
 	update_date = models.DateTimeField(auto_now = True)
 	objects = Manager()
 
-	def get_total_price(self):
+	"""def get_total_price(self):
 
 		room = Room.objects.filter(id=self.room_id).first()
 		#Se debe implementar para que tambien sume el precio de los servicios despues agregados
 		
-		return room.precio
+		return room.precio"""
 
 #Prueba documento
 class Document(models.Model):

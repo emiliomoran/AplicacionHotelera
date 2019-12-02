@@ -5,7 +5,6 @@ from django.contrib.auth.models import UserManager
 from django.db.models.signals import post_save
 
 from django.contrib.auth.models import AbstractBaseUser
-from tour_package.models import Tour_Package
 
 class Usr(AbstractBaseUser):	
 	username = models.CharField(max_length = 100, unique=True, null=True)

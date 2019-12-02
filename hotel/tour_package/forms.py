@@ -1,6 +1,6 @@
 from django import forms
 
-from tour_package.models import Tour_Package
+from tour_package.models import Tour_Package,TourOrder
 
 class TourForm(forms.ModelForm):
 
@@ -14,6 +14,7 @@ class TourForm(forms.ModelForm):
 			'days',
 			'hours',
 			'price',
+			'available_stock',
 			'path_image',
 		]
 
@@ -24,6 +25,7 @@ class TourForm(forms.ModelForm):
 			'days':'Dias del Tour',
 			'hours':'Horas del Tour',
 			'price':'Precio del Paquete',
+			'available_stock': 'Cupos Disponibles',
 			'path_image':'Subir Imagen',
 		}
 
@@ -34,6 +36,23 @@ class TourForm(forms.ModelForm):
 			'days':forms.TextInput(attrs={'class':'form-control'}),
 			'hours':forms.TextInput(attrs={'class':'form-control'}),
 			'price':forms.NumberInput(attrs={'class':'form-control'}),
+			'available_stock':forms.NumberInput(attrs={'class':'form-control'}),
 			'path_image':forms.FileInput(attrs={'class':'form-control'}),
 
+		}
+
+class TourOrderForm(forms.ModelForm):
+
+	class Meta:
+		model = TourOrder
+
+		fields = '__all__'
+
+		widgets = {
+
+			'title': forms.HiddenInput(attrs={'class':'form-control'}),
+			'tour': forms.HiddenInput(attrs={'class':'form-control'}),
+			'description': forms.HiddenInput(attrs={'class':'form-control'}),
+			'reservation_name': forms.HiddenInput(attrs={'class':'form-control'}),
+			'quantity': forms.NumberInput(attrs={'class':'form-control'}),
 		}

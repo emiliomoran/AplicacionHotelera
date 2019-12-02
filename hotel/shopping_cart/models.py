@@ -5,9 +5,14 @@ from accesos.models import Perfil
 
 # Create your models here.
 
+#Clase padre para paquetes turisticos o servicios adicionales
+class Product(models.Model):
+	title = models.CharField(max_length = 100, verbose_name = 'Titulo')
+	description = models.CharField(max_length = 250,verbose_name = 'Descripcion del Producto')
+	quantity = models.IntegerField(default = 30,verbose_name = 'Cantidad')
+
 class OrderItem(models.Model):
-	reserva = models.OneToOneField(Booking, on_delete = models.SET_NULL, null = True)##Aqui debe cambiarse 
-	#para que despues pueda ser habitacion, algun servicio, etc...
+	product = models.OneToOneField(Product, on_delete = models.SET_NULL, null = True)
 	is_ordered = models.BooleanField(default=False)
 	date_added = models.DateTimeField(auto_now = True)
 	date_ordered = models.DateTimeField(null=True)
