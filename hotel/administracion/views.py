@@ -381,7 +381,28 @@ def buscarcliente(request):
     return JsonResponse(data)
 
 def buscarhabitaciones(request):
-    print(request.GET)
+    try:
+        json_get = request.GET
+
+        #Buscar habitaciones con campo disponible = true    
+        room_list_filter_1 = list(Room.objects.values('id', 'nombre', 'numero', 'descripcion', 'precio').filter(
+            disponible=True, id_roomtype_id=int(json_get['tipo']), num_adultos__gte=int(json_get['select_num_adultos']), num_ninos__gte=int(json_get['select_num_ninos'])))
+        print(room_list_filter_1)
+
+        data = {
+            'error': False,
+            'data': room_list_filter_1,
+        }        
+
+        return JsonResponse(data)
+    except:
+        data = {
+            'error': True,
+            'message': 'Se ha producido un error en el requerimiento'
+        }
+
+        return JsonResponse(data)
+
     """ fechain = request.GET.get('fechain')
     fechaout = request.GET.get('fechaout')
     num = request.GET.get("tipo")
