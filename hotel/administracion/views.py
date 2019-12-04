@@ -4,7 +4,7 @@ from accesos.models import Usr, Perfil
 from administracion.choices import TIPO_DE_IDENTIFICACION, GENERO
 from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
-from administracion.forms import RoomForm, TourForm, DocumentForm
+from administracion.forms import RoomForm, TourForm, DocumentForm, NoticiaForm
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
@@ -29,6 +29,7 @@ from django.http import JsonResponse
 from accesos.models import Usr
 from accesos.models import Perfil
 from reservas.models import Booking
+from noticias.models import Noticia
 
 from tour_package.models import Tour_Package
 
@@ -538,3 +539,23 @@ class TourEliminar(DeleteView):
     def get_object(self):
         id_ = self.kwargs.get("id_tour")
         return get_object_or_404(Tour_Package, id=id_)
+
+def noticia_create_form(request):
+    if request.method == 'POST':
+        form = NoticiaForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/administracion/')
+    else:
+        form = NoticiaForm()
+    return render(request, 'noticias/addNoticia.html', {
+        'form': form
+    })
+
+
+class NoticiaCreate(CreateView):
+    model = Noticia
+    form_class = NoticiaForm
+    template_name = "noticias/addNoticia.html"
+
+    success_url = reverse_lazy("administracion")
