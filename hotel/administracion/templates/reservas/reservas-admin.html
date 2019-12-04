@@ -1,5 +1,51 @@
 {% extends 'layout_administrador.html' %}
 {% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+
+<!-- Modal -->
+<div class="modal hide fade" id="verificacionCheckin" tabindex="-1" role="dialog" aria-labelledby="verificacionCheckinLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verificacionCheckinLabel">Confirmación de Checkin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span>¿Está seguro de hacer el checkin de esta reserva?</span>
+                <input id="id-reserva-checkin" type="hidden" value=""/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="checkInButton btn btn-secondary">Aceptar</button>                            
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="verificacionCheckout" tabindex="-1" role="dialog" aria-labelledby="verificacionCheckoutLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verificacionCheckoutLabel">Confirmación de Checkout</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span>¿Está seguro de hacer el checkout de esta reserva?</span>
+                <input id="id-reserva-checkout" type="hidden" value=""/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="checkOutButton btn btn-secondary">Aceptar</button>                            
+            </div>
+        </div>
+    </div>
+</div>
 
 <div>
     <div class="row">
@@ -8,10 +54,7 @@
                 <h2 class="pageheader-title">Reservas </h2>
             </div>
         </div>
-    </div>
-    <!-- ============================================================== -->
-    <!-- end pageheader  -->
-    <!-- ============================================================== -->
+    </div>    
     <div class="row">
         <div class="col-lg-10">
             <a href="/administracion/agregar_reserva"
@@ -20,38 +63,36 @@
             </a>
         </div>
     </div>
-    <br>
-    <div id="popup"></div>
+    <br>    
     <div class="row">
         <div class="table-responsive">
-            <table class="table table-striped table-bordered first">
+            <table id="table-booking" class="table table-striped table-bordered first">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nombre-Cliente</th>
-                        <th>Apellido-Cliente</th>
-                        <th>Fecha Programada de Entrada</th>
-                        <th>Fecha Programada de Salida</th>
-                        <th>Fecha Real de Entrada</th>
-                        <th>Fecha Real de Salida</th>
-                        <th>Habitacion</th>                    
+                        <th>Cliente</th>
+                        <th>No Documento</th>
+                        <th>Llegada</th>
+                        <th>Salida</th>
+                        <th>Checkin</th>
+                        <th>Checkout</th>
+                        <th>Habitacion</th>
+                        <th>Acción</th>                
                         <th>Check In</th>
                         <th>Check Out</th>                      
                     </tr>
                 </thead>
                 <tbody>
                     {% for reserva in lista_reservas %}
-                    <tr>
+                    <tr id="{{ reserva.id }}">
                         <td class="id">{{ reserva.id }}</td>
-                        <td>{{ reserva.name }}</td>
-
-                        <td>{{ reserva.last_name }}</td>
-                        <td>{{ reserva.chek_in_date}}</td>
-                        <td>{{ reserva.chek_out_date}}</td>
+                        <td>{{ reserva.name }} {{ reserva.last_name }}</td>
+                        <td>{{ reserva.cedula }}</td>
+                        <td>{{ reserva.check_in_date}}</td>
+                        <td>{{ reserva.check_out_date}}</td>
                         <td class="fechaIngreso">{{ reserva.fecha_ingresado}}</td>
                         <td class="fechaSalida">{{ reserva.fecha_salida}}</td>
-
-                        <td>{{ reserva.descripcion}}</td>
+                        <td>{{ reserva.nombre }} {{ reserva.numero }}</td>
                         <td>
                             
                             <a onclick="return abrir_modal('/administracion/administrador-edicion/{{ administrador.id }}','EDICIÓN')"
@@ -60,108 +101,99 @@
                             </a>
                         </td>
 
+                        <!-- onclick="checkin_reserva('{{ reserva.id }}')" -->
                         <td>
-                            <button class="checkInButton btn btn-primary btn-agregar-adm"> Check In </button>
-                            
+                            <button id="btn-modal-checkin" onclick="checkin_reserva('{{ reserva.id }}')" class="btn btn-primary btn-agregar-adm" data-toggle="modal" data-target="#verificacionCheckin"> Check In </button>                            
                         </td>
                         <td>
-                            <button class="checkOutButton btn btn-primary btn-agregar-adm" disabled="disabled"> Check Out </button>
+                            <button id="btn-modal-checkout" onclick="checkout_reserva('{{ reserva.id }}')" class="btn btn-primary btn-agregar-adm" data-toggle="modal" data-target="#verificacionCheckout" disabled="disabled"> Check Out </button>
                         </td>
-
                     </tr>
                     {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre-Cliente</th>
-                        <th>Apellido-Cliente</th>
-                        <th>Fecha Programada de Entrada</th>
-                        <th>Fecha Programada de Salida</th>
-                        <th>Fecha Real de Entrada</th>
-                        <th>Fecha Real de Salida</th>
-                        <th>Habitacion</th>
-                        <th>Check In</th>
-                        <th>Check Out</th>
-                    </tr>
-                </tfoot>
+                </tbody>                
             </table>
         </div>
     </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+{% block scripts %}
+{{ block.super }}
 <script>
     $( document ).ready(function() {
         $(".table tbody tr td:nth-child(6)").each( function(){
             var fechaIngresado = $(this).text();
             let tableRow = $(this).closest("tr")
-            if (fechaIngresado != "None") {
-                tableRow.find(".checkInButton").prop("disabled", true);
-                tableRow.find(".checkInButton").addClass("disabled");
-                tableRow.find(".checkOutButton").removeClass("disabled");
-                tableRow.find(".checkOutButton").removeProp("disabled")
+            if (fechaIngresado != "-") {
+                tableRow.find("#btn-modal-checkin").prop("disabled", true);
+                tableRow.find("#btn-modal-checkin").addClass("disabled");
+                tableRow.find("#btn-modal-checkout").removeClass("disabled");
+                tableRow.find("#btn-modal-checkout").removeAttr("disabled")
             }
         });
 
         $(".table tbody tr td:nth-child(7)").each( function(){
             var fechaSalida = $(this).text();
             let tableRow = $(this).closest("tr")
-            if (fechaSalida != "None") {
-                tableRow.find(".checkOutButton").prop("disabled", true);
-                tableRow.find(".checkOutButton").addClass("disabled");
+            if (fechaSalida != "-") {
+                tableRow.find("#btn-modal-checkout").prop("disabled", true);
+                tableRow.find("#btn-modal-checkout").addClass("disabled");
             }
         });
 
-        $(".checkInButton").click(function(){
-            var $item = $(this).closest("tr")   // Finds the closest row <tr> 
-                       .find(".id")     // Gets a descendent with class="nr"
-                       .text();       
-            console.log($item);
+        $("#table-booking").DataTable();
+
+        $(".checkInButton").on('click',function(){
+            let id = $("#id-reserva-checkin").val();
+
+            let tableRow = $(`#${id}`);
+
+            console.log(tableRow);            
             
-            let tableRow = $(this).closest("tr")
             $.ajax({
                 type: "POST",
-                url: "/administracion/makeCheckIn/"+$item+"/",
+                url: "/administracion/makeCheckIn/"+id+"/",
                 success: function(data) {
                     var detalle = data.detail;
                     if(detalle == "Not found") {
                         alert("Check In fallido");
                     }
-                    console.log(tableRow);
-                    alert("Check In hecho el: "+ detalle);
+                    
                     tableRow.find(".fechaIngreso")     // Gets a descendent with class="nr"
-                       .html(detalle); 
-                    tableRow.find(".checkInButton").prop("disabled", true);
-                    tableRow.find(".checkInButton").addClass("disabled");
-                    tableRow.find(".checkOutButton").removeAttr("disabled");
+                    .html(detalle); 
+                    tableRow.find("#btn-modal-checkin").prop("disabled", true);
+                    tableRow.find("#btn-modal-checkin").addClass("disabled");
+                    tableRow.find("#btn-modal-checkout").removeAttr("disabled");
+                    $('#verificacionCheckin').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 },
                 error: function() {
                     alert("Check In fallido");
                 }
-            });
-                
+            });            
         });
+
         $(".checkOutButton").click(function(){
-            var $item = $(this).closest("tr")   // Finds the closest row <tr> 
-                       .find(".id")     // Gets a descendent with class="nr"
-                       .text();       
-            console.log($item);
+            let id = $("#id-reserva-checkout").val();
             
-            let tableRow = $(this).closest("tr")
+            let tableRow = $(`#${id}`);
             $.ajax({
                 type: "POST",
-                url: "/administracion/makeCheckOut/"+$item+"/",
+                url: "/administracion/makeCheckOut/"+id+"/",
                 success: function(data) {
                     var detalle = data.detail;
                     if(detalle == "Not found") {
                         alert("Check Out fallido");
                     }
-                    console.log(tableRow);
-                    alert("Check Out hecho el: "+ detalle);
+                    /* console.log(tableRow);
+                    alert("Check Out hecho el: "+ detalle); */
                     tableRow.find(".fechaSalida")     // Gets a descendent with class="nr"
-                       .html(detalle); 
-                    tableRow.find(".checkOutButton").addClass("disabled");
-                    tableRow.find(".checkOutButton").prop("disabled", true)
+                       .html(detalle);
+                    tableRow.find("#btn-modal-checkout").addClass("disabled");
+                    tableRow.find("#btn-modal-checkout").prop("disabled", true)
+                    $('#verificacionCheckout').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 },
                 error: function() {
                     alert("Check In fallido");
@@ -171,30 +203,16 @@
         });
     });
 
-    var modal;
-    function abrir_modal(url, titulo) {
-        modal = $('#popup').dialog(
-            {
-                title: titulo,
-                modal: true,
-                width: 450,
-                resizable: false
-            }).dialog('open').load(url)
+    function checkin_reserva(id) {        
+        console.log(id);
+        document.getElementById("id-reserva-checkin").value = id;        
     }
 
-    function cerrar_modal() {
-        modal.dialog("close");
+    function checkout_reserva(id) {
+        console.log(id);
+        document.getElementById("id-reserva-checkout").value = id;
     }
-    /*function confirmDelete(id) {
-        var reply = confirm("¿Seguro que desea eliminar esta reserva?");
-        if (reply == true) {
-            $.ajax({
-                method: 'POST',
-                url: '/administracion/eliminar_reserva/'+id,
-                error: function () { alert('An error occured'); }
-            });
-        }
-    }*/
-    
+
 </script>
+{% endblock %}
 {% endblock %}

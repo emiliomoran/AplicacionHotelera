@@ -89,7 +89,7 @@
 </div>
 
 
-{% comment %} <script>
+<!-- {% comment %} <script>
     var modal;
     //var docs = "{{ choices }}";
     function abrir_modal(url, titulo)
@@ -107,19 +107,19 @@
     {
         modal.dialog("close");
     }
-</script> {% endcomment %}
+</script> {% endcomment %} -->
 <script>
     function delete_adm(name, last_name, id) {        
         document.getElementById("modal-name").innerHTML = name;
         document.getElementById("modal-lastname").innerHTML = last_name;
         document.getElementById("btn-delete-confirm").href = "/administracion/administrador-eliminacion/" + id; 
     }
-{% comment %} $(document).on("click", "#btn-delete", function () {
+/* {% comment %} $(document).on("click", "#btn-delete", function () {
      var adm_name = $(this).data('id');
      $(".modal-body #bookId").val( myBookId );
      // As pointed out in comments, 
      // it is unnecessary to have to manually call the modal.
      // $('#addBookDialog').modal('show');
-}); {% endcomment %}
+}); {% endcomment %} */
 </script>
 {% endblock %}

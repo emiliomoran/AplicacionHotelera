@@ -55,26 +55,27 @@ class BookingState(models.Model):
 class Booking(models.Model):
 	
 	customer_id = models.ForeignKey(Perfil, on_delete = models.CASCADE)
-	room_id = models.ForeignKey(Room,on_delete = models.CASCADE)
-	bookingtype_id = models.ForeignKey(BookingType, on_delete = models.CASCADE)
-	state_id = models.ForeignKey(BookingState, on_delete = models.CASCADE)
-	booking_date = models.DateTimeField(auto_now_add = True)
+	room_id = models.ForeignKey(Room,on_delete = models.CASCADE)	
+	state_id = models.ForeignKey(BookingState, on_delete = models.CASCADE)	
 	check_in_date = models.DateTimeField(null= True) #Estas son las fechas de ingreso y salida en la reserva
 	check_out_date = models.DateTimeField(null= True)
 	fecha_ingresado = models.DateTimeField(null= True) #Estas son las fechas reales en las que el cliente ingresa al hotel
 	fecha_salida = models.DateTimeField(null= True)
+	num_adultos = models.IntegerField(default=0)
+	num_ninos = models.IntegerField(default=0)
 	no_nights = models.IntegerField(default = 0)
+	total_to_pay = models.FloatField(default=0)
 	is_removed = models.BooleanField(default = False)
 	create_date = models.DateTimeField(auto_now_add = True)
 	update_date = models.DateTimeField(auto_now = True)
-	objects = Manager()
+	""" objects = Manager() """
 
-	def get_total_price(self):
+	""" def get_total_price(self):
 
 		room = Room.objects.filter(id=self.room_id).first()
 		#Se debe implementar para que tambien sume el precio de los servicios despues agregados
 		
-		return room.precio
+		return room.precio """
 
 #Prueba documento
 class Document(models.Model):

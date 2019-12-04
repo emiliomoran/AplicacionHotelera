@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.utils import timezone
 from reservas.models import Room, BookingState, BookingType, RoomType
 from accesos.models import Usr, Perfil
 from administracion.choices import TIPO_DE_IDENTIFICACION, GENERO
@@ -9,7 +10,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import logout
-
+import pytz
 from rest_framework import generics
 from rest_framework import views
 from rest_framework.response import Response
@@ -332,13 +333,23 @@ def habitaciones_disponibilidad(request):
 def lista_reservas(request):
     reservas_list = []
     out_queries = Booking.objects.raw('''
-        select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name, r.descripcion
+        select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name, p.cedula, r.nombre, r.numero
         from reservas_booking as b, accesos_perfil as p, reservas_room as r
         where b.customer_id_id = p.id and b.room_id_id = r.id and b.state_id_id > 1
     ''')
     for e in out_queries:
+        print(e)
         reservas_list.append(e)
-        print(type(e.check_in_date))
+        e.check_in_date = e.check_in_date.strftime("%Y-%m-%d %I:%M %p")
+        e.check_out_date = e.check_out_date.strftime("%Y-%m-%d %I:%M %p")
+        if(e.fecha_ingresado is None):
+            e.fecha_ingresado = "-"
+        else:
+            e.fecha_ingresado = e.fecha_ingresado.strftime("%Y-%m-%d %I:%M %p")
+        if(e.fecha_salida is None):
+            e.fecha_salida = "-"
+        else:
+            e.fecha_salida = e.fecha_salida.strftime("%Y-%m-%d %I:%M %p")
 
     return render(request, 'reservas/reservas-admin.html', {'lista_reservas': reservas_list})
 
@@ -349,11 +360,99 @@ def eliminar_reserva(request, id):
 
 
 def agregar_reserva(request):
-    if request.method == 'POST':
-        print(request.GET)
-        
-    room_type_list = list(RoomType.objects.values('id', 'nombre'))
-    return render(request, 'reservas/addreserva.html', {'choices_id': TIPO_DE_IDENTIFICACION, 'room_type': room_type_list})
+    if request.method == 'POST':                
+        print(request.POST)
+        json_post = request.POST
+        if(json_post['id_cliente']!=''):
+            
+            #Obtener el perfil del usuario que hace la reserva
+            perfil_model = get_object_or_404(Perfil, id=json_post['id_cliente'])
+
+            #Obtener el estado registrado de un booking
+            bookingstate_model = get_object_or_404(BookingState, name="Registrada")
+
+            #Obtener la habitacion
+            room_model = get_object_or_404(Room, id=json_post['id_habitacion'])
+            
+            str_fechain = json_post['fechain_form'].split(" ")[0].split('/')[2]+"-"+json_post['fechain_form'].split(" ")[0].split('/')[0]+"-"+json_post['fechain_form'].split(" ")[0].split('/')[1]+" "+json_post['fechain_form'].split(" ")[1]+" "+json_post['fechain_form'].split(" ")[2]
+            str_fechasal = json_post['fechasal_form'].split(" ")[0].split('/')[2]+"-"+json_post['fechasal_form'].split(" ")[0].split('/')[0]+"-"+json_post['fechasal_form'].split(" ")[0].split('/')[1]+" "+json_post['fechasal_form'].split(" ")[1]+" "+json_post['fechasal_form'].split(" ")[2]
+            print(str_fechain)
+            print(str_fechasal)
+            fechain_datetime = datetime.datetime.strptime(str_fechain, '%Y-%m-%d %I:%M %p')
+            fechasal_datetime = datetime.datetime.strptime(str_fechasal, '%Y-%m-%d %I:%M %p')
+            dif = fechasal_datetime - fechain_datetime
+            booking_model = Booking(
+                customer_id=perfil_model,
+                room_id=room_model,
+                state_id=bookingstate_model,
+                check_in_date=fechain_datetime,
+                check_out_date=fechasal_datetime,
+                num_adultos=int(json_post['num_adultos_form']),
+                num_ninos=int(json_post['num_ninos_form']),
+                total_to_pay=float(json_post['total_pagar_form']),
+                no_nights=dif.days
+            )
+            booking_model.save()
+
+            return redirect('/administracion/lista_reservas')
+        else:
+
+            #Registro del nuevo cliente
+            password_hash = make_password(json_post['documento_form'])            
+            usr_model = Usr(
+                username=json_post['email_form'].split('@')[0],
+                email=json_post['email_form'],
+                password=password_hash,
+                is_admin=False
+            )
+
+            usr_model.save()
+
+            perfil_model = Perfil(
+                usr_id=usr_model,
+                name=json_post['nombres_form'],
+                last_name=json_post['apellidos_form'],
+                date_birth=json_post['fecha_nacimiento_form'],
+                phone=json_post['telf_form'],
+                cedula=json_post['documento_form'],
+                doc_type=json_post['tipo_documento_form'],
+            )
+
+            perfil_model.save()
+
+            #Obtener el estado registrado de un booking
+            bookingstate_model = get_object_or_404(BookingState, name="Registrada")
+
+            #Obtener la habitacion
+            room_model = get_object_or_404(Room, id=json_post['id_habitacion'])
+            
+            str_fechain = json_post['fechain_form'].split(" ")[0].split('/')[2]+"-"+json_post['fechain_form'].split(" ")[0].split('/')[0]+"-"+json_post['fechain_form'].split(" ")[0].split('/')[1]+" "+json_post['fechain_form'].split(" ")[1]+" "+json_post['fechain_form'].split(" ")[2]
+            str_fechasal = json_post['fechasal_form'].split(" ")[0].split('/')[2]+"-"+json_post['fechasal_form'].split(" ")[0].split('/')[0]+"-"+json_post['fechasal_form'].split(" ")[0].split('/')[1]+" "+json_post['fechasal_form'].split(" ")[1]+" "+json_post['fechasal_form'].split(" ")[2]
+            print(str_fechain)
+            print(str_fechasal)
+            fechain_datetime = datetime.datetime.strptime(str_fechain, '%Y-%m-%d %I:%M %p')         
+            fechasal_datetime = datetime.datetime.strptime(str_fechasal, '%Y-%m-%d %I:%M %p') 
+            dif = fechasal_datetime - fechain_datetime
+            booking_model = Booking(
+                customer_id=perfil_model,
+                room_id=room_model,
+                state_id=bookingstate_model,
+                check_in_date=fechain_datetime,
+                check_out_date=fechasal_datetime,
+                num_adultos=int(json_post['num_adultos_form']),
+                num_ninos=int(json_post['num_ninos_form']),
+                total_to_pay=float(json_post['total_pagar_form']),
+                no_nights=dif.days
+            )
+            booking_model.save()
+
+            return redirect('/administracion/lista_reservas')
+    else:
+        print("entra a else de agregar_reserva")
+        room_type_list = list(RoomType.objects.values('id', 'nombre'))
+        print(room_type_list)
+        print(TIPO_DE_IDENTIFICACION)
+        return render(request, 'reservas/addreserva.html', {'choices_id': TIPO_DE_IDENTIFICACION, 'room_type': room_type_list})
 
 
 def buscarcliente(request):
@@ -367,6 +466,7 @@ def buscarcliente(request):
         u = Usr.objects.filter(id=user.usr_id_id)[0]
         data = {
             'existe': is_taken,
+            'id': user.id,
             'nombres': user.name,
             'apellidos': user.last_name,
             'fecha_nacimiento': user.date_birth.strftime("%Y-%m-%d"),
@@ -479,9 +579,11 @@ class makeCheckInView(views.APIView):
         print(Booking.objects)
         print("TEST")
         fecha_ingreso = datetime.datetime.now()
-        bookingActual.fecha_ingresado = fecha_ingreso
+        #fecha_ingreso = datetime.datetime.now(timezone.utc)
+        str_fecha_ingreso = fecha_ingreso.strftime("%Y-%m-%d %I:%M %p")
+        bookingActual.fecha_ingresado = datetime.datetime.strptime(str_fecha_ingreso, '%Y-%m-%d %I:%M %p')
         bookingActual.save()
-        respuesta = {'detail':  fecha_ingreso}
+        respuesta = {'detail':  str_fecha_ingreso}
         return JsonResponse(respuesta)
 
 
@@ -492,9 +594,10 @@ class makeCheckOutView(views.APIView):
         print(Booking.objects)
         print("TEST")
         fecha_salida = datetime.datetime.now()
-        bookingActual.fecha_salida = fecha_salida
+        str_fecha_salida = fecha_salida.strftime("%Y-%m-%d %I:%M %p")        
+        bookingActual.fecha_salida = datetime.datetime.strptime(str_fecha_salida, "%Y-%m-%d %I:%M %p")        
         bookingActual.save()
-        respuesta = {'detail':  fecha_salida}
+        respuesta = {'detail':  str_fecha_salida}
         return JsonResponse(respuesta)
 
 ####PAQUETES TURISTICOS####

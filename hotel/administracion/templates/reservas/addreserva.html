@@ -1,54 +1,119 @@
 {% extends 'layout_administrador.html' %}
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
 <div>
-    <!-- ============================================================== 
-    <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div class="page-header">
-                <h2 class="pageheader-title">Reserva manual </h2>
-            </div>
-        </div>
-    </div>-->
-    <!-- ============================================================== -->
-    <!-- end pageheader  -->
-    <!-- ============================================================== -->
-    <div class="row">
-        <!--  <div class="col-lg-10">
-            <button data-toggle="modal" data-target="#cliente" class="btn btn-primary btn-agregar-adm">
-                <i class="fas fa-search"></i> Buscar cliente
-            </button>
-           
-            <div class="modal fade" id="cliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Search</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="text" class="form-control" name="nombres" id="inputnombres"
-                                placeholder="Nombres" value="" required="required">
-                        </div>
-                        <div class="modal-footer">
+    <br>
 
-                            <button type="button" onclick="buscarcliente()" class="btn btn-primary">Buscar</button>
+    <!-- Modal -->
+    <div class="modal fade" id="verificacionModal" tabindex="-1" role="dialog" aria-labelledby="verificacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="verificacionModalLabel">Confirmación de reserva</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">                                  
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <strong>Cliente: </strong>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <span id="conf-cliente"></span>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <strong>No de Documento: </strong>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <span id="conf-doc"></span>
+                        </div>
+                    </div>                                 
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <strong>Habitacion: </strong>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <span id="conf-hab"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <strong>Llegada: </strong>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <span id="conf-lle"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <strong>Salida: </strong>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <span id="conf-sal"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <strong>No Adultos: </strong>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <span id="conf-adu"></span>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <strong>No Ninos: </strong>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <span id="conf-nin"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <strong>Total a pagar: </strong>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <span id="conf-tot"></span>
+                        </div>
+                    </div>                    
                 </div>
             </div>
-
-        </div>-->
+            <div class="modal-footer">                
+                <form method="POST" action="/administracion/agregar_reserva">
+                    {% csrf_token %}
+                    <div>                        
+                        <input type="text" value="" id="id_cliente" name="id_cliente"/>
+                        <input type="text" value="" id="tipo_documento_form" name="tipo_documento_form"/>
+                        <input type="text" value="" id="documento_form" name="documento_form"/>
+                        <input type="text" value="" id="nombres_form" name="nombres_form"/>
+                        <input type="text" value="" id="apellidos_form" name="apellidos_form"/>
+                        <input type="date" value="" id="fecha_nacimiento_form" name="fecha_nacimiento_form"/>
+                        <input type="email" value="" id="email_form" name="email_form"/>
+                        <input type="tel" value="" id="telf_form" name="telf_form"/>
+                        
+                        <input type="text" value="" id="id_habitacion" name="id_habitacion"/>
+                        <input type="text" value="" id="fechain_form" name="fechain_form"/>
+                        <input type="text" value="" id="fechasal_form" name="fechasal_form"/>
+                        <input type="number" value="" id="num_adultos_form" name="num_adultos_form"/>
+                        <input type="number" value="" id="num_ninos_form" name="num_ninos_form"/>
+                        <input type="text" value="" id="total_pagar_form" name="total_pagar_form"/>
+                    </div>                        
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-secondary">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
     </div>
-    <br>
 
     <div class="row">
         <div class="card">
@@ -120,8 +185,6 @@
                                     value="" placeholder="" required="required" disabled>
                             </div>
                         </div>
-
-
                     </div>
                     <div class="row">
                         <div class="col-xl-6 col-md-6">
@@ -192,8 +255,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit"
-                                class="btn btn-primary btn-block login-btn border-button">Guardar</button>
+                            <button type="button" id="btn-guardar" class="btn btn-primary btn-block login-btn border-button" data-toggle="modal" data-target="#verificacionModal">
+                                Guardar
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -204,6 +268,7 @@
     <!-- block.super will get the content of the block from the parent template -->
     {{ block.super }}
     <script>
+        var table;
         $(document).ready(function () {
             $('#fechain').datetimepicker();
             $('#fechasal').datetimepicker();
@@ -228,11 +293,18 @@
                     success: function (result) {
                         if (result.existe) {
 
-                            $("#nombres").val(result.nombres)
-                            $("#apellidos").val(result.apellidos)
-                            $("#fecha_nacimiento").val(result.fecha_nacimiento)
-                            $("#email").val(result.email)
-                            $("#telf").val(result.telefono)
+                            $("#nombres").attr('disabled', 'disabled');
+                            $("#apellidos").attr('disabled', 'disabled');
+                            $("#fecha_nacimiento").attr('disabled', 'disabled');
+                            $("#email").attr('disabled', 'disabled');
+                            $("#telf").attr('disabled', 'disabled');
+
+                            $("#nombres").val(result.nombres);
+                            $("#apellidos").val(result.apellidos);
+                            $("#fecha_nacimiento").val(result.fecha_nacimiento);
+                            $("#email").val(result.email);
+                            $("#telf").val(result.telefono);
+                            $("#id_cliente").val(result.id);
                         }
                         else {
 
@@ -260,6 +332,7 @@
                 $("#email").val("")
                 $("#telf").val("")
             });
+
         })
         
         function buscarhabitacion() {
@@ -290,8 +363,8 @@
                 dataType: 'json',
                 success: function (result) {
                     if(!result.error){
-                        var table = $('#table-rooms');
-                        table.find("tbody tr").remove();
+                        /* var table = $('#table-rooms');
+                        table.find("tbody tr").remove(); */
                         var data = [];
                         result.data.forEach(function (room) {
                             var data_room = [];
@@ -307,7 +380,7 @@
 
                         console.log(data);
 
-                        $('#table-rooms').DataTable({
+                        table = $('#table-rooms').DataTable({
                             data: data,
                             columnDefs: [{
                                 orderable: false,
@@ -320,6 +393,42 @@
                             },
                             order: [[ 1, 'asc' ]]
                         });
+
+                        $('#btn-guardar').on('click', function() {
+                            var tblData = table.rows('.selected').data();                            
+                            console.log(tblData[0]);    //En este caso solo se puede seleccionar una fila
+                            /**
+                             * Set para solo vista
+                            */
+                            document.getElementById('conf-cliente').innerHTML = `${document.getElementById('nombres').value} ${document.getElementById('apellidos').value}`;
+                            document.getElementById('conf-doc').innerHTML = `${document.getElementById('cedula').value}`;
+                            document.getElementById('conf-hab').innerHTML = `${tblData[0][2]} ${tblData[0][3]}`;
+                            document.getElementById('conf-lle').innerHTML = `${document.getElementById('fechain').value}`;
+                            document.getElementById('conf-sal').innerHTML = `${document.getElementById('fechasal').value}`;
+                            document.getElementById('conf-adu').innerHTML = `${document.getElementById('adultos').value}`;
+                            document.getElementById('conf-nin').innerHTML = `${document.getElementById('ninos').value}`;
+                            var total_pagar = (parseInt(document.getElementById('adultos').value)+parseInt(document.getElementById('ninos').value))*tblData[0][5];
+                            document.getElementById('conf-tot').innerHTML = `${total_pagar}`;
+
+                            /**
+                             * Set para el formulario
+                            */
+                            document.getElementById('tipo_documento_form').value = document.getElementById('dropdown-docs').value;
+                            document.getElementById('documento_form').value = document.getElementById('cedula').value;
+                            document.getElementById('nombres_form').value = document.getElementById('nombres').value;
+                            document.getElementById('apellidos_form').value = document.getElementById('apellidos').value;
+                            document.getElementById('fecha_nacimiento_form').value = document.getElementById('fecha_nacimiento').value;
+                            document.getElementById('email_form').value = document.getElementById('email').value;
+                            document.getElementById('telf_form').value = document.getElementById('telf').value;
+
+                            document.getElementById('id_habitacion').value = tblData[0][1];
+                            document.getElementById('fechain_form').value = document.getElementById('fechain').value;
+                            document.getElementById('fechasal_form').value = document.getElementById('fechasal').value;
+                            document.getElementById('num_adultos_form').value = document.getElementById('adultos').value;
+                            document.getElementById('num_ninos_form').value = document.getElementById('ninos').value;
+                            document.getElementById('total_pagar_form').value = total_pagar;
+
+                        })
 
                     } else {
                         console.log(result);
