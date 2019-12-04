@@ -30,6 +30,8 @@ Para compilar:
 - python manage.py migrate reservas
 - python manage.py makemigrations shopping_cart
 - python manage.py migrate shopping_cart
+- python manage.py makemigrations noticias
+- python manage.py migrate noticias
 - python manage.py runserver
 
 Si se ha hecho un pull, para que no exista conflicto con los migrate en la db se debe hacer:

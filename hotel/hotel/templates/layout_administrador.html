@@ -19,6 +19,14 @@
     <link rel="stylesheet" href="{% static "css/style_own.css" %}">
     <link rel="stylesheet" href="{% static "css/bootstrap-datetimepicker.min.css" %}">
     <title>Hotel Salinas</title>
+    <style>
+        .noticia {
+            white-space: nowrap; 
+            width: 46em; 
+            overflow: hidden;
+            text-overflow: ellipsis; 
+        }
+    </style>
 </head>
 <body>
     <!-- ============================================================== -->
@@ -130,13 +138,15 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5"><i class="fas fa-fw fa-table"></i>Blog</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5"><i class="fas fa-fw fa-table"></i>Noticias</a>
                                 <div id="submenu-5" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="pages/general-table.html">Agregar noticias</a>
+                                            <a class="nav-link" href="/administracion/noticias/index">Ver noticias</a>
                                         </li>
-                                       
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/administracion/noticias/create">Agregar noticias</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
