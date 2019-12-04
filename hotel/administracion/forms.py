@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import Textarea
 
 from reservas.models import Room, RoomType, Document
 from tour_package.models import Tour_Package
@@ -94,6 +95,6 @@ class NoticiaForm(forms.ModelForm):
 
 		widgets = {
 			'titulo' : forms.TextInput(attrs={'class':'form-control'}),
-			'noticia' : forms.TextInput(attrs={'class':'form-control'}),
+			'noticia' : Textarea(attrs={'class':'form-control'}),
 			'path_image' : forms.FileInput(attrs={'class':'form-control'}),
 		}
