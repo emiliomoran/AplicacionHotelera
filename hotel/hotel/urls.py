@@ -30,6 +30,7 @@ urlpatterns = [
     re_path('api/', include('cardToken.urls')),
     path('api_mobile/', include('api_mobile.urls')),
     path('administracion/', include('administracion.urls')),
+    path('noticias/', include('noticias.urls')),
 ]
 
 if settings.DEBUG:

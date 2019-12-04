@@ -2,6 +2,7 @@ from django import forms
 
 from reservas.models import Room, RoomType, Document
 from tour_package.models import Tour_Package
+from noticias.models import Noticia
 
 class RoomForm(forms.ModelForm):
 
@@ -74,3 +75,25 @@ class DocumentForm(forms.ModelForm):
 	class Meta:
 		model = Document
 		fields = ('description', 'document', )
+
+class NoticiaForm(forms.ModelForm):
+	class Meta:
+		model = Noticia
+
+		fields = {
+			'titulo',
+			'noticia',
+			'path_image',
+		}
+
+		labels = {
+			'titulo' : 'Titulo de la noticia',
+			'noticia' : 'Noticia completa',
+			'path_image' : 'Subir imagen',
+		}
+
+		widgets = {
+			'titulo' : forms.TextInput(attrs={'class':'form-control'}),
+			'noticia' : forms.TextInput(attrs={'class':'form-control'}),
+			'path_image' : forms.FileInput(attrs={'class':'form-control'}),
+		}
