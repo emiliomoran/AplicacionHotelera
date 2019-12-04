@@ -20,4 +20,7 @@ class TourOrder(Product):
 
 	tour = models.ForeignKey(Tour_Package, on_delete = models.SET_NULL, null = True)
 	reservation_name = models.ForeignKey(Perfil,on_delete = models.SET_NULL, null = True)
+
+	def __str__(self):
+		return '{0} - {1}'.format(self.tour,self.reservation_name)
 	

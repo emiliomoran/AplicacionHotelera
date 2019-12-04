@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from accesos.models import Perfil
 from reservas.models import Booking
 from accesos.models import Usr
+from shopping_cart.models import OrderItem, Order
 from .models import Tour_Package
 from .forms import TourOrderForm
 
@@ -89,12 +90,30 @@ class ParticularOrder(FormMixin,DetailView):
 		self.object = self.get_object()
 		form = self.get_form()
 		if form.is_valid():
-
 			return self.form_valid(form)
 		else:
 			print(form.errors)
 			return self.form_invalid(form)
 
 	def form_valid(self, form):
-		form.save()
+		tour_order = form.save()	#Aqui esta el perfil como 'reservation_name'
+
+		final_price = tour_order.quantity * tour_order.tour.price
+		order_item = OrderItem(
+			product = tour_order,
+			price = final_price
+		)
+		order_item.save()
+
+		order = Order.objects.filter(owner = tour_order.reservation_name)
+		if len(order)>0:
+			order.first().items.add(order_item)
+		else:
+			new_order = Order(
+				reference_code = '123456789012',
+				owner = tour_order.reservation_name
+			)
+			new_order.save()
+			new_order.items.add(order_item)
+
 		return super(ParticularOrder, self).form_valid(form)
