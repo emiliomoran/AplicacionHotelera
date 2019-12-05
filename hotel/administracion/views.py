@@ -648,7 +648,7 @@ def noticia_create_form(request):
         form = NoticiaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('/administracion/')
+            return redirect('/administracion/noticias/index')
     else:
         form = NoticiaForm()
     return render(request, 'noticias/addNoticia.html', {
@@ -661,7 +661,35 @@ class NoticiaCreate(CreateView):
     form_class = NoticiaForm
     template_name = "noticias/addNoticia.html"
 
-    success_url = reverse_lazy("administracion")
+    #success_url = reverse_lazy("administracion")
+    success_url = reverse_lazy("/administracion/noticias/index")
+
+class NoticiasList(ListView):
+    model = Noticia
+    context_object_name = 'noticias'
+    template_name = 'noticias/listaNoticias.html'
+
+class NoticiasEliminar(DeleteView):
+    model = Noticia
+    success_url = reverse_lazy("administracion:listaNoticias")
+    template_name = 'noticias/noticias_delete_form.html'
+
+    def get_object(self):
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Noticia, id=id_)
+
+class NoticiasEdit(UpdateView):
+
+    model = Noticia
+    context_object_name = 'noticias'
+    template_name = 'noticias/noticias_edit.html'
+    form_class = NoticiaForm
+
+    def get_object(self):
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Noticia, id=id_)
+
+    success_url = reverse_lazy("administracion:listaNoticias")
 
 ###Administracion de checkout###
 
