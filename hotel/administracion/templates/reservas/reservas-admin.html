@@ -79,7 +79,8 @@
                         <th>Habitacion</th>
                         <th>Acción</th>                
                         <th>Check In</th>
-                        <th>Check Out</th>                      
+                        <th>Check Out</th>
+                        <th>Penalidad</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,8 +94,7 @@
                         <td class="fechaIngreso">{{ reserva.fecha_ingresado}}</td>
                         <td class="fechaSalida">{{ reserva.fecha_salida}}</td>
                         <td>{{ reserva.nombre }} {{ reserva.numero }}</td>
-                        <td>
-                            
+                        <td>                            
                             <a onclick="return abrir_modal('/administracion/administrador-edicion/{{ administrador.id }}','EDICIÓN')"
                                 class="btn">
                                 <span><i class="fas fa-edit"></i></span>
@@ -108,6 +108,7 @@
                         <td>
                             <button id="btn-modal-checkout" onclick="checkout_reserva('{{ reserva.id }}')" class="btn btn-primary btn-agregar-adm" data-toggle="modal" data-target="#verificacionCheckout" disabled="disabled"> Check Out </button>
                         </td>
+                        <td><a href="/administracion/checkouts-penalidad/{{ reserva.id }}"><i class="fas fa-exclamation-circle"></i></a></td>
                     </tr>
                     {% endfor %}
                 </tbody>                

@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
-from reservas.models import Room, BookingState, BookingType, RoomType
+from reservas.models import Room, BookingState, BookingType, RoomType, Checkout
 from accesos.models import Usr, Perfil
-from administracion.choices import TIPO_DE_IDENTIFICACION, GENERO
+from administracion.choices import TIPO_DE_IDENTIFICACION, GENERO, REASON_CHECKOUT
 from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
 from administracion.forms import RoomForm, TourForm, DocumentForm, NoticiaForm
@@ -662,3 +662,97 @@ class NoticiaCreate(CreateView):
     template_name = "noticias/addNoticia.html"
 
     success_url = reverse_lazy("administracion")
+
+###Administracion de checkout###
+
+def checkouts_penalidad(request, booking_id):
+    query_checkouts = Checkout.objects.raw('''
+        select id, reason, details_reason, amount
+        from reservas_checkout
+        where booking_id_id = %s
+        and is_canceled = %s
+        and is_removed = %s
+    ''', [int(booking_id), False, False])
+
+    query_checkouts_canceled = Checkout.objects.raw('''
+        select id, reason, details_reason, amount, details_canceled
+        from reservas_checkout
+        where booking_id_id = %s
+        and is_canceled = %s
+        and is_removed = %s
+    ''', [int(booking_id), True, False])
+
+    list_checkouts = []
+    list_checkouts_canceled = []
+
+    for e in query_checkouts:
+        list_checkouts.append(e)
+
+    for e in query_checkouts_canceled:
+        list_checkouts_canceled.append(e)
+
+    return render(request, 'checkouts/checkouts_administracion.html', {
+        'list_checkouts': list_checkouts,
+        'list_checkouts_canceled': list_checkouts_canceled,
+        'booking_id': booking_id,
+        'reason_checkout': REASON_CHECKOUT,
+    })
+
+def guardar_checkout_penalidad(request):
+    if request.method=="POST":
+        json_post = request.POST
+
+        if(json_post['checkout_id']!=""):
+            checkout_model = get_object_or_404(Checkout, id=json_post['checkout_id'])
+            checkout_model.reason=json_post['reason']
+            checkout_model.amount=json_post['amount']
+            checkout_model.details_reason=json_post['details_reason']
+
+            checkout_model.save()
+
+        else:
+            booking_model = get_object_or_404(Booking, id=json_post['booking_id'])
+
+            checkout_model = Checkout(
+                booking_id=booking_model,
+                reason=json_post['reason'],
+                details_reason=json_post['details_reason'],
+                amount=json_post['amount'],
+            )
+
+            checkout_model.save()
+                
+        return redirect('/administracion/checkouts-penalidad/'+json_post['booking_id'])
+    else:
+        return redirect('/administracion/lista_reservas')
+
+def eliminar_checkout_penalidad(request):
+    if request.method=="POST":
+        json_post = request.POST
+        #print(json_post)
+        checkout_model = get_object_or_404(Checkout, id=json_post['checkout_id_eliminacion'])
+        checkout_model.is_canceled=True
+        checkout_model.details_canceled=json_post['details_canceled']
+
+        checkout_model.save()
+
+        return redirect('/administracion/checkouts-penalidad/'+json_post['booking_id'])
+    else:
+        return redirect('/administracion/lista_reservas')
+
+def reactivar_checkout_penalidad(request):
+    if request.method=="POST":
+        json_post = request.POST
+        print(json_post)
+
+        checkout_model = get_object_or_404(Checkout, id=json_post['checkout_id_reactivacion'])
+        checkout_model.is_canceled=False
+        checkout_model.details_canceled=""
+
+        checkout_model.save()
+
+        return redirect('/administracion/checkouts-penalidad/'+json_post['booking_id'])
+    else:
+        return redirect('/administracion/lista_reservas')
+
+###Administracion de checkout###

@@ -77,6 +77,19 @@ class Booking(models.Model):
 		
 		return room.precio """
 
+#Checkout
+
+class Checkout(models.Model):
+	booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE)
+	reason = models.CharField(max_length = 100)
+	details_reason = models.TextField()
+	amount = models.FloatField(default=0)
+	is_canceled = models.BooleanField(default=False)
+	details_canceled = models.TextField()
+	is_removed = models.BooleanField(default=False)
+	create_date = models.DateTimeField(auto_now_add=True)
+	update_date = models.DateTimeField(auto_now=True)
+
 #Prueba documento
 class Document(models.Model):
 	description = models.CharField(max_length=255, blank=True)

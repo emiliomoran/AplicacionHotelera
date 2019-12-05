@@ -88,7 +88,7 @@
             <div class="modal-footer">                
                 <form method="POST" action="/administracion/agregar_reserva">
                     {% csrf_token %}
-                    <div>                        
+                    <div style="display: none;">
                         <input type="text" value="" id="id_cliente" name="id_cliente"/>
                         <input type="text" value="" id="tipo_documento_form" name="tipo_documento_form"/>
                         <input type="text" value="" id="documento_form" name="documento_form"/>

@@ -48,4 +48,10 @@ urlpatterns = [
     path('makeCheckOut/<pk>/', views.makeCheckOutView.as_view(), name="hacer_checkout"),
 
     path('noticias/create',views.noticia_create_form, name="noticia_create"),
+
+    #Checkouts
+    path('checkouts-penalidad/<int:booking_id>', views.checkouts_penalidad),
+    path('guardar-checkout-penalidad', views.guardar_checkout_penalidad),
+    path('eliminar-checkout-penalidad', views.eliminar_checkout_penalidad),
+    path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),
 ]
