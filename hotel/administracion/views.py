@@ -332,12 +332,14 @@ def habitaciones_disponibilidad(request):
 
 
 def lista_reservas(request):
+    print("Entraaaaa a listar")
     reservas_list = []
     out_queries = Booking.objects.raw('''
         select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name, p.cedula, r.nombre, r.numero
         from reservas_booking as b, accesos_perfil as p, reservas_room as r
-        where b.customer_id_id = p.id and b.room_id_id = r.id and b.state_id_id > 1
+        where b.customer_id_id = p.id and b.room_id_id = r.id
     ''')
+    print(out_queries)
     for e in out_queries:
         print(e)
         reservas_list.append(e)
