@@ -10,3 +10,9 @@ GENERO = [
     ('M','Masculino'),
     ('F','Femenino'),
 ]
+
+REASON_CHECKOUT = [
+    ('TARDÍO', 'Tardío'),
+    ('DAÑO HABITACIÓN', 'Daño habitación'),
+    ('OTRO', 'Otro')
+]

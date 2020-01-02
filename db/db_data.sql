@@ -12,11 +12,6 @@ values('customer','0911122233', 'customer', null, now(), false, now(), now(), 1,
 /* */
 
 /*RoomType */
-insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Suite','Habitación de tipo suite', false, now(), now());
-insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Familiar','Habitación de tipo familiar', false, now(), now());
-insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Deluxe','Habitación de tipo deluxe', false, now(), now());
-insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Clásico','Habitación de tipo clásico', false, now(), now());
-
 insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Normal','Habitación de tipo normal', false, now(), now());
 insert into reservas_roomtype(nombre, descripcion, eliminado, fecha_creacion, fecha_modificacion) values('Matrimonial','Habitación de tipo matrimonial', false, now(), now());
 /* */
@@ -40,9 +35,9 @@ insert into reservas_bookingtype(name, description, is_removed, create_date, upd
 /* */
 
 /*Booking state*/
-insert into public.reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Pasada', 'Reserva pasada', false, now(), now());
-insert into public.reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Actual', 'Reserva actual', false, now(), now());
-insert into public.reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Futura', 'Reserva futura', false, now(), now());
+insert into reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Registrada', 'Reserva registrada', false, now(), now());
+insert into reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Activa', 'Reserva activa', false, now(), now());
+insert into reservas_bookingstate(name, description, is_removed, create_date, update_date) values('Finalizada', 'Reserva finalizada', false, now(), now());
 /* */
 
 /* Booking */
@@ -65,6 +60,7 @@ values(now(), '2019-09-05 23:34:39.554642-05', '2019-09-07 21:34:39.554642-05', 
 
 /* Product */
 /*INSERT INTO public.shopping_cart_product(
+INSERT INTO shopping_cart_product(
 	id, title, description)
 	VALUES (1, 'Paquete Tour 1', 'Nadar con Tortugas'),
 	(2,'Paquete Tour 2','Tour Islas');
