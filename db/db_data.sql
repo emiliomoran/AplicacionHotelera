@@ -64,12 +64,12 @@ values(now(), '2019-09-05 23:34:39.554642-05', '2019-09-07 21:34:39.554642-05', 
 /* */
 
 /* Product */
-INSERT INTO public.shopping_cart_product(
+/*INSERT INTO public.shopping_cart_product(
 	id, title, description)
 	VALUES (1, 'Paquete Tour 1', 'Nadar con Tortugas'),
 	(2,'Paquete Tour 2','Tour Islas');
-
+*/
 /* Tour_Package */
-INSERT INTO tour_package_tour_package(id,title,description,company,days,hours, price, path_image)
-VALUES(1,'Tour 1','Salida con  Tortugas','COMPANY TEST 1','Lunes-Miercoles-Viernes','14:00 a 17:00',10,'path'),
-(2,'Tour 2','Viaje a otras islas','COMPANY TEST 2','Viernes','10:00', 300,'path');
+INSERT INTO tour_package_tour_package(id,title,description,company,days,hours, price, path_image,available_stock)
+VALUES(1,'Tour 1','Salida con  Tortugas','COMPANY TEST 1','Lunes-Miercoles-Viernes','14:00 a 17:00',10,'path',30),
+(2,'Tour 2','Viaje a otras islas','COMPANY TEST 2','Viernes','10:00', 300,'path',30);

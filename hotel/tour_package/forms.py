@@ -18,17 +18,6 @@ class TourForm(forms.ModelForm):
 			'path_image',
 		]
 
-		labels = {
-			'title':'Titulo del Paquete',
-			'description':'Descripcion del Paquete',
-			'company':'Compañia',
-			'days':'Dias del Tour',
-			'hours':'Horas del Tour',
-			'price':'Precio del Paquete',
-			'available_stock': 'Cupos Disponibles',
-			'path_image':'Subir Imagen',
-		}
-
 		widgets = {
 			'title': forms.TextInput(attrs={'class':'form-control'}),
 			'description': forms.TextInput(attrs={'class':'form-control'}),

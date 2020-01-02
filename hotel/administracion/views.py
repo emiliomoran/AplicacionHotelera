@@ -5,7 +5,8 @@ from accesos.models import Usr, Perfil
 from administracion.choices import TIPO_DE_IDENTIFICACION, GENERO
 from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
-from administracion.forms import RoomForm, TourForm, DocumentForm, NoticiaForm
+from administracion.forms import RoomForm, DocumentForm, NoticiaForm
+from tour_package.forms import TourForm
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
