@@ -11,5 +11,6 @@ urlpatterns = [
     path('paquetes_turisticos', views.show_packages),
     path('rooms<int:profile_id>',views.rooms, name="list_bookings"),
     path('habitacion-detalles/<int:id>', views.show_details_room),
-    path('add-to-cart/<int:id_cuarto>',views.add_to_cart, name="add-to-cart"),    
+    path('add-to-cart/<int:id_cuarto>',views.add_to_cart, name="add-to-cart"), 
+    path('historial/',views.BookingRecords.as_view(),name= "historial-reservas"),   
 ]

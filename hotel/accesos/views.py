@@ -208,4 +208,3 @@ class ProfileEdit(UpdateView):
         return get_object_or_404(Perfil,id=id_perfil)
 
     success_url = reverse_lazy("accesos:profile")
-

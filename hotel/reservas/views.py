@@ -158,3 +158,51 @@ def add_to_cart(request, id_cuarto):
 
 def show_packages(request):
     return render(request, 'paquete_turistico.html')
+
+
+class BookingRecords(ListView):
+
+    model = Booking
+    #context_object_name = "bookings"
+    template_name = "booking_records.html"
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+
+        usuario = self.request.session["customer"]['customer_id']
+        print("Usuario es: " + str(usuario))
+        reservas = Booking.objects.filter(customer_id = usuario)
+        print("Las reservas son: ")
+        print(reservas)
+        dic_registradas = {}
+        dic_activas = {}
+        dic_finalizadas = {}
+
+        perfil = Perfil.objects.filter(id=usuario).first()
+        nombre_cliente = perfil.name
+        cedula = perfil.cedula
+
+        print(nombre_cliente)
+
+        for reserva in reservas:
+            room = Room.objects.filter(id=reserva.room_id.id).first()
+            dicInterno = {'name':nombre_cliente,'identification':cedula,
+            'room_description':room.descripcion,'nights':reserva.no_nights,'price':reserva.total_to_pay}
+
+            if reserva.state_id == 1:
+                dic_registradas[reserva.id] = dicInterno
+            elif reserva.state_id == 2:
+                dic_activas[reserva.id] = dicInterno
+            else:
+                dic_finalizadas[reserva.id] = dicInterno
+
+       
+        
+        
+        context['registrada'] = dic_registradas
+        context['activa'] = dic_activas
+        context['finalizada'] = dic_finalizadas
+
+        print(context)
+        return context
+
