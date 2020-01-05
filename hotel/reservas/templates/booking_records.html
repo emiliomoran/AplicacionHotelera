@@ -61,7 +61,7 @@
         <h4>Reservas Registradas</h3>
 
         {% if registrada %}
-            {% for id,info in registrada.items %}
+            {% for id,info in registrada %}
                 <p>Numero de Reserva: {{ id}}</p>
                 <p>Id de Cliente: {{ info.name}}</p>
                 <p>Precio a Pagar: {{info.price}}</p>
@@ -82,7 +82,7 @@
                 </thead>
                 <tbody>
                     
-                {% for id,info in activa.items %}
+                {% for id,info in activa%}
                     <tr>
                         <th scope="row">{{id}}</th>
                         <td>{{info.name}}</td>
@@ -107,7 +107,7 @@
                 </thead>
                 <tbody>
                     
-                {% for id,info in finalizada.items %}
+                {% for id,info in finalizada %}
                     <tr>
                         <th scope="row">{{id}}</th>
                         <td>{{info.name}}</td>

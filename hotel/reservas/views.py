@@ -174,9 +174,9 @@ class BookingRecords(ListView):
         reservas = Booking.objects.filter(customer_id = usuario)
         print("Las reservas son: ")
         print(reservas)
-        dic_registradas = {}
-        dic_activas = {}
-        dic_finalizadas = {}
+        lista_registradas = []
+        lista_activas = []
+        lista_finalizadas = []
 
         perfil = Perfil.objects.filter(id=usuario).first()
         nombre_cliente = perfil.name
@@ -190,18 +190,19 @@ class BookingRecords(ListView):
             'room_description':room.descripcion,'nights':reserva.no_nights,'price':reserva.total_to_pay}
 
             if reserva.state_id == 1:
-                dic_registradas[reserva.id] = dicInterno
+                lista_registradas.append((reserva.id,dicInterno))
             elif reserva.state_id == 2:
-                dic_activas[reserva.id] = dicInterno
+                lista_activas.append((reserva.id,dicInterno))
             else:
-                dic_finalizadas[reserva.id] = dicInterno
+                lista_finalizadas.append((reserva.id,dicInterno))
 
-       
-        
-        
-        context['registrada'] = dic_registradas
-        context['activa'] = dic_activas
-        context['finalizada'] = dic_finalizadas
+        lista_registradas.sort(key=lambda tup: tup[0])
+        lista_activas.sort(key=lambda tup: tup[0])
+        lista_finalizadas.sort(key=lambda tup: tup[0])
+
+        context['registrada'] = lista_registradas
+        context['activa'] = lista_activas
+        context['finalizada'] = lista_finalizadas
 
         print(context)
         return context
