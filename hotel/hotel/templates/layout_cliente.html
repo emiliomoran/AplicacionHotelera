@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="{% static "css/icomoon.css" %}">
   <link rel="stylesheet" href="{% static "css/style.css" %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.31/esri/css/esri.css">
 </head>
 
 <body>
@@ -113,10 +114,10 @@
         <div class="col-md-4">
           <div class="ftco-footer-widget mb-4">
             <form action="/contact/to-suscribe" method="POST">
-              {% csrf_token %}              
+              {% csrf_token %}
               <div class="form-group">
                 <input type="email" id="email" name="email" class="form-control" placeholder="Correo" required>
-              </div>              
+              </div>
               <div class="form-group">
                 <input type="submit" value="Suscribirse" class="btn-custom px-3 py-2">
               </div>
@@ -182,6 +183,56 @@
         }
       });
     })		
+  </script>
+  <script src="https://js.arcgis.com/3.31/"></script>
+  <script>
+    var map;
+    var graphicsArray = [];
+    require(["esri/map",
+      "esri/geometry/Geometry",
+      "esri/geometry/Point",
+      "esri/geometry/Polyline",
+      "esri/geometry/Polygon",
+      "esri/graphic",
+      "esri/symbols/SimpleMarkerSymbol",
+      "esri/symbols/SimpleLineSymbol",
+      "esri/symbols/SimpleFillSymbol",
+      "esri/Color",
+      "esri/InfoTemplate",
+      "dojo/domReady!",
+      "esri/geometry"], function (Map,
+
+        Geometry,
+        Point,
+        Polyline,
+        Polygon,
+        Graphic,
+        SimpleMarkerSymbol,
+        SimpleLineSymbol,
+        SimpleFillSymbol,
+        Color,
+        InfoTemplate) {
+        map = new Map("esri-map-container", {
+          basemap: "topo",
+          center: [-106.61, 35.1107],
+          zoom: 13
+        });
+
+        map.on("load", addSomeGraphics);
+
+        var point = new Point(19.3911658,-99.4245036);
+        var pointSymbol = new SimpleMarkerSymbol();
+        var pointAttributes = { city: "Albuquerque", state: "New Mexico" };
+        var pointInfoTemplate = new InfoTemplate("Albuquerque");
+        var pointGraphic = new Graphic(point, pointSymbol, pointAttributes).setInfoTemplate(pointInfoTemplate);
+
+        graphicsArray.push(pointGraphic);
+        function addSomeGraphics() {
+          for (i = 0; i < graphicsArray.length; ++i) {
+            map.graphics.add(graphicsArray[i]);
+          }
+        }
+      });
   </script>
   <!---->
 </body>
