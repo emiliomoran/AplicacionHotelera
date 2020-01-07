@@ -10,7 +10,9 @@ from rest_framework.status import (
 from rest_framework.response import Response
 from accesos.models import Usr, Perfil
 from django.contrib.auth.hashers import make_password, check_password
-
+from noticias.models import Noticia
+from noticias.serializer import NoticiaSerialiser
+from rest_framework import viewsets
 
 @csrf_exempt
 @api_view(["POST"])
@@ -171,3 +173,7 @@ def get_bookings(request):
 				'error': True,
 				'message_error': 'Error en la aplicación!'
 			}, status=HTTP_404_NOT_FOUND)
+
+class NoticiasViewSet(viewsets.ModelViewSet):
+    queryset = Noticia.objects.all()
+    serializer_class = NoticiaSerialiser
