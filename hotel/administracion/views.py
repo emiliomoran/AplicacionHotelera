@@ -787,3 +787,11 @@ def reactivar_checkout_penalidad(request):
         return redirect('/administracion/lista_reservas')
 
 ###Administracion de checkout###
+
+def estadisticas(request):
+    reservasList = list(Booking.objects.all().values('check_in_date', 'total_to_pay'))
+    fechasList = []
+    for reserva in reservasList:
+        fechasList.append(reserva["check_in_date"].strftime("%d-%m-%Y"))
+    print(reservasList[0]["check_in_date"].strftime("%d-%m-%Y"))
+    return render(request, 'estadisticas/estadisticas.html', {'reservas': fechasList})
