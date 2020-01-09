@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import Textarea
-
+from .models import Publicidad
 from reservas.models import Room, RoomType, Document
 from tour_package.models import Tour_Package
 from noticias.models import Noticia
@@ -98,3 +98,20 @@ class NoticiaForm(forms.ModelForm):
 			'noticia' : Textarea(attrs={'class':'form-control'}),
 			'path_image' : forms.FileInput(attrs={'class':'form-control'}),
 		}
+
+class PublicidadForm(forms.ModelForm):
+   class Meta:
+      model = Publicidad
+      fields = ['imagen','name','company','price','phone','city','address']
+
+      widgets = {
+			'name' : forms.TextInput(attrs={'class':'form-control'}),
+			'company' : forms.TextInput(attrs={'class':'form-control'}),
+			'price' : forms.NumberInput(attrs={'class':'form-control'}),
+			'imagen' : forms.FileInput(attrs={'class':'form-control'}),
+			'phone' : forms.TextInput(attrs={'class':'form-control'}),
+			'city' : forms.TextInput(attrs={'class':'form-control'}),
+			'address' : forms.TextInput(attrs={'class':'form-control'})
+		}
+
+

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -54,72 +55,72 @@
             </div>
         </nav>
         <!-- END nav -->
-        {% block content%}
+        <div class="hero">
 
-        <h2>Historial de Reservas</h2>
+            <h2>Historial de Reservas</h2>
 
-        <h4>Reservas Registradas</h3>
+            <h4>Reservas Registradas</h3>
 
-        {% if registrada %}
-            {% for id,info in registrada %}
-                <p>Numero de Reserva: {{ id}}</p>
-                <p>Id de Cliente: {{ info.name}}</p>
-                <p>Precio a Pagar: {{info.price}}</p>
-            {% endfor %}
-        {% else %}
-            <p>No hay reservas registradas actualmente.</p>
-        {% endif %}
-
-        <h4>Reservas Activas</h3>
-        {% if activa %}
-            <table class = "table">
-                <thead>
-                    <tr>
-                        <th scope="col"> Booking Id </th>
-                        <th scope="col"> Client Id</th>
-                        <th scope="col"> Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                {% for id,info in activa%}
-                    <tr>
-                        <th scope="row">{{id}}</th>
-                        <td>{{info.name}}</td>
-                        <td>{{info.price}}</td>
-                    </tr>
+            {% if registrada %}
+                {% for id,info in registrada %}
+                    <p>Numero de Reserva: {{ id}}</p>
+                    <p>Id de Cliente: {{ info.name}}</p>
+                    <p>Precio a Pagar: {{info.price}}</p>
                 {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>No hay reservas activas.</p>
-        {% endif %}
+            {% else %}
+                <p>No hay reservas registradas actualmente.</p>
+            {% endif %}
 
-        <h4>Reservas Finalizadas</h3>
-        {% if finalizada %}
-            <table class = "table">
-                <thead>
-                    <tr>
-                        <th scope="col"> Booking Id </th>
-                        <th scope="col"> Client Id</th>
-                        <th scope="col"> Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                {% for id,info in finalizada %}
-                    <tr>
-                        <th scope="row">{{id}}</th>
-                        <td>{{info.name}}</td>
-                        <td>{{info.price}}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>Aún no ha reservado con nosotros.</p>
-        {% endif %}
+            <h4>Reservas Activas</h3>
+            {% if activa %}
+                <table class = "table">
+                    <thead>
+                        <tr>
+                            <th scope="col"> Booking Id </th>
+                            <th scope="col"> Client Id</th>
+                            <th scope="col"> Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    {% for id,info in activa%}
+                        <tr>
+                            <th scope="row">{{id}}</th>
+                            <td>{{info.name}}</td>
+                            <td>{{info.price}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No hay reservas en curso.</p>
+            {% endif %}
 
-        {% endblock %}
+            <h4>Reservas Finalizadas</h3>
+            {% if finalizada %}
+                <table class = "table">
+                    <thead>
+                        <tr>
+                            <th scope="col"> Booking Id </th>
+                            <th scope="col"> Client Id</th>
+                            <th scope="col"> Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    {% for id,info in finalizada %}
+                        <tr>
+                            <th scope="row">{{id}}</th>
+                            <td>{{info.name}}</td>
+                            <td>{{info.price}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Aún no ha reservado con nosotros.</p>
+            {% endif %}
+        </div>
+        
     </body>
 </html>

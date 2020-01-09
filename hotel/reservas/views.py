@@ -24,7 +24,10 @@ def index(request):
     print(booking_type_list)
     return render(request, 'index.html', {'room_type': room_type_list, 'booking_type': booking_type_list})
 
+def test(request):
 
+    return render(request,'test.html')
+    
 @csrf_protect
 def busqueda_normal(request):
     if request.method == 'POST':

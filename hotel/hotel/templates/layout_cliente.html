@@ -27,10 +27,10 @@
     <link rel="stylesheet" href="{% static "css/flaticon.css" %}">
     <link rel="stylesheet" href="{% static "css/icomoon.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
-
+    {% block navbar %}
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
 	      <a class="navbar-brand" href="/reservas/">Hotel Salinas</a>
@@ -61,7 +61,7 @@
 	    </div>
 	  </nav>
     <!-- END nav -->
-		
+		{% endblock %}
 
   {% block content %}
 	{% endblock %}
