@@ -77,7 +77,7 @@
                         <th>Checkin</th>
                         <th>Checkout</th>
                         <th>Habitacion</th>
-                        <th>Acción</th>                
+                        <th>Extender</th>                
                         <th>Check In</th>
                         <th>Check Out</th>
                         <th>Penalidad</th>
@@ -95,10 +95,7 @@
                         <td class="fechaSalida">{{ reserva.fecha_salida}}</td>
                         <td>{{ reserva.nombre }} {{ reserva.numero }}</td>
                         <td>                            
-                            <a onclick="return abrir_modal('/administracion/administrador-edicion/{{ administrador.id }}','EDICIÓN')"
-                                class="btn">
-                                <span><i class="fas fa-edit"></i></span>
-                            </a>
+                            <button id="btn-modal-extender" onclick="extender_previa('{{ reserva.id }}', '{{ reserva.check_out_date}}')" class="btn btn-primary btn-agregar-adm" data-toggle="modal" data-target="#extendermodal" > Extender </button>
                         </td>
 
                         <!-- onclick="checkin_reserva('{{ reserva.id }}')" -->
@@ -116,11 +113,44 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="extendermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Extender Reserva</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+           
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Nueva fecha de salida:</label>
+              <input type="text" class="form-control" id="fechasalnew" name="fechasal" required>
+              <input id="id-reserva-extension" type="hidden" value=""/>
+              <input id="fecha-out" type="hidden" value=""/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" " class="btn btn-primary extender">Guardar</button>
+              </div>
+          </form>
+        </div>
+       
+      </div>
+    </div>
+  </div>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 {% block scripts %}
 {{ block.super }}
 <script>
     $( document ).ready(function() {
+        $('#fechasalnew').datetimepicker({
+                format: 'DD-MM-YYYY HH:mm:ss',
+                
+            });
         $(".table tbody tr td:nth-child(6)").each( function(){
             var fechaIngresado = $(this).text();
             let tableRow = $(this).closest("tr")
@@ -130,7 +160,10 @@
                 tableRow.find("#btn-modal-checkout").removeClass("disabled");
                 tableRow.find("#btn-modal-checkout").removeAttr("disabled")
             }
+            
         });
+      
+
 
         $(".table tbody tr td:nth-child(7)").each( function(){
             var fechaSalida = $(this).text();
@@ -138,6 +171,9 @@
             if (fechaSalida != "-") {
                 tableRow.find("#btn-modal-checkout").prop("disabled", true);
                 tableRow.find("#btn-modal-checkout").addClass("disabled");
+                tableRow.find("#btn-modal-extender").prop("disabled", true);
+                tableRow.find("#btn-modal-extender").addClass("disabled");
+               
             }
         });
 
@@ -173,6 +209,8 @@
                 }
             });            
         });
+       
+        
 
         $(".checkOutButton").click(function(){
             let id = $("#id-reserva-checkout").val();
@@ -202,6 +240,36 @@
             });
                 
         });
+        $(".extender").click(function(){
+            
+        let id = $("#id-reserva-extension").val();
+        console.log(id);
+        var fecha = $('#fechasalnew').val();
+        fecha = fecha.replace(" ", ".");
+        console.log(fecha);
+        let tableRow = $(`#${id}`);
+        $.ajax({
+                type: 'POST',
+                url: "/administracion/extenderReserva/"+id+"/"+ fecha+"/",
+               
+                success: function(data) {
+                    var detalle = data.detail;
+                    console.log(detalle)
+                    if(detalle == "Not found") {
+                        alert("Proceso Fallido");
+                    }
+
+                    tableRow.find(".check_out_date").html(detalle);
+                   
+                    $('#extendermodal').modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+                },
+                error: function() {
+                    alert("Extension fallida");
+                }
+            });
+        });
     });
 
     function checkin_reserva(id) {        
@@ -213,6 +281,27 @@
         console.log(id);
         document.getElementById("id-reserva-checkout").value = id;
     }
+  
+    function extender_previa(id, fecha) {
+        console.log(id);
+        console.log(fecha)
+        document.getElementById("id-reserva-extension").value = id;
+        document.getElementById("fecha-out").value = fecha;
+        $('#fechasalnew').datetimepicker('destroy');
+        $('#fechasalnew').datetimepicker({
+                format: 'DD-MM-YYYY HH:mm:ss',
+                minDate: fecha,
+                defaultDate: fecha
+                
+            });
+        
+    }
+   
+    
+   
+    
+    
+    
 
 </script>
 {% endblock %}

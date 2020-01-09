@@ -16,6 +16,8 @@ from rest_framework import generics
 from rest_framework import views
 from rest_framework.response import Response
 
+
+
 # from datetime import date
 # from datetime import datetime
 import dateutil.parser
@@ -59,6 +61,9 @@ def reservas(request):
     template_name = 'reservas/reservas-admin.html'
     return render(request, template_name)
 
+def reportes_reserva(request):
+    template_name = 'reportes/ReporteReserva.html'
+    return render(request, template_name)
 
 class RoomList(ListView):
     model = Room
@@ -575,6 +580,36 @@ def clientes(request):
 
 ###Administracion de clientes###
 
+class extenderReservaView(views.APIView):
+    def post(self, request, pk, fecha ):
+        # Booking.bookings.get_object(pk = pk)
+       
+        
+        nuevafecha = fecha.split('.')[0]
+        tmp = fecha.split('.')[1]
+        print(tmp)
+        tmp1 = tmp.split(':')[0]
+        tmp2 = fecha.split(':')[1]
+        fecha_sal = nuevafecha.split('-')[2]+"-"+nuevafecha.split('-')[1]+"-"+nuevafecha.split('-')[0]+" "+tmp1+":"+tmp2
+        print(fecha_sal)
+        bookingActual = get_object_or_404(Booking, pk=pk)
+        
+
+
+        fechasal_datetime = datetime.datetime.strptime(fecha_sal, '%Y-%m-%d %I:%M')      
+        bookingActual.check_out_date = fechasal_datetime   
+        fechain = bookingActual.check_out_date
+        fechain = fechain.replace(tzinfo=None)
+        fe = bookingActual.check_out_date
+        fe = fe.replace(tzinfo=None)
+        dif = fe -  fechain
+        bookingActual.no_nights=dif.days 
+        print(bookingActual.no_nights)
+        bookingActual.save()
+        print(bookingActual.check_out_date)
+        print(bookingActual.fecha_salida)
+        respuesta = {'detail':  fechasal_datetime}
+        return JsonResponse(respuesta)
 
 class makeCheckInView(views.APIView):
     def post(self, request, pk):
@@ -584,8 +619,10 @@ class makeCheckInView(views.APIView):
         print("TEST")
         fecha_ingreso = datetime.datetime.now()
         #fecha_ingreso = datetime.datetime.now(timezone.utc)
+        print(fecha_ingreso)
         str_fecha_ingreso = fecha_ingreso.strftime("%Y-%m-%d %I:%M %p")
         bookingActual.fecha_ingresado = datetime.datetime.strptime(str_fecha_ingreso, '%Y-%m-%d %I:%M %p')
+        
         bookingActual.save()
         respuesta = {'detail':  str_fecha_ingreso}
         return JsonResponse(respuesta)
@@ -603,6 +640,8 @@ class makeCheckOutView(views.APIView):
         bookingActual.save()
         respuesta = {'detail':  str_fecha_salida}
         return JsonResponse(respuesta)
+
+
 
 ####PAQUETES TURISTICOS####
 

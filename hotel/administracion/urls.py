@@ -46,6 +46,7 @@ urlpatterns = [
     #path('makeCheckIn/<pk>/', views.makeCheckIn, name="hacer_checkin"),
     path('makeCheckIn/<pk>/', views.makeCheckInView.as_view(), name="hacer_checkin"),
     path('makeCheckOut/<pk>/', views.makeCheckOutView.as_view(), name="hacer_checkout"),
+    path('extenderReserva/<pk>/<str:fecha>/', views.extenderReservaView.as_view(), name="hacer_extension"),
 
     path('noticias/create',views.noticia_create_form, name="noticia_create"),
     path('noticias/index',views.NoticiasList.as_view(), name="listaNoticias"),
@@ -56,5 +57,8 @@ urlpatterns = [
     path('checkouts-penalidad/<int:booking_id>', views.checkouts_penalidad),
     path('guardar-checkout-penalidad', views.guardar_checkout_penalidad),
     path('eliminar-checkout-penalidad', views.eliminar_checkout_penalidad),
-    path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),    
+    path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),
+
+    #reportes  
+    
 ]
