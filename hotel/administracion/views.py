@@ -69,6 +69,7 @@ class RoomList(ListView):
 
 
 def room_create_form(request):
+    print("Entra a room_create_form")
     if request.method == 'POST':
         form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
@@ -90,7 +91,7 @@ class RoomCreate(CreateView):
 
 
 def upload_image_room(request):
-
+    print("Entra a upload_image_room")
     if request.method == 'POST':
         file = request.FILES['path_image']
         form = RoomForm(request.POST, request.FILES)
@@ -605,7 +606,38 @@ class makeCheckOutView(views.APIView):
         bookingActual.save()
         respuesta = {'detail':  str_fecha_salida}
         return JsonResponse(respuesta)
+        
+class extenderReservaView(views.APIView):
+    def post(self, request, pk, fecha ):
+        # Booking.bookings.get_object(pk = pk)
+       
+        
+        nuevafecha = fecha.split('.')[0]
+        tmp = fecha.split('.')[1]
+        print(tmp)
+        tmp1 = tmp.split(':')[0]
+        tmp2 = fecha.split(':')[1]
+        fecha_sal = nuevafecha.split('-')[2]+"-"+nuevafecha.split('-')[1]+"-"+nuevafecha.split('-')[0]+" "+tmp1+":"+tmp2
+        print(fecha_sal)
+        bookingActual = get_object_or_404(Booking, pk=pk)
+        
 
+
+        fechasal_datetime = datetime.datetime.strptime(fecha_sal, '%Y-%m-%d %I:%M')      
+        bookingActual.check_out_date = fechasal_datetime   
+        fechain = bookingActual.check_out_date
+        fechain = fechain.replace(tzinfo=None)
+        fe = bookingActual.check_out_date
+        fe = fe.replace(tzinfo=None)
+        dif = fe -  fechain
+        ##falta precio y noches
+        bookingActual.no_nights=dif.days 
+        print(bookingActual.no_nights)
+        bookingActual.save()
+        print(bookingActual.check_out_date)
+        print(bookingActual.fecha_salida)
+        respuesta = {'detail':  fechasal_datetime}
+        return JsonResponse(respuesta)
 ####PAQUETES TURISTICOS####
 
 
