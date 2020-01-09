@@ -7,6 +7,8 @@ from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
 from administracion.forms import RoomForm, DocumentForm, NoticiaForm
 from tour_package.forms import TourForm
+from .models import Publicidad
+from .forms import PublicidadForm
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
@@ -647,6 +649,48 @@ class TourEliminar(DeleteView):
         id_ = self.kwargs.get("id_tour")
         return get_object_or_404(Tour_Package, id=id_)
 
+
+###ADMINISTRACION DE PUBLICIDAD NO INVASIVA
+
+class PublicidadList(ListView):
+    model = Publicidad
+    context_object_name = 'anuncios'
+    template_name = 'publicidad/publicidad_list.html'
+
+class PublicidadCreate(CreateView):
+    model = Publicidad
+    form_class = PublicidadForm
+    template_name = 'publicidad/publicidad_create_form.html'
+
+    success_url = reverse_lazy('administracion:publicidad_listar')
+
+class PublicidadEdit(UpdateView):
+
+    model = Publicidad
+    context_object_name = 'anuncio'
+    template_name = 'publicidad/publicidad_edit.html'
+    form_class = PublicidadForm
+
+    def get_object(self):
+        id_ = self.kwargs.get("id_anuncio")
+        return get_object_or_404(Publicidad, id=id_)
+
+    success_url = reverse_lazy("administracion:publicidad_listar")
+
+class PublicidadDelete(DeleteView):
+    model = Publicidad
+    success_url = reverse_lazy("administracion:publicidad_listar")
+    template_name = 'publicidad/publicidad_delete_form.html'
+
+    def get_object(self):
+        id_ = self.kwargs.get("id_anuncio")
+        return get_object_or_404(Publicidad, id=id_)
+
+def anuncio_test(request):
+    anuncio = Publicidad.objects.filter(id=1).first()
+    
+
+##NOTICIAS
 def noticia_create_form(request):
     if request.method == 'POST':
         form = NoticiaForm(request.POST, request.FILES)
@@ -788,3 +832,12 @@ def reactivar_checkout_penalidad(request):
         return redirect('/administracion/lista_reservas')
 
 ###Administracion de checkout###
+
+
+def estadisticas(request):
+    reservasList = list(Booking.objects.all().values('check_in_date', 'total_to_pay'))
+    fechasList = []
+    for reserva in reservasList:
+        fechasList.append(reserva["check_in_date"].strftime("%d-%m-%Y"))
+    print(reservasList[0]["check_in_date"].strftime("%d-%m-%Y"))
+    return render(request, 'estadisticas/estadisticas.html', {'reservas': fechasList})

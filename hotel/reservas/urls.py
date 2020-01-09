@@ -7,6 +7,7 @@ app_name = 'reservas'
 
 urlpatterns = [
     path('', views.index, name = 'index'),
+    path('test/',views.test,name='test'),
     path('busqueda-normal', views.busqueda_normal),
     path('paquetes_turisticos', views.show_packages),
     path('rooms<int:profile_id>',views.rooms, name="list_bookings"),
