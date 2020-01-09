@@ -7,6 +7,8 @@ from django.views.generic import ListView, CreateView
 from django.views.generic.edit import UpdateView, DeleteView
 from administracion.forms import RoomForm, DocumentForm, NoticiaForm
 from tour_package.forms import TourForm
+from .models import Publicidad
+from .forms import PublicidadForm
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
@@ -15,8 +17,6 @@ import pytz
 from rest_framework import generics
 from rest_framework import views
 from rest_framework.response import Response
-
-
 
 # from datetime import date
 # from datetime import datetime
@@ -61,9 +61,6 @@ def reservas(request):
     template_name = 'reservas/reservas-admin.html'
     return render(request, template_name)
 
-def reportes_reserva(request):
-    template_name = 'reportes/ReporteReserva.html'
-    return render(request, template_name)
 
 class RoomList(ListView):
     model = Room
@@ -72,6 +69,7 @@ class RoomList(ListView):
 
 
 def room_create_form(request):
+    print("Entra a room_create_form")
     if request.method == 'POST':
         form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
@@ -93,7 +91,7 @@ class RoomCreate(CreateView):
 
 
 def upload_image_room(request):
-
+    print("Entra a upload_image_room")
     if request.method == 'POST':
         file = request.FILES['path_image']
         form = RoomForm(request.POST, request.FILES)
@@ -580,6 +578,35 @@ def clientes(request):
 
 ###Administracion de clientes###
 
+
+class makeCheckInView(views.APIView):
+    def post(self, request, pk):
+        # Booking.bookings.get_object(pk = pk)
+        bookingActual = get_object_or_404(Booking, pk=pk)
+        print(Booking.objects)
+        print("TEST")
+        fecha_ingreso = datetime.datetime.now()
+        #fecha_ingreso = datetime.datetime.now(timezone.utc)
+        str_fecha_ingreso = fecha_ingreso.strftime("%Y-%m-%d %I:%M %p")
+        bookingActual.fecha_ingresado = datetime.datetime.strptime(str_fecha_ingreso, '%Y-%m-%d %I:%M %p')
+        bookingActual.save()
+        respuesta = {'detail':  str_fecha_ingreso}
+        return JsonResponse(respuesta)
+
+
+class makeCheckOutView(views.APIView):
+    def post(self, request, pk):
+        # Booking.bookings.get_object(pk = pk)
+        bookingActual = get_object_or_404(Booking, pk=pk)
+        print(Booking.objects)
+        print("TEST")
+        fecha_salida = datetime.datetime.now()
+        str_fecha_salida = fecha_salida.strftime("%Y-%m-%d %I:%M %p")        
+        bookingActual.fecha_salida = datetime.datetime.strptime(str_fecha_salida, "%Y-%m-%d %I:%M %p")        
+        bookingActual.save()
+        respuesta = {'detail':  str_fecha_salida}
+        return JsonResponse(respuesta)
+        
 class extenderReservaView(views.APIView):
     def post(self, request, pk, fecha ):
         # Booking.bookings.get_object(pk = pk)
@@ -603,6 +630,7 @@ class extenderReservaView(views.APIView):
         fe = bookingActual.check_out_date
         fe = fe.replace(tzinfo=None)
         dif = fe -  fechain
+        ##falta precio y noches
         bookingActual.no_nights=dif.days 
         print(bookingActual.no_nights)
         bookingActual.save()
@@ -610,39 +638,6 @@ class extenderReservaView(views.APIView):
         print(bookingActual.fecha_salida)
         respuesta = {'detail':  fechasal_datetime}
         return JsonResponse(respuesta)
-
-class makeCheckInView(views.APIView):
-    def post(self, request, pk):
-        # Booking.bookings.get_object(pk = pk)
-        bookingActual = get_object_or_404(Booking, pk=pk)
-        print(Booking.objects)
-        print("TEST")
-        fecha_ingreso = datetime.datetime.now()
-        #fecha_ingreso = datetime.datetime.now(timezone.utc)
-        print(fecha_ingreso)
-        str_fecha_ingreso = fecha_ingreso.strftime("%Y-%m-%d %I:%M %p")
-        bookingActual.fecha_ingresado = datetime.datetime.strptime(str_fecha_ingreso, '%Y-%m-%d %I:%M %p')
-        
-        bookingActual.save()
-        respuesta = {'detail':  str_fecha_ingreso}
-        return JsonResponse(respuesta)
-
-
-class makeCheckOutView(views.APIView):
-    def post(self, request, pk):
-        # Booking.bookings.get_object(pk = pk)
-        bookingActual = get_object_or_404(Booking, pk=pk)
-        print(Booking.objects)
-        print("TEST")
-        fecha_salida = datetime.datetime.now()
-        str_fecha_salida = fecha_salida.strftime("%Y-%m-%d %I:%M %p")        
-        bookingActual.fecha_salida = datetime.datetime.strptime(str_fecha_salida, "%Y-%m-%d %I:%M %p")        
-        bookingActual.save()
-        respuesta = {'detail':  str_fecha_salida}
-        return JsonResponse(respuesta)
-
-
-
 ####PAQUETES TURISTICOS####
 
 
@@ -685,6 +680,48 @@ class TourEliminar(DeleteView):
         id_ = self.kwargs.get("id_tour")
         return get_object_or_404(Tour_Package, id=id_)
 
+
+###ADMINISTRACION DE PUBLICIDAD NO INVASIVA
+
+class PublicidadList(ListView):
+    model = Publicidad
+    context_object_name = 'anuncios'
+    template_name = 'publicidad/publicidad_list.html'
+
+class PublicidadCreate(CreateView):
+    model = Publicidad
+    form_class = PublicidadForm
+    template_name = 'publicidad/publicidad_create_form.html'
+
+    success_url = reverse_lazy('administracion:publicidad_listar')
+
+class PublicidadEdit(UpdateView):
+
+    model = Publicidad
+    context_object_name = 'anuncio'
+    template_name = 'publicidad/publicidad_edit.html'
+    form_class = PublicidadForm
+
+    def get_object(self):
+        id_ = self.kwargs.get("id_anuncio")
+        return get_object_or_404(Publicidad, id=id_)
+
+    success_url = reverse_lazy("administracion:publicidad_listar")
+
+class PublicidadDelete(DeleteView):
+    model = Publicidad
+    success_url = reverse_lazy("administracion:publicidad_listar")
+    template_name = 'publicidad/publicidad_delete_form.html'
+
+    def get_object(self):
+        id_ = self.kwargs.get("id_anuncio")
+        return get_object_or_404(Publicidad, id=id_)
+
+def anuncio_test(request):
+    anuncio = Publicidad.objects.filter(id=1).first()
+    
+
+##NOTICIAS
 def noticia_create_form(request):
     if request.method == 'POST':
         form = NoticiaForm(request.POST, request.FILES)
@@ -826,3 +863,12 @@ def reactivar_checkout_penalidad(request):
         return redirect('/administracion/lista_reservas')
 
 ###Administracion de checkout###
+
+
+def estadisticas(request):
+    reservasList = list(Booking.objects.all().values('check_in_date', 'total_to_pay'))
+    fechasList = []
+    for reserva in reservasList:
+        fechasList.append(reserva["check_in_date"].strftime("%d-%m-%Y"))
+    print(reservasList[0]["check_in_date"].strftime("%d-%m-%Y"))
+    return render(request, 'estadisticas/estadisticas.html', {'reservas': fechasList})

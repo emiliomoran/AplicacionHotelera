@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'tour_package.apps.TourPackageConfig',
     'administracion.apps.AdministracionConfig',
     'noticias.apps.NoticiasConfig',
+    'contact.apps.ContactConfig'
 ]
 
 MIDDLEWARE = [
@@ -73,7 +74,8 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',                
+                'django.contrib.messages.context_processors.messages',
+                'reservas.context_processors.add_variable_to_context',                
             ],
         },
     },
@@ -185,3 +187,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'recursos/')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "hotel/static"),
 ]
+
+#Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'hotelsalinas2020@gmail.com'
+EMAIL_HOST_PASSWORD = 'hotel123salinas'

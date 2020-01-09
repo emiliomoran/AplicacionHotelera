@@ -33,12 +33,20 @@ urlpatterns = [
     path('administrador-eliminacion/<int:id>', views.administrador_eliminacion),
     path('administrador-edicion/<int:id>', views.administrador_edicion),
     path('administrador-nuevo', views.administrador_nuevo),
+    
+
     path('tours',views.TourList.as_view(), name="tour_listar"),
-
-
     path('tours/crear/',views.TourCreate.as_view(),name = 'tour_crear'),
 	path('tours/editar/<int:id_tour>/',views.TourEdit.as_view(),name = 'tour_editar'),
-	path('tours/eliminar/<int:id_tour>/', views.TourEliminar.as_view(), name = 'tour_eliminar'), 
+	path('tours/eliminar/<int:id_tour>/', views.TourEliminar.as_view(), name = 'tour_eliminar'),
+
+    path('publicidad/',views.PublicidadList.as_view(),name="publicidad_listar"),
+    path('publicidad/crear',views.PublicidadCreate.as_view(),name="publicidad_crear"),
+    path('publicidad/editar/<int:id_anuncio>/',views.PublicidadEdit.as_view(),name="publicidad_editar"),
+    path('publicidad/eliminar/<int:id_anuncio>/',views.PublicidadDelete.as_view(),name="publicidad_eliminar"), 
+
+
+
     ###Habitaciones disponibles###
     path('habitaciones-disponibles', views.habitaciones_disponibilidad),
     ###Habitaciones disponibles###
@@ -57,8 +65,12 @@ urlpatterns = [
     path('checkouts-penalidad/<int:booking_id>', views.checkouts_penalidad),
     path('guardar-checkout-penalidad', views.guardar_checkout_penalidad),
     path('eliminar-checkout-penalidad', views.eliminar_checkout_penalidad),
+
     path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),
 
-    #reportes  
-    
-]
+
+    path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),   
+
+    #estadisticas
+    path('estadisticas', views.estadisticas)
+    ]

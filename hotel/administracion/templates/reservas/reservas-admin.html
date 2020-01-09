@@ -90,7 +90,7 @@
                         <td>{{ reserva.name }} {{ reserva.last_name }}</td>
                         <td>{{ reserva.cedula }}</td>
                         <td>{{ reserva.check_in_date}}</td>
-                        <td>{{ reserva.check_out_date}}</td>
+                        <td class="out">{{ reserva.check_out_date}}</td>
                         <td class="fechaIngreso">{{ reserva.fecha_ingresado}}</td>
                         <td class="fechaSalida">{{ reserva.fecha_salida}}</td>
                         <td>{{ reserva.nombre }} {{ reserva.numero }}</td>
@@ -259,11 +259,14 @@
                         alert("Proceso Fallido");
                     }
 
-                    tableRow.find(".check_out_date").html(detalle);
+                    tableRow.find(".out")     // Gets a descendent with class="nr"
+                       .html( $('#fechasalnew').val());
                    
                     $('#extendermodal').modal('hide');
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
+                    
+
                 },
                 error: function() {
                     alert("Extension fallida");
