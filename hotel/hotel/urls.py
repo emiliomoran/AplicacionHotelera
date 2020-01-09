@@ -31,6 +31,7 @@ urlpatterns = [
     path('api_mobile/', include('api_mobile.urls')),
     path('administracion/', include('administracion.urls')),
     path('noticias/', include('noticias.urls')),
+    path('contact/', include('contact.urls')),
 ]
 
 if settings.DEBUG:

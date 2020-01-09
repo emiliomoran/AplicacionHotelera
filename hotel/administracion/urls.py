@@ -64,5 +64,8 @@ urlpatterns = [
     path('checkouts-penalidad/<int:booking_id>', views.checkouts_penalidad),
     path('guardar-checkout-penalidad', views.guardar_checkout_penalidad),
     path('eliminar-checkout-penalidad', views.eliminar_checkout_penalidad),
-    path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),    
+    path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),   
+
+    #estadisticas
+    path('estadisticas', views.estadisticas),   
 ]
