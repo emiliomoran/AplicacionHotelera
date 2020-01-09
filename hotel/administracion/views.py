@@ -67,6 +67,7 @@ class RoomList(ListView):
 
 
 def room_create_form(request):
+    print("Entra a room_create_form")
     if request.method == 'POST':
         form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
@@ -88,7 +89,7 @@ class RoomCreate(CreateView):
 
 
 def upload_image_room(request):
-
+    print("Entra a upload_image_room")
     if request.method == 'POST':
         file = request.FILES['path_image']
         form = RoomForm(request.POST, request.FILES)

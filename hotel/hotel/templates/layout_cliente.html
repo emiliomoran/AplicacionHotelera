@@ -188,43 +188,33 @@
   <script>
     var map;
     var graphicsArray = [];
-    require(["esri/map",
-      "esri/geometry/Geometry",
-      "esri/geometry/Point",
-      "esri/geometry/Polyline",
-      "esri/geometry/Polygon",
-      "esri/graphic",
-      "esri/symbols/SimpleMarkerSymbol",
-      "esri/symbols/SimpleLineSymbol",
-      "esri/symbols/SimpleFillSymbol",
-      "esri/Color",
-      "esri/InfoTemplate",
-      "dojo/domReady!",
-      "esri/geometry"], function (Map,
-
-        Geometry,
-        Point,
-        Polyline,
-        Polygon,
-        Graphic,
-        SimpleMarkerSymbol,
-        SimpleLineSymbol,
-        SimpleFillSymbol,
-        Color,
-        InfoTemplate) {
+    require(["esri/map",      
+      "esri/geometry/Point",      
+      "esri/graphic",            
+      "esri/symbols/PictureMarkerSymbol",
+      "dojo/domReady!"], function (Map,        
+        Point,        
+        Graphic,        
+        PictureMarkerSymbol) {
+        var point = new Point({
+          latitude: -0.745682,
+          longitude: -90.312806,
+        });
         map = new Map("esri-map-container", {
           basemap: "topo",
-          center: [-106.61, 35.1107],
-          zoom: 13
+          center: point,
+          zoom: 8,          
         });
 
         map.on("load", addSomeGraphics);
 
-        var point = new Point(19.3911658,-99.4245036);
-        var pointSymbol = new SimpleMarkerSymbol();
-        var pointAttributes = { city: "Albuquerque", state: "New Mexico" };
-        var pointInfoTemplate = new InfoTemplate("Albuquerque");
-        var pointGraphic = new Graphic(point, pointSymbol, pointAttributes).setInfoTemplate(pointInfoTemplate);
+        var pointSymbol = new PictureMarkerSymbol({
+          "url": "https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png",
+          "height": 30,
+          "width": 30,
+          "type": "esriPMS",          
+        });        
+        var pointGraphic = new Graphic(point, pointSymbol);
 
         graphicsArray.push(pointGraphic);
         function addSomeGraphics() {

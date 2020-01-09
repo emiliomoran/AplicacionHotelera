@@ -52,3 +52,11 @@ Administrador
 #deny:hover {
     cursor: pointer;
 }
+
+/* .esriMapContainer {
+    width: 100em !important;
+} */
+
+#esri-map-container {
+    width: 100% !important;    
+}

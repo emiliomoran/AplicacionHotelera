@@ -33,9 +33,11 @@
                 </div>
             </div>
         </div>
-        <div class="row block-9">
-            <div class="col-md-6 order-md-last d-flex">
+        <div class="row block-9">            
+            <div class="col-md-6 order-md-last d-flex">                
                 <form action="/contact/send-email" method="POST" class="bg-white p-5 contact-form">
+                    <h4>Preguntas o comentarios</h4>
+                    <br></br>
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" id="name" name="name" class="form-control" placeholder="Nombres" required>
@@ -57,7 +59,7 @@
                 </form>
             </div>
             <div class="col-md-6 d-flex">
-                <div id="esri-map-container" class="bg-white"></div>
+                <div id="esri-map-container" class="bg-white" style="width: 100%;"></div>
             </div>
         </div>
     </div>
