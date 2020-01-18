@@ -4,6 +4,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'noticias', views.NoticiasViewSet)
+router.register(r'tours',views.ToursViewSet)
 
 urlpatterns = [
     path('login', views.login),

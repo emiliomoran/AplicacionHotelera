@@ -13,6 +13,8 @@ from django.contrib.auth.hashers import make_password, check_password
 from noticias.models import Noticia
 from noticias.serializer import NoticiaSerialiser
 from rest_framework import viewsets
+from tour_package.models import Tour_Package
+from tour_package.serializers import TourSerializer
 
 @csrf_exempt
 @api_view(["POST"])
@@ -177,3 +179,9 @@ def get_bookings(request):
 class NoticiasViewSet(viewsets.ModelViewSet):
     queryset = Noticia.objects.all()
     serializer_class = NoticiaSerialiser
+
+
+class ToursViewSet(viewsets.ModelViewSet):
+
+	queryset = Tour_Package.objects.all()
+	serializer_class = TourSerializer
