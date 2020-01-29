@@ -72,5 +72,7 @@ urlpatterns = [
     path('reactivar-checkout-penalidad', views.reactivar_checkout_penalidad),   
 
     #estadisticas
-    path('estadisticas', views.estadisticas)
+    path('estadisticas', views.estadisticas),
+
+    path('chat', views.chat)
     ]
