@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'tour_package.apps.TourPackageConfig',
     'administracion.apps.AdministracionConfig',
     'noticias.apps.NoticiasConfig',
-    'contact.apps.ContactConfig'
+    'contact.apps.ContactConfig',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': "hotel",
         'USER': "postgres",
-        'PASSWORD': "root",
+        'PASSWORD': "admin",
         'HOST': "localhost",
         'PORT': "5432",
     }

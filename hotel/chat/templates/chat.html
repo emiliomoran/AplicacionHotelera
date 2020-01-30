@@ -236,7 +236,6 @@
 }
   </style>
 </head>
-{% extends 'layout_administrador.html' %}
 {% block content %}
 <body>
 
@@ -284,71 +283,19 @@
     var userDict = {}
 
     $(document).ready(function(){
+        var usuario = "{{ username }}";
+        console.log(usuario);
+
         $('.msg_send_btn').on('click', function(){
-            newMessage();
+            newMessage(usuario);
         }); 
-        db.ref('/chat').orderByChild("date").on('child_added', function(data){
-            var arr = Object.values(data.val());
-            var keys = Object.keys(data.val());
-            var lastKey = keys[keys.length - 1];
-            var last = arr[arr.length - 1];
-            console.log(last);
-            var usuario = last.sender;
-            var messagePrev = last.message;
-            userDict[usuario] = arr;
-            console.log(userDict);
-            var divs = '<div id="'+usuario +'" class="chat_list"><div class="chat_people"><div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div><div class="chat_ib">';
-            var text = '<h5 class="usuarioMsg">'+usuario +'<span class="chat_date">Dec 25</span></h5><p class="msgPreview" >'+messagePrev +'</p>';
-            var closingDivs = '</div></div></div>';
 
-            $(divs+text+closingDivs).appendTo($("#chats"));
+        db.ref('chat/'+usuario).on('child_added', function(data){
+            var mensaje = data.val().message;
 
-            db.ref('chat/'+usuario).orderByKey().startAt(lastKey).on('child_added', function(data){
-                var mensaje = data.val().message;
-                userDict[usuario].push(data.val());
+            var message = data.val();
 
-                console.log("inc message"+usuario);
-                var activeUser = $(".active_chat").attr('id');
-                var messagePrev = data.val().message;
-                console.log("sender is active");
-                $("#"+usuario).remove();
-                var divs = '<div id="'+usuario +'" class="chat_list"><div class="chat_people"><div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div><div class="chat_ib">';
-                var text = '<h5 class="usuarioMsg">'+usuario +'<span class="chat_date">Dec 25</span></h5><p class="msgPreview" >'+messagePrev +'</p>';
-                var closingDivs = '</div></div></div>';
-                $(divs+text+closingDivs).prependTo($("#chats"));
-
-                if(activeUser === usuario) {
-                    $(".chat_list").removeClass("active_chat");
-                    $("#"+usuario).addClass("active_chat");
-                    loadMessages(usuario);
-                }
-                
-                
-                $("#"+usuario).on("click",function() {
-                    $(".chat_list").removeClass("active_chat");
-                    $("#"+usuario).addClass("active_chat");
-                    loadMessages(usuario);
-                });
-
-                
-            });
-
-            $("#"+usuario).on("click",function() {
-                $(".chat_list").removeClass("active_chat");
-                $("#"+usuario).addClass("active_chat");
-                loadMessages(usuario)
-            });
-        });
-        
-    });
-
-
-    function loadMessages(usuario) {
-        $('.msg_history').html("");
-        var messageArr = userDict[usuario]
-        messageArr.forEach(function(message){
-            var mensaje = message.message;
-            if(!message.adminSend){
+            if(message.adminSend){
                 var divs = '<div class="incoming_msg"><div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div><div class="received_msg"><div class="received_withd_msg">';
                 var text = '<p>'+mensaje +'</p><span class="time_date"> 11:01 AM    |    June 9</span></div>'
                 var closing = '</div></div>'
@@ -371,14 +318,14 @@
                 $(".msg_history").animate({ scrollTop: $(document).height() }, "fast");
             }  
         });
+        
+    });
 
-    }
 
-    function newMessage(){
+    function newMessage(user){
 
         var message = $('.write_msg').val();
 
-        var user = $(".active_chat").attr('id');
 
         if($.trim(message) == '') {
             return false;
@@ -387,7 +334,7 @@
         console.log(user);
         db.ref('chat/'+user).push({
             message: message,
-            adminSend: true,
+            adminSend: false,
             sender: user,
             date: Date.now()
         });
@@ -397,7 +344,8 @@
 
     $(window).on('keydown', function(e) {
         if (e.which == 13) {
-            newMessage();
+            var usuario = "{{ username }}";
+            newMessage(usuario);
             return false;
         }
     });
