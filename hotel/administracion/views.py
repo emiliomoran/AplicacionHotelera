@@ -17,6 +17,8 @@ import pytz
 from rest_framework import generics
 from rest_framework import views
 from rest_framework.response import Response
+from django.conf import settings
+from django.core.mail import send_mail
 
 # from datetime import date
 # from datetime import datetime
@@ -578,7 +580,6 @@ def clientes(request):
 
 ###Administracion de clientes###
 
-
 class makeCheckInView(views.APIView):
     def post(self, request, pk):
         # Booking.bookings.get_object(pk = pk)
@@ -875,3 +876,108 @@ def estadisticas(request):
 
 def chat(request):
     return render(request, 'chat/chat.html')
+
+def suscripcion(request):
+    if request.method=="POST":
+        print("Envio masivo de promocion")
+        json_post = request.POST
+        print(json_post)                     
+
+        subject = json_post['asunto']
+        message = json_post['mensaje']
+                
+        email_from = settings.EMAIL_HOST_USER
+
+        email_list = []
+        out_queries = Perfil.objects.raw('''
+            select au.id, au.email
+            from accesos_usr as au
+            where au.is_admin = false
+            and au.is_staff = false
+            and au.is_superuser=false;
+        ''')
+
+        for e in out_queries:            
+            email_list.append(e.email)
+
+        print(email_list)
+
+        recipient_list = email_list
+        send_mail(subject, message, email_from, recipient_list)
+
+        return redirect('/administracion/suscripciones')
+
+    else:
+        clientes_list = []
+        out_queries = Perfil.objects.raw('''
+            select ap.id, ap.name, ap.last_name, ap.cedula, ap.genero, au.email, ap.phone, ap.date_birth, au.is_removed
+            from accesos_perfil as ap, accesos_usr as au
+            where ap.usr_id_id = au.id
+            and au.is_admin = false
+            and au.is_staff = false
+            and au.is_superuser=false;
+        ''')
+
+        for e in out_queries:
+            if(e.cedula == None):
+                e.phone = 'Sin dato'
+            if(e.phone == None):
+                e.phone = 'Sin dato'
+            clientes_list.append(e)
+
+        print(clientes_list)
+        return render(request, 'notificaciones/suscripcion.html', {'clientes': clientes_list})
+
+def notificacion_reserva(request):
+    if request.method=="POST":
+        json_post = request.POST
+        print(json_post)
+
+        out_queries = Booking.objects.raw('''
+            select au.id, au.email
+            from reservas_booking as rb, accesos_perfil as ap, accesos_usr as au
+            where rb.customer_id_id = ap.id and ap.usr_id_id = au.id and rb.id = %s
+        ''', json_post['id_reserva'])
+
+        email_list = []
+
+        for e in out_queries:
+            print(e)
+            email_list.append(e.email)
+
+        print(email_list)
+
+        subject = json_post['asunto']
+        message = json_post['mensaje']
+                
+        email_from = settings.EMAIL_HOST_USER
+
+        recipient_list = email_list
+        send_mail(subject, message, email_from, recipient_list)
+
+        return redirect('/administracion/notificacion-reserva')
+
+    else:
+        print("Entraaaaa a listar")
+        reservas_list = []
+        out_queries = Booking.objects.raw('''
+            select b.id, b.check_in_date, b.check_out_date, p.name, p.last_name, p.cedula, r.nombre, r.numero
+            from reservas_booking as b, accesos_perfil as p, reservas_room as r
+            where b.customer_id_id = p.id and b.room_id_id = r.id
+        ''')
+        print(out_queries)
+        for e in out_queries:
+            print(e)
+            reservas_list.append(e)
+            e.check_in_date = e.check_in_date.strftime("%Y-%m-%d %I:%M %p")
+            e.check_out_date = e.check_out_date.strftime("%Y-%m-%d %I:%M %p")
+            if(e.fecha_ingresado is None):
+                e.fecha_ingresado = "-"
+            else:
+                e.fecha_ingresado = e.fecha_ingresado.strftime("%Y-%m-%d %I:%M %p")
+            if(e.fecha_salida is None):
+                e.fecha_salida = "-"
+            else:
+                e.fecha_salida = e.fecha_salida.strftime("%Y-%m-%d %I:%M %p")
+
+        return render(request, 'notificaciones/notificacion_reserva.html', {'lista_reservas': reservas_list})

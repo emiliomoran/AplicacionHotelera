@@ -74,5 +74,9 @@ urlpatterns = [
     #estadisticas
     path('estadisticas', views.estadisticas),
 
-    path('chat', views.chat)
-    ]
+    path('chat', views.chat),
+
+    #Notificaciones#
+    path('suscripciones', views.suscripcion),
+    path('notificacion-reserva', views.notificacion_reserva),
+    ]    
