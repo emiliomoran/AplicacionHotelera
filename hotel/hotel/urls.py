@@ -32,6 +32,7 @@ urlpatterns = [
     path('administracion/', include('administracion.urls')),
     path('noticias/', include('noticias.urls')),
     path('contact/', include('contact.urls')),
+    path('chat/', include('chat.urls')),
 ]
 
 if settings.DEBUG:

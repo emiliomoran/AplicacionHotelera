@@ -12,13 +12,13 @@
 					<div class="carousel-item active">
 						
 						<a href="#">
-							<img class="d-block w-100" src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-3_cexmhn.jpg" alt="" width="70" class="img-fluid rounded shadow-sm" alt="First slide">
+							<img class="d-block w-100" src="{{ anuncio.imagen.url }}" alt="" width="700" class="img-fluid rounded shadow-sm" alt="First slide">
 						</a> 
 					</div>
 				{% else %}
 					<div class="carousel-item">
 						<a href="#"><!--AQUI DEBERIA IR LINK PARA IR A OTRA PAGINA EXTERNA-->
-							<img class="d-block w-100" src="anuncio.imagen" alt="First slide">
+							<img class="d-block w-100" src="anuncio.imagen.url" alt="First slide">
 						</a> 
 					</div>
 				{% endif %}

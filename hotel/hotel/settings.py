@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'tour_package.apps.TourPackageConfig',
     'administracion.apps.AdministracionConfig',
     'noticias.apps.NoticiasConfig',
-    'contact.apps.ContactConfig'
+    'contact.apps.ContactConfig',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [

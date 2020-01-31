@@ -872,3 +872,6 @@ def estadisticas(request):
         fechasList.append(reserva["check_in_date"].strftime("%d-%m-%Y"))
     print(reservasList[0]["check_in_date"].strftime("%d-%m-%Y"))
     return render(request, 'estadisticas/estadisticas.html', {'reservas': fechasList})
+
+def chat(request):
+    return render(request, 'chat/chat.html')
