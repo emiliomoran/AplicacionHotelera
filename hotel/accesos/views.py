@@ -5,6 +5,8 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
+from django.conf import settings
+from django.core.mail import send_mail
 
 # Modelos
 from accesos.models import Usr
@@ -31,6 +33,10 @@ def login_cliente(request):
                 perfil = Perfil.objects.get(usr_id_id=usr.id)
                 if 'success_register' in request.session:
                     del request.session['success_register']
+                    
+                if 'success_change' in request.session:
+                    del request.session['success_change']
+
                 request.session['success_login'] = True
                 request.session.modified = True
                 # print(perfil.name)    Para verificar si toma el perfil
@@ -62,6 +68,9 @@ def login_cliente(request):
 
 @csrf_protect
 def registro(request):
+    if 'success_login' in request.session:
+        del request.session['success_login']
+        
     if request.method == 'POST':
         try:
             nombres = request.POST.get('nombres')
@@ -92,6 +101,8 @@ def registro(request):
             perfil.save()
 
             request.session['success_register'] = True
+            if 'success_change' in request.session:
+                del request.session['success_change']
             return redirect('/accesos/login')
 
         except Exception as error:
@@ -110,6 +121,10 @@ def login_social(request):
 
         if 'success_register' in request.session:
             del request.session['success_register']
+
+        if 'success_change' in request.session:            
+            del request.session['success_change']
+        
         request.session['success_login'] = True
         request.session.modified = True
         # print(perfil.name)    Para verificar si toma el perfil
@@ -135,6 +150,9 @@ def login_social(request):
 
 @csrf_protect
 def registro_social(request):
+    if 'success_login' in request.session:
+        del request.session['success_login']
+
     if request.method == 'POST':
         try:
             usr = Usr.objects.get(id=request.user.id)
@@ -159,6 +177,9 @@ def registro_social(request):
 
             print(customer_json)
             request.session['customer'] = customer_json
+
+            if 'success_change' in request.session:
+                del request.session['success_change']
 
             return redirect('/reservas')
         except Exception as error:
@@ -208,3 +229,50 @@ class ProfileEdit(UpdateView):
         return get_object_or_404(Perfil,id=id_perfil)
 
     success_url = reverse_lazy("accesos:profile")
+
+def recuperar_contrasena(request):
+
+    if 'success_login' in request.session:
+        del request.session['success_login']
+
+    if request.method=="POST":        
+        json_post = request.POST             
+
+        subject = "RECUPERACIÓN DE CONTRASEÑA"
+        message = """
+        Buenas tardes,
+
+        Para recuperar su contraseña, por favor acceder al siguiente enlace e ingresar nueva contraseña.
+        http://localhost:8000/accesos/nueva-contraseña
+        """
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [json_post['email'], ]
+        send_mail(subject, message, email_from, recipient_list)
+
+        return redirect('/accesos/recuperar-contraseña')
+    else:
+        return render(request, 'recuperar_contrasena.html')
+
+def nueva_contrasena(request):
+
+    if 'success_login' in request.session:
+        del request.session['success_login']
+
+    if request.method=="POST":
+        json_post = request.POST
+        print(json_post)
+
+        email_test = "emiliojmp9@gmail.com"
+
+        password_hash = make_password(json_post['password'])
+
+        usr = Usr.objects.get(email=email_test)
+        usr.password = password_hash
+
+        usr.save()
+
+        request.session['success_change'] = True        
+
+        return redirect('/accesos/login')
+    else:
+        return render(request, 'nueva_contrasena.html')

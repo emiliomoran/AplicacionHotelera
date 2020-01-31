@@ -34,6 +34,19 @@
         </div>
     {% endif %}
 {% endif %}
+{% if 'success_change' in request.session %}
+    {% if request.session.success_change %}
+    <div class="alert success">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <strong>Bien!</strong> Se ha cambiado la contraseña exitosamente.
+    </div>
+    {% else %}
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <strong>Falló!</strong> Intento recuperar la contraseña otra vez.
+    </div>
+    {% endif %}
+{% endif %}
 <div class="login-form center">    
     <form action="/accesos/login" class="form-style" method="POST">
         {% csrf_token %}
@@ -60,7 +73,7 @@
         </div>
         <div class="clearfix">
             <label class="pull-left checkbox-inline recuerdame"><input type="checkbox"> Recuerdame</label>
-            <a href="#" class="pull-right text-success olvido">¿Olvidó su contraseña?</a>
+            <a href="/accesos/recuperar-contraseña" class="pull-right text-success olvido">¿Olvidó su contraseña?</a>
         </div>
     </form>
     <div class="hint-text small">¿No tienes cuenta? <a href="/accesos/registro" class="text-success registro">Registrate aquí!</a></div>

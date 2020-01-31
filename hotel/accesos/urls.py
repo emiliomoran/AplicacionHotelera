@@ -11,4 +11,6 @@ urlpatterns = [
     path('registro_social', views.registro_social),
     path('profile', views.my_profile, name='profile'),
     path('profile/edit/',views.ProfileEdit.as_view(),name='edit_profile'),
+    path('recuperar-contraseña', views.recuperar_contrasena),
+    path('nueva-contraseña', views.nueva_contrasena),
 ]
